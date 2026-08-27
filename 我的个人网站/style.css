@@ -279,3 +279,100 @@ box-shadow:
 0 0 20px #00ffff;
 
 }
+/* 项目展示 */
+
+.works{
+
+padding:100px 10%;
+
+text-align:center;
+
+}
+
+
+.works h2{
+
+font-size:40px;
+
+margin-bottom:50px;
+
+}
+
+
+
+.project-list{
+
+display:flex;
+
+justify-content:center;
+
+gap:30px;
+
+flex-wrap:wrap;
+
+}
+
+
+
+.project-card{
+
+width:280px;
+
+padding:30px;
+
+
+background:
+
+rgba(255,255,255,0.05);
+
+
+border:
+
+1px solid rgba(0,255,255,0.3);
+
+
+border-radius:20px;
+
+
+backdrop-filter:blur(10px);
+
+
+transition:.3s;
+
+
+}
+
+
+
+.project-card:hover{
+
+transform:translateY(-10px);
+
+
+box-shadow:
+
+0 0 30px rgba(0,255,255,.5);
+
+}
+
+
+
+.project-card h3{
+
+color:#00ffff;
+
+font-size:24px;
+
+margin-bottom:15px;
+
+}
+
+
+
+.project-card p{
+
+color:#aaa;
+
+line-height:1.8;
+
+}
