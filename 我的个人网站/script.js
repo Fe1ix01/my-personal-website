@@ -1,270 +1,203 @@
-// 获取画布
+// 打字效果
 
-const canvas = document.getElementById("particles");
-
-const ctx = canvas.getContext("2d");
-
-
-// 设置大小
-
-canvas.width = window.innerWidth;
-
-canvas.height = window.innerHeight;
+const text = [
+"探索 AI 与未来科技",
+"创造属于自己的数字世界",
+"Keep Learning, Keep Creating"
+];
 
 
+let index = 0;
+let char = 0;
 
-// 粒子数量
-
-let particles = [];
-
-const count = 120;
-
+const typing =
+document.getElementById("typing");
 
 
-// 创建粒子
+function type(){
 
-for(let i = 0; i < count; i++){
+if(char < text[index].length){
 
-    particles.push({
+typing.innerHTML += text[index][char];
 
-        x:Math.random()*canvas.width,
+char++;
 
-        y:Math.random()*canvas.height,
+setTimeout(type,100);
 
-        size:Math.random()*2+0.5,
+}
 
-        speedX:(Math.random()-0.5)*0.5,
+else{
 
-        speedY:(Math.random()-0.5)*0.5
+setTimeout(erase,1500);
 
-    });
+}
 
 }
 
 
+function erase(){
 
-// 绘制
+if(char>0){
 
-function draw(){
+typing.innerHTML =
+text[index].substring(0,char-1);
 
+char--;
 
-    ctx.clearRect(
-        0,
-        0,
-        canvas.width,
-        canvas.height
-    );
+setTimeout(erase,50);
 
+}
 
+else{
 
-    particles.forEach(p=>{
+index++;
 
+if(index>=text.length){
 
-        ctx.beginPath();
+index=0;
 
+}
 
-        ctx.arc(
-            p.x,
-            p.y,
-            p.size,
-            0,
-            Math.PI*2
-        );
+setTimeout(type,500);
 
+}
 
-        ctx.fillStyle="#00eaff";
+}
 
 
-        ctx.fill();
+type();
 
 
 
-        // 移动
 
-        p.x += p.speedX;
-
-        p.y += p.speedY;
+// 粒子背景
 
 
-
-        // 边界返回
-
-        if(
-            p.x<0 ||
-            p.x>canvas.width
-        ){
-
-            p.speedX*=-1;
-
-        }
+const canvas =
+document.getElementById("particles");
 
 
-
-        if(
-            p.y<0 ||
-            p.y>canvas.height
-        ){
-
-            p.speedY*=-1;
-
-        }
+const ctx =
+canvas.getContext("2d");
 
 
-    });
+canvas.width =
+window.innerWidth;
+
+
+canvas.height =
+window.innerHeight;
 
 
 
-    requestAnimationFrame(draw);
+let particles=[];
+
+
+
+for(let i=0;i<100;i++){
+
+
+particles.push({
+
+x:Math.random()*canvas.width,
+
+y:Math.random()*canvas.height,
+
+size:Math.random()*3+1,
+
+speedX:(Math.random()-0.5),
+
+speedY:(Math.random()-0.5)
+
+});
 
 
 }
 
 
 
-draw();
+function animate(){
+
+
+ctx.clearRect(
+0,
+0,
+canvas.width,
+canvas.height
+);
 
 
 
+particles.forEach(p=>{
 
-// 窗口变化
+
+ctx.beginPath();
+
+ctx.arc(
+p.x,
+p.y,
+p.size,
+0,
+Math.PI*2
+);
+
+
+ctx.fillStyle="#00ffff";
+
+
+ctx.fill();
+
+
+p.x+=p.speedX;
+
+p.y+=p.speedY;
+
+
+
+if(
+p.x<0 ||
+p.x>canvas.width
+){
+
+p.speedX*=-1;
+
+}
+
+
+if(
+p.y<0 ||
+p.y>canvas.height
+){
+
+p.speedY*=-1;
+
+}
+
+
+});
+
+
+
+requestAnimationFrame(animate);
+
+
+}
+
+
+
+animate();
+
+
 
 window.addEventListener(
 "resize",
 ()=>{
 
+canvas.width=
+window.innerWidth;
 
-canvas.width=window.innerWidth;
-
-canvas.height=window.innerHeight;
-
-
-});
-
-
-
-
-// 鼠标移动光效
-
-document.addEventListener(
-"mousemove",
-(e)=>{
-
-
-document.body.style.background=
-
-`
-radial-gradient(
-600px at ${e.clientX}px ${e.clientY}px,
-rgba(0,120,255,.12),
-#050505
-)
-`;
-
-
-
-});
-
-// ===== Suze v3 打字机效果 =====
-
-
-const typingText = document.getElementById("typing");
-
-
-const words = [
-
-"I create with AI.",
-
-"I explore technology.",
-
-"I share digital ideas.",
-
-"Building the future with creativity."
-
-];
-
-
-
-let wordIndex = 0;
-
-let charIndex = 0;
-
-let deleting = false;
-
-
-
-function typeEffect(){
-
-
-const current = words[wordIndex];
-
-
-
-if(!deleting){
-
-
-typingText.textContent =
-
-current.substring(0,charIndex++);
-
-
-
-if(charIndex > current.length){
-
-
-deleting = true;
-
-
-setTimeout(typeEffect,1500);
-
-
-return;
-
+canvas.height=
+window.innerHeight;
 
 }
-
-
-
-}else{
-
-
-typingText.textContent =
-
-current.substring(0,charIndex--);
-
-
-
-if(charIndex === 0){
-
-
-deleting = false;
-
-
-wordIndex++;
-
-
-if(wordIndex >= words.length){
-
-wordIndex = 0;
-
-}
-
-
-}
-
-
-}
-
-
-
-setTimeout(
-typeEffect,
-deleting ? 60 : 120
 );
-
-
-
-}
-
-
-
-typeEffect();
