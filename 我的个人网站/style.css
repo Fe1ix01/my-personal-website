@@ -5,6 +5,21 @@
 }
 
 body {
+
+margin:0;
+
+background:#000;
+
+color:white;
+
+font-family:
+"Inter",
+"Microsoft YaHei",
+sans-serif;
+
+overflow-x:hidden;
+
+}
     background: #050505;
     color: white;
     font-family: "Segoe UI", Arial, sans-serif;
@@ -52,7 +67,54 @@ nav a:hover {
 
 /* 主区域 */
 
-.hero {
+.hero{
+
+height:100vh;
+
+display:flex;
+
+flex-direction:column;
+
+justify-content:center;
+
+align-items:center;
+
+text-align:center;
+
+}
+
+
+.hero h1{
+
+font-size:60px;
+
+margin:20px 0 10px;
+
+letter-spacing:3px;
+
+}
+
+
+.hero h2{
+
+font-size:24px;
+
+font-weight:400;
+
+color:#00ffff;
+
+}
+
+
+.hero p{
+
+font-size:18px;
+
+color:#aaa;
+
+margin-top:15px;
+
+}
 
     min-height:80vh;
 
@@ -69,7 +131,23 @@ nav a:hover {
 }
 
 
-.avatar {
+.avatar{
+
+width:150px;
+
+height:150px;
+
+border-radius:50%;
+
+border:3px solid #00ffff;
+
+box-shadow:
+
+0 0 30px #00ffff;
+
+object-fit:cover;
+
+}
 
     width:140px;
 
@@ -160,5 +238,44 @@ text-align:center;
 padding:40px;
 
 color:#666;
+
+}
+.buttons{
+
+margin-top:30px;
+
+display:flex;
+
+gap:20px;
+
+}
+
+
+.buttons a{
+
+padding:12px 30px;
+
+border-radius:30px;
+
+border:1px solid #00ffff;
+
+color:white;
+
+text-decoration:none;
+
+transition:.3s;
+
+}
+
+
+.buttons a:hover{
+
+background:#00ffff;
+
+color:black;
+
+box-shadow:
+
+0 0 20px #00ffff;
 
 }
