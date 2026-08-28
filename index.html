@@ -717,7 +717,7 @@
             <span id="journal-date"></span>
           </div>
           <textarea class="journal-area" id="journal" placeholder="今天发生了什么，想到什么，就写一点。"></textarea>
-          <div class="save-hint">自动保存到当前浏览器</div>
+          <div class="save-hint" id="journal-save-status" aria-live="polite">已保存</div>
         </div>
 
         <div class="panel side-panel">
@@ -739,7 +739,7 @@
               <textarea class="review-area" id="review-next" placeholder="写最重要的一件。"></textarea>
             </label>
           </div>
-          <div class="save-hint">自动保存到当前浏览器</div>
+          <div class="save-hint" id="review-save-status" aria-live="polite">已保存</div>
         </div>
       </aside>
 
@@ -965,12 +965,32 @@
       return `${d.getFullYear()}-${d.getMonth()+1}-${d.getDate()}`;
     }
 
-    function bindSavedText(id, prefix) {
+    const saveTimers = new Map();
+    const pendingSaves = new Map();
+
+    function bindSavedText(id, prefix, statusId) {
       const el = document.getElementById(id);
+      const status = document.getElementById(statusId);
       if (!el) return;
       const key = prefix + todayKey();
       el.value = localStorage.getItem(key) || "";
-      el.addEventListener("input", () => localStorage.setItem(key, el.value));
+      el.addEventListener("input", () => {
+        if (status) status.textContent = "正在保存…";
+        if (!pendingSaves.has(statusId)) pendingSaves.set(statusId, new Set());
+        pendingSaves.get(statusId).add(id);
+        clearTimeout(saveTimers.get(id));
+        saveTimers.set(id, setTimeout(() => {
+          try {
+            localStorage.setItem(key, el.value);
+            pendingSaves.get(statusId).delete(id);
+            if (status && pendingSaves.get(statusId).size === 0) status.textContent = "已保存";
+          } catch {
+            pendingSaves.get(statusId).delete(id);
+            if (status) status.textContent = "保存失败";
+          }
+          saveTimers.delete(id);
+        }, 400));
+      });
     }
 
     function initNotes() {
@@ -978,10 +998,10 @@
       const dateEl = document.getElementById("journal-date");
       if (dateEl) dateEl.textContent = `${d.getMonth()+1}/${d.getDate()}`;
 
-      bindSavedText("journal", "suze_journal_");
-      bindSavedText("review-good", "suze_review_good_");
-      bindSavedText("review-learn", "suze_review_learn_");
-      bindSavedText("review-next", "suze_review_next_");
+      bindSavedText("journal", "suze_journal_", "journal-save-status");
+      bindSavedText("review-good", "suze_review_good_", "review-save-status");
+      bindSavedText("review-learn", "suze_review_learn_", "review-save-status");
+      bindSavedText("review-next", "suze_review_next_", "review-save-status");
     }
 
     function searchWith(engine) {
