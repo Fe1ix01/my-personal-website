@@ -2,12 +2,12 @@
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
-  <!-- 单文件页面：不依赖外部字体、图片或 CDN，尽量降低不同网络环境下的加载失败概率 -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Suze OS</title>
   <meta name="description" content="Suze OS - Personal Workspace">
+  <title>Suze OS</title>
+
   <style>
-    :root{
+    :root {
       --bg1:#eef4f8;
       --bg2:#dfe9f3;
       --bg3:#d3e0eb;
@@ -16,87 +16,69 @@
       --line:rgba(23,32,43,.08);
       --accent:#16c9c3;
       --accent-deep:#0f8f8a;
-      --max:980px;
+      --panel:rgba(255,255,255,.40);
+      --item:rgba(255,255,255,.60);
       --shadow:0 18px 44px rgba(32,56,85,.08);
     }
 
-    *{box-sizing:border-box}
-    html{scroll-behavior:smooth}
+    * { box-sizing:border-box; }
+    html { scroll-behavior:smooth; }
 
-    body{
+    body {
       margin:0;
       min-height:100vh;
       color:var(--text);
       font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,
       "Segoe UI","PingFang SC","Microsoft YaHei",Arial,sans-serif;
-      line-height:1.45;
       background:
-        radial-gradient(circle at 15% 18%, rgba(22,201,195,.13), transparent 24%),
-        radial-gradient(circle at 84% 14%, rgba(116,152,255,.12), transparent 26%),
+        radial-gradient(circle at 13% 17%, rgba(22,201,195,.13), transparent 24%),
+        radial-gradient(circle at 86% 14%, rgba(116,152,255,.12), transparent 26%),
         linear-gradient(180deg,var(--bg1) 0%,var(--bg2) 56%,var(--bg3) 100%);
+      line-height:1.45;
     }
 
-    a{text-decoration:none;color:inherit}
-    button{font:inherit}
-    .wrap{
-      width:min(calc(100% - 36px),var(--max));
-      margin:0 auto;
-    }
+    a { text-decoration:none; color:inherit; }
+    button,input,textarea { font:inherit; }
+    button,a { -webkit-tap-highlight-color:transparent; }
 
-    img,svg,video,canvas{
-      max-width:100%;
-      height:auto;
-    }
-
-    button,a{
-      -webkit-tap-highlight-color:transparent;
-    }
-
-    header{
+    header {
       height:56px;
       border-bottom:1px solid rgba(255,255,255,.45);
       background:rgba(255,255,255,.24);
       backdrop-filter:blur(12px);
     }
 
-    .nav{
+    .nav {
+      width:min(calc(100% - 36px),980px);
       height:56px;
+      margin:0 auto;
       display:flex;
       align-items:center;
       justify-content:space-between;
     }
 
-    .brand{
+    .brand {
       font-size:17px;
       font-weight:800;
     }
 
-    .brand span{color:var(--accent-deep)}
+    .brand span { color:var(--accent-deep); }
 
-    .nav-links{
+    .nav-links {
       display:flex;
       gap:20px;
       color:var(--muted);
       font-size:12px;
     }
 
-    main{
-      padding:24px 0 24px;
-    }
-
-    .layout{
-      width:min(100%,860px);
+    .hero {
+      width:min(calc(100% - 36px),860px);
       margin:0 auto;
-      display:grid;
-      gap:34px;
-    }
-
-    .hero{
+      padding:28px 0 30px;
       text-align:center;
-      padding:24px 0 4px;
     }
 
-    .eyebrow{
+    .eyebrow {
       color:var(--accent-deep);
       font-size:10px;
       font-weight:800;
@@ -104,7 +86,7 @@
       margin-bottom:10px;
     }
 
-    h1{
+    h1 {
       margin:0;
       font-size:clamp(46px,6vw,68px);
       line-height:.96;
@@ -112,52 +94,28 @@
       color:#111923;
     }
 
-    .subtitle{
+    .subtitle {
       margin-top:12px;
       font-size:clamp(17px,1.9vw,21px);
       font-weight:700;
       color:#293541;
     }
 
-    .desc{
+    .desc {
       margin:8px auto 0;
       color:var(--muted);
       font-size:12px;
     }
 
-    .hero-tools{
+    .modes {
       margin-top:18px;
-      display:flex;
-      flex-direction:column;
-      align-items:center;
-      gap:12px;
-    }
-
-    .priority{
-      width:min(100%,560px);
-      padding:10px 15px;
-      border-radius:999px;
-      border:1px solid rgba(22,201,195,.18);
-      background:rgba(255,255,255,.50);
-      color:#33404d;
-      font-size:12px;
-      box-shadow:var(--shadow);
-      backdrop-filter:blur(8px);
-    }
-
-    .priority strong{
-      color:var(--accent-deep);
-      margin-right:5px;
-    }
-
-    .modes{
       display:flex;
       justify-content:center;
       gap:10px;
       flex-wrap:wrap;
     }
 
-    .btn{
+    .btn {
       padding:10px 16px;
       border-radius:999px;
       border:1px solid rgba(23,32,43,.08);
@@ -169,55 +127,167 @@
       transition:.16s ease;
     }
 
-    .btn:hover{
+    .btn:hover {
       transform:translateY(-1px);
       background:rgba(255,255,255,.84);
     }
 
-    .btn.primary{
+    .btn.primary {
       background:var(--accent);
       border-color:var(--accent);
       color:#062321;
       font-weight:800;
     }
 
-    .workspace-shell{
-      padding:24px 24px 20px;
-      border-radius:24px;
-      border:1px solid rgba(255,255,255,.58);
-      background:rgba(255,255,255,.40);
-      backdrop-filter:blur(16px);
-      box-shadow:0 20px 54px rgba(29,47,76,.09);
+    /* 真正三栏：顶部天然平行 */
+    .dashboard {
+      width:min(calc(100% - 56px),1540px);
+      margin:0 auto 34px;
+      display:grid;
+      grid-template-columns:280px minmax(620px,760px) 280px;
+      gap:86px;
+      justify-content:center;
+      align-items:start;
     }
 
-    .section-title{
+    .left-stack,
+    .right-stack,
+    .center-stack {
+      min-width:0;
+      display:grid;
+      gap:18px;
+      align-content:start;
+    }
+
+    .panel {
+      border:1px solid rgba(255,255,255,.58);
+      background:var(--panel);
+      backdrop-filter:blur(16px);
+      border-radius:22px;
+      box-shadow:var(--shadow);
+    }
+
+    .side-panel {
+      padding:18px;
+    }
+
+    .panel-head {
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:12px;
+      margin-bottom:13px;
+    }
+
+    .panel-head h3 {
+      margin:0;
+      font-size:16px;
+      letter-spacing:-.2px;
+    }
+
+    .panel-head span {
+      color:var(--muted);
+      font-size:9px;
+    }
+
+    .quote-box {
+      min-height:104px;
+      padding:16px;
+      display:flex;
+      align-items:center;
+      border-radius:14px;
+      border:1px solid rgba(23,32,43,.06);
+      background:rgba(255,255,255,.56);
+      color:#31404e;
+      font-size:13px;
+      line-height:1.75;
+    }
+
+    .quote-box::before {
+      content:"“";
+      color:var(--accent-deep);
+      font-size:26px;
+      margin-right:6px;
+      align-self:flex-start;
+      line-height:1;
+    }
+
+    .journal-area,
+    .review-area {
+      width:100%;
+      border:1px solid rgba(23,32,43,.08);
+      background:rgba(255,255,255,.64);
+      color:var(--text);
+      border-radius:12px;
+      padding:11px 12px;
+      outline:none;
+      resize:vertical;
+      font-size:12px;
+      line-height:1.6;
+    }
+
+    .journal-area { min-height:160px; }
+    .review-area { min-height:72px; }
+
+    .journal-area:focus,
+    .review-area:focus,
+    .search-input:focus,
+    .url-input:focus {
+      border-color:rgba(22,201,195,.38);
+      box-shadow:0 0 0 3px rgba(22,201,195,.08);
+    }
+
+    .save-hint {
+      margin-top:7px;
+      color:var(--muted);
+      font-size:9px;
+      text-align:right;
+    }
+
+    .review-list {
+      display:grid;
+      gap:10px;
+    }
+
+    .review-list label {
+      display:grid;
+      gap:5px;
+    }
+
+    .review-list label span {
+      color:#566371;
+      font-size:10px;
+      font-weight:700;
+    }
+
+    .workspace {
+      padding:24px 24px 20px;
+    }
+
+    .section-title {
       text-align:center;
       margin-bottom:20px;
     }
 
-    .section-title h2{
+    .section-title h2 {
       margin:0;
       font-size:27px;
       letter-spacing:-.4px;
     }
 
-    .section-title p{
+    .section-title p {
       margin:5px 0 0;
       color:var(--muted);
       font-size:11px;
     }
 
-    .tool-groups{
+    .tool-groups {
       display:grid;
-      grid-template-columns:repeat(2,minmax(0,1fr));
+      grid-template-columns:1fr 1fr;
       gap:20px 22px;
     }
 
-    .group{
-      min-width:0;
-    }
-
-    .group-name{
+    .group-name {
       text-align:center;
       margin-bottom:9px;
       color:#7a8590;
@@ -227,308 +297,131 @@
       text-transform:uppercase;
     }
 
-    .tools{
+    .tools {
       display:grid;
       grid-template-columns:repeat(2,minmax(0,1fr));
       gap:10px;
     }
 
-    .tool{
+    .tool {
       min-height:54px;
-      padding:10px 10px;
+      padding:10px;
       display:flex;
       align-items:center;
       justify-content:center;
       text-align:center;
       border-radius:12px;
       border:1px solid rgba(23,32,43,.07);
-      background:rgba(255,255,255,.60);
+      background:var(--item);
       font-size:12px;
       font-weight:700;
       color:#24303c;
       transition:.16s ease;
     }
 
-    .tool:hover{
+    .tool:hover {
       transform:translateY(-1px);
       border-color:rgba(22,201,195,.26);
       background:rgba(255,255,255,.82);
     }
 
-    .footer-note{
-      margin-top:18px;
-      text-align:center;
+    .workspace-note {
+      margin-top:17px;
       color:var(--muted);
+      text-align:center;
       font-size:10px;
     }
 
-
-    .connection-path{
-      margin-top:34px;
-      padding:22px 24px 20px;
-      border-radius:22px;
-      border:1px solid rgba(255,255,255,.58);
-      background:rgba(255,255,255,.32);
-      backdrop-filter:blur(14px);
-      box-shadow:0 18px 48px rgba(29,47,76,.07);
+    .connection {
+      padding:22px 20px 18px;
     }
 
-    .connection-head{
+    .connection-title {
       text-align:center;
       margin-bottom:16px;
     }
 
-    .connection-head h2{
+    .connection-title h2 {
       margin:0;
       font-size:23px;
-      letter-spacing:-.3px;
     }
 
-    .connection-head p{
+    .connection-title p {
       margin:5px 0 0;
       color:var(--muted);
-      font-size:11px;
+      font-size:10px;
     }
 
-    .path-steps{
+    .path-steps {
       display:grid;
       grid-template-columns:repeat(5,minmax(0,1fr));
       gap:10px;
-      align-items:stretch;
     }
 
-    .path-step{
-      position:relative;
-      min-height:78px;
-      padding:12px 10px;
-      border-radius:13px;
-      border:1px solid rgba(23,32,43,.07);
-      background:rgba(255,255,255,.58);
+    .path-step {
+      min-height:82px;
+      padding:10px 7px;
       display:flex;
       flex-direction:column;
       align-items:center;
       justify-content:center;
       text-align:center;
+      border-radius:12px;
+      border:1px solid rgba(23,32,43,.07);
+      background:var(--item);
       transition:.16s ease;
     }
 
-    .path-step:hover{
+    .path-step:hover {
       transform:translateY(-1px);
-      background:rgba(255,255,255,.82);
       border-color:rgba(22,201,195,.26);
+      background:rgba(255,255,255,.82);
     }
 
-    .path-step .num{
+    .num {
       width:22px;
       height:22px;
-      border-radius:999px;
+      margin-bottom:7px;
       display:grid;
       place-items:center;
-      margin-bottom:7px;
+      border-radius:50%;
       background:rgba(22,201,195,.13);
       color:var(--accent-deep);
       font-size:10px;
       font-weight:800;
     }
 
-    .path-step strong{
-      font-size:12px;
+    .path-step strong {
+      font-size:11px;
       color:#24303c;
     }
 
-    .path-step small{
+    .path-step small {
       margin-top:3px;
+      color:var(--muted);
+      font-size:8px;
+    }
+
+    .path-note {
+      margin-top:12px;
+      text-align:center;
       color:var(--muted);
       font-size:9px;
     }
 
-    .path-note{
-      margin-top:12px;
-      text-align:center;
-      color:var(--muted);
-      font-size:10px;
-    }
-
-    @media (max-width:760px){
-      .path-steps{
-        grid-template-columns:1fr;
-      }
-
-      .path-step{
-        min-height:60px;
-      }
-    }
-
-
-
-    /* ===== Suze OS side dashboard ===== */
-    .desktop-dashboard{
-      width:min(calc(100% - 44px),1660px);
-      margin:0 auto 26px;
-      display:grid;
-      grid-template-columns:minmax(270px,300px) minmax(600px,860px) minmax(270px,300px);
-      gap:64px;
-      justify-content:center;
-      align-items:start;
-    }
-
-    .center-stack{
-      min-width:0;
-    }
-
-    .side-stack{
-      display:grid;
-      gap:18px;
-      padding-top:310px;
-    }
-
-    @media(max-width:1500px){
-      .desktop-dashboard{
-        gap:46px;
-      }
-
-      .side-stack{
-        padding-top:300px;
-      }
-    }
-
-    @media(max-width:1320px){
-      .desktop-dashboard{
-        gap:34px;
-      }
-
-      .side-stack{
-        padding-top:288px;
-      }
-    }
-
-    .mini-panel{
-      border:1px solid rgba(255,255,255,.58);
-      background:rgba(255,255,255,.38);
-      backdrop-filter:blur(16px);
-      border-radius:22px;
-      padding:18px;
-      box-shadow:0 18px 44px rgba(32,56,85,.08);
-    }
-
-    .mini-head{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:12px;
-      margin-bottom:14px;
-    }
-
-    .mini-head h3{
-      margin:0;
-      font-size:16px;
-      letter-spacing:-.2px;
-    }
-
-    .mini-head span{
-      color:var(--muted);
-      font-size:10px;
-    }
-
-    .task-list{
-      display:grid;
-      gap:9px;
-    }
-
-    .task-item{
-      display:flex;
-      align-items:flex-start;
-      gap:10px;
-      padding:10px 11px;
-      border-radius:12px;
-      background:rgba(255,255,255,.58);
-      border:1px solid rgba(23,32,43,.06);
-      font-size:12px;
-    }
-
-    .task-item input{
-      margin-top:2px;
-      accent-color:var(--accent);
-      width:15px;
-      height:15px;
-      cursor:pointer;
-    }
-
-    .task-item.done span{
-      text-decoration:line-through;
-      opacity:.48;
-    }
-
-    .task-progress{
-      margin-top:12px;
-      display:flex;
-      align-items:center;
-      gap:9px;
-    }
-
-    .task-bar{
-      flex:1;
-      height:6px;
-      border-radius:999px;
-      background:rgba(23,32,43,.08);
-      overflow:hidden;
-    }
-
-    .task-bar > i{
-      display:block;
-      height:100%;
-      width:0%;
-      background:var(--accent);
-      border-radius:999px;
-      transition:.2s ease;
-    }
-
-    .task-count{
-      min-width:30px;
-      text-align:right;
-      color:var(--muted);
-      font-size:10px;
-    }
-
-    .status-list{
-      display:grid;
-      gap:8px;
-    }
-
-    .status-row{
-      display:flex;
-      gap:9px;
-      align-items:flex-start;
-      padding:9px 10px;
-      border-radius:11px;
-      background:rgba(255,255,255,.50);
-      color:#3a4652;
-      font-size:11px;
-    }
-
-    .status-dot{
-      width:7px;
-      height:7px;
-      margin-top:5px;
-      flex:0 0 auto;
-      border-radius:50%;
-      background:var(--accent);
-    }
-
-    .search-box{
+    .search-box {
       display:grid;
       gap:10px;
     }
 
-    .search-row{
+    .search-row {
       display:grid;
       grid-template-columns:1fr auto;
       gap:8px;
     }
 
     .search-input,
-    .url-input,
-    .url-name{
+    .url-input {
       width:100%;
       border:1px solid rgba(23,32,43,.08);
       background:rgba(255,255,255,.68);
@@ -536,59 +429,50 @@
       border-radius:11px;
       padding:10px 11px;
       outline:none;
-      font:inherit;
-      font-size:12px;
+      font-size:11px;
     }
 
-    .search-input:focus,
-    .url-input:focus,
-    .url-name:focus{
-      border-color:rgba(22,201,195,.38);
-      box-shadow:0 0 0 3px rgba(22,201,195,.08);
-    }
-
-    .search-engines{
-      display:grid;
-      grid-template-columns:repeat(2,minmax(0,1fr));
-      gap:8px;
-    }
-
-    .small-btn{
+    .small-btn {
       border:1px solid rgba(23,32,43,.07);
       background:rgba(255,255,255,.60);
       color:#27333f;
       border-radius:10px;
       padding:9px 10px;
       cursor:pointer;
-      font-size:11px;
+      font-size:10px;
       font-weight:700;
       transition:.16s ease;
     }
 
-    .small-btn:hover{
+    .small-btn:hover {
       background:rgba(255,255,255,.84);
       transform:translateY(-1px);
     }
 
-    .custom-links{
+    .search-engines {
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:8px;
+    }
+
+    .custom-links {
       display:grid;
       gap:8px;
       margin-bottom:10px;
     }
 
-    .custom-link{
+    .custom-link {
       display:grid;
       grid-template-columns:1fr auto;
       gap:8px;
       align-items:center;
       padding:9px 10px;
       border-radius:11px;
-      background:rgba(255,255,255,.54);
       border:1px solid rgba(23,32,43,.06);
+      background:rgba(255,255,255,.54);
     }
 
-    .custom-link a{
-      min-width:0;
+    .custom-link a {
       overflow:hidden;
       white-space:nowrap;
       text-overflow:ellipsis;
@@ -596,342 +480,98 @@
       font-weight:700;
     }
 
-    .delete-link{
+    .delete-link {
       border:none;
       background:transparent;
-      color:#9a6b6b;
+      color:#a06f6f;
       cursor:pointer;
-      font-size:11px;
-      padding:2px 4px;
     }
 
-    .add-link-grid{
+    .add-link {
       display:grid;
-      grid-template-columns:1fr 1fr;
       gap:8px;
     }
 
-    .add-link-grid .small-btn{
-      grid-column:1 / -1;
-    }
-
-    .mobile-dashboard{
-      display:none;
-    }
-
-    @media(max-width:1180px){
-      .desktop-dashboard{
-        width:min(calc(100% - 32px),980px);
-        grid-template-columns:1fr;
-        gap:20px;
-      }
-
-      .desktop-dashboard > .side-stack{
-        display:none;
-      }
-
-      .mobile-dashboard{
-        display:grid;
-        grid-template-columns:1fr 1fr;
-        gap:16px;
-        margin-top:24px;
-      }
-    }
-
-    @media(max-width:760px){
-      .mobile-dashboard{
-        grid-template-columns:1fr;
-        gap:14px;
-      }
-
-      .mini-panel{
-        padding:16px;
-        border-radius:18px;
-      }
-
-      .search-engines{
-        grid-template-columns:repeat(2,minmax(0,1fr));
-      }
-    }
-
-
-
-    .quote-panel{
-      text-align:left;
-    }
-
-    .daily-quote{
-      padding:14px 14px;
-      border-radius:14px;
-      background:rgba(255,255,255,.55);
-      border:1px solid rgba(23,32,43,.06);
-      font-size:13px;
-      line-height:1.75;
-      color:#31404e;
-    }
-
-    .daily-quote::before{
-      content:"“";
-      color:var(--accent-deep);
-      font-size:22px;
-      line-height:0;
-      margin-right:4px;
-      vertical-align:-3px;
-    }
-
-    .daily-quote::after{
-      content:"”";
-      color:var(--accent-deep);
-      font-size:22px;
-      line-height:0;
-      margin-left:4px;
-      vertical-align:-3px;
-    }
-
-    .journal-area,
-    .review-grid textarea{
-      width:100%;
-      resize:vertical;
-      border:1px solid rgba(23,32,43,.08);
-      background:rgba(255,255,255,.64);
-      color:var(--text);
-      border-radius:12px;
-      padding:11px 12px;
-      outline:none;
-      font:inherit;
-      font-size:12px;
-      line-height:1.6;
-    }
-
-    .journal-area{
-      min-height:150px;
-    }
-
-    .journal-area:focus,
-    .review-grid textarea:focus{
-      border-color:rgba(22,201,195,.38);
-      box-shadow:0 0 0 3px rgba(22,201,195,.08);
-    }
-
-    .save-hint{
-      margin-top:8px;
-      color:var(--muted);
-      font-size:9px;
-      text-align:right;
-    }
-
-    .review-grid{
-      display:grid;
-      gap:10px;
-    }
-
-    .review-grid label{
-      display:grid;
-      gap:6px;
-    }
-
-    .review-grid label > span{
-      color:#566371;
-      font-size:10px;
-      font-weight:700;
-    }
-
-    .review-grid textarea{
-      min-height:76px;
-    }
-
-    @media(max-width:760px){
-      .journal-area{
-        min-height:130px;
-      }
-
-      .review-grid textarea{
-        min-height:70px;
-      }
-    }
-
-
-    footer{
-      padding:14px 0 18px;
+    footer {
+      padding:14px 0 20px;
       text-align:center;
       color:#77818c;
       font-size:10px;
     }
 
-    @media (max-width:900px){
-      .wrap{
-        width:min(calc(100% - 28px),var(--max));
+    @media(max-width:1280px) {
+      .dashboard {
+        width:min(calc(100% - 32px),980px);
+        grid-template-columns:1fr;
+        gap:20px;
       }
 
-      .layout{
-        width:min(100%,780px);
+      .center-stack { order:1; }
+      .left-stack { order:2; }
+      .right-stack { order:3; }
+
+      .left-stack,
+      .right-stack {
+        grid-template-columns:1fr 1fr;
+      }
+
+      .left-stack .side-panel:last-child {
+        grid-column:1/-1;
       }
     }
 
-    @media (max-width:760px){
-      header,
-      .nav{
-        height:54px;
+    @media(max-width:760px) {
+      .hero {
+        padding:22px 0 22px;
       }
 
-      main{
-        padding:16px 0 18px;
+      h1 { font-size:46px; }
+
+      .dashboard {
+        width:min(calc(100% - 20px),980px);
       }
 
-      .layout{
-        gap:24px;
+      .left-stack,
+      .right-stack {
+        grid-template-columns:1fr;
       }
 
-      .hero{
-        padding:10px 0 2px;
+      .left-stack .side-panel:last-child {
+        grid-column:auto;
       }
 
-      h1{
-        font-size:48px;
-        letter-spacing:-1.8px;
-      }
-
-      .subtitle{
-        font-size:17px;
-      }
-
-      .desc{
-        font-size:12px;
-        padding:0 8px;
-      }
-
-      .priority{
-        width:min(100%,500px);
-        border-radius:16px;
-        padding:10px 14px;
-      }
-
-      .modes{
-        width:100%;
-        max-width:520px;
-        margin:0 auto;
-      }
-
-      .btn{
-        min-height:42px;
-        padding:10px 14px;
-      }
-
-      .workspace-shell{
+      .workspace {
         padding:20px 16px 16px;
-        border-radius:20px;
       }
 
-      .tool-groups{
+      .tool-groups {
         grid-template-columns:1fr;
         gap:18px;
       }
 
-      .group{
-        width:100%;
-      }
-
-      .tools{
-        grid-template-columns:repeat(2,minmax(0,1fr));
-        gap:10px;
-      }
-
-      .tool{
-        min-height:50px;
-        font-size:12px;
-      }
-
-      .connection-path{
-        margin-top:24px;
-        padding:20px 16px 16px;
-        border-radius:20px;
-      }
-
-      .path-steps{
+      .path-steps {
         grid-template-columns:1fr 1fr;
-        gap:10px;
       }
 
-      .path-step{
-        min-height:74px;
-      }
-
-      .nav-links{
-        gap:14px;
+      .journal-area {
+        min-height:130px;
       }
     }
 
-    @media (max-width:520px){
-      .wrap{
-        width:min(calc(100% - 20px),var(--max));
-      }
-
-      .nav-links a:nth-child(2){
-        display:none;
-      }
-
-      .eyebrow{
-        font-size:9px;
-      }
-
-      h1{
-        font-size:42px;
-      }
-
-      .subtitle{
-        font-size:16px;
-      }
-
-      .hero-tools{
-        gap:10px;
-      }
-
-      .modes{
+    @media(max-width:420px) {
+      .modes {
         display:grid;
         grid-template-columns:1fr;
-        gap:8px;
-        max-width:360px;
       }
 
-      .btn{
-        width:100%;
-      }
+      .btn { width:100%; }
 
-      .tools{
+      .tools {
         grid-template-columns:1fr 1fr;
-        gap:8px;
       }
 
-      .tool{
-        min-height:48px;
-        padding:9px 6px;
-      }
-
-      .section-title h2,
-      .connection-head h2{
-        font-size:22px;
-      }
-
-      .path-steps{
+      .path-steps {
         grid-template-columns:1fr;
-      }
-
-      .path-step{
-        min-height:62px;
-      }
-    }
-
-    @media (max-width:380px){
-      .tools{
-        grid-template-columns:1fr;
-      }
-
-      .tool{
-        min-height:46px;
-      }
-
-      h1{
-        font-size:38px;
       }
     }
   </style>
@@ -939,7 +579,7 @@
 
 <body>
   <header>
-    <div class="wrap nav">
+    <div class="nav">
       <a class="brand" href="#top">Suze<span>.</span></a>
       <div class="nav-links">
         <a href="#workspace">Workspace</a>
@@ -949,126 +589,116 @@
   </header>
 
   <main id="top">
-    <div class="desktop-dashboard">
+    <section class="hero">
+      <div class="eyebrow">PERSONAL WORKSPACE</div>
+      <h1>Suze OS</h1>
+      <div class="subtitle">AI × Web × Digital Creator</div>
+      <p class="desc">一个简单、快速、随时可用的个人工作入口。</p>
 
-        <aside class="side-stack">
-          <section class="mini-panel quote-panel">
-            <div class="mini-head">
-              <h3>一句话</h3>
-              <span>10 min refresh</span>
-            </div>
-            <div class="daily-quote" id="daily-quote"></div>
-          </section>
+      <div class="modes">
+        <button class="btn primary" onclick="launchJobMode()">💼 求职模式</button>
+        <button class="btn" onclick="launchLearnMode()">🧠 学习模式</button>
+        <button class="btn" onclick="launchContentMode()">🌍 内容模式</button>
+      </div>
+    </section>
 
-          <section class="mini-panel">
-            <div class="mini-head">
-              <h3>今日日记</h3>
-              <span id="journal-date"></span>
-            </div>
-            <textarea class="journal-area" id="journal" placeholder="今天发生了什么，想到什么，就写一点。"></textarea>
-            <div class="save-hint" id="journal-hint">自动保存到当前浏览器</div>
-          </section>
+    <section class="dashboard">
 
-          <section class="mini-panel">
-            <div class="mini-head">
-              <h3>今日复盘</h3>
-              <span>Review</span>
-            </div>
-            <div class="review-grid">
-              <label>
-                <span>今天做得不错的</span>
-                <textarea id="review-good" placeholder="哪怕只是一件小事。"></textarea>
-              </label>
-              <label>
-                <span>今天学到的</span>
-                <textarea id="review-learn" placeholder="一个新认知、经验或教训。"></textarea>
-              </label>
-              <label>
-                <span>明天想继续的</span>
-                <textarea id="review-next" placeholder="不用列很多，写最重要的一件。"></textarea>
-              </label>
-            </div>
-            <div class="save-hint">自动保存到当前浏览器</div>
-          </section>
-        </aside>
+      <aside class="left-stack">
+        <div class="panel side-panel">
+          <div class="panel-head">
+            <h3>一句话</h3>
+            <span>每 10 分钟更新</span>
+          </div>
+          <div class="quote-box" id="quote"></div>
+        </div>
+
+        <div class="panel side-panel">
+          <div class="panel-head">
+            <h3>今日日记</h3>
+            <span id="journal-date"></span>
+          </div>
+          <textarea class="journal-area" id="journal" placeholder="今天发生了什么，想到什么，就写一点。"></textarea>
+          <div class="save-hint">自动保存到当前浏览器</div>
+        </div>
+
+        <div class="panel side-panel">
+          <div class="panel-head">
+            <h3>今日复盘</h3>
+            <span>Review</span>
+          </div>
+          <div class="review-list">
+            <label>
+              <span>今天做得不错的</span>
+              <textarea class="review-area" id="review-good" placeholder="哪怕只是一件小事。"></textarea>
+            </label>
+            <label>
+              <span>今天学到的</span>
+              <textarea class="review-area" id="review-learn" placeholder="一个新认知、经验或教训。"></textarea>
+            </label>
+            <label>
+              <span>明天想继续的</span>
+              <textarea class="review-area" id="review-next" placeholder="写最重要的一件。"></textarea>
+            </label>
+          </div>
+          <div class="save-hint">自动保存到当前浏览器</div>
+        </div>
+      </aside>
 
       <div class="center-stack">
-<div class="layout">
+        <section class="panel workspace" id="workspace">
+          <div class="section-title">
+            <h2>Workspace</h2>
+            <p>常用工具，点开即用。</p>
+          </div>
 
-        <section class="hero">
-          <div class="eyebrow">PERSONAL WORKSPACE</div>
-          <h1>Suze OS</h1>
-          <div class="subtitle">AI × Web × Digital Creator</div>
-          <p class="desc">一个简单、快速、随时可用的个人工作入口。</p>
+          <div class="tool-groups">
+            <div>
+              <div class="group-name">AI</div>
+              <div class="tools">
+                <a class="tool" target="_blank" rel="noopener" href="https://chatgpt.com">ChatGPT</a>
+                <a class="tool" target="_blank" rel="noopener" href="https://claude.ai">Claude</a>
+                <a class="tool" target="_blank" rel="noopener" href="https://gemini.google.com">Gemini</a>
+                <a class="tool" target="_blank" rel="noopener" href="https://www.perplexity.ai">Perplexity</a>
+              </div>
+            </div>
 
-          <div class="hero-tools">
-            <div class="modes">
-              <button class="btn primary" onclick="launchJobMode()">💼 求职模式</button>
-              <button class="btn" onclick="launchLearnMode()">🧠 学习模式</button>
-              <button class="btn" onclick="launchContentMode()">🌍 内容模式</button>
+            <div>
+              <div class="group-name">Work</div>
+              <div class="tools">
+                <a class="tool" target="_blank" rel="noopener" href="https://www.zhipin.com">BOSS直聘</a>
+                <a class="tool" target="_blank" rel="noopener" href="https://www.linkedin.com">LinkedIn</a>
+                <a class="tool" target="_blank" rel="noopener" href="https://mail.google.com">Gmail</a>
+                <a class="tool" target="_blank" rel="noopener" href="https://www.feishu.cn">飞书</a>
+              </div>
+            </div>
+
+            <div>
+              <div class="group-name">Build</div>
+              <div class="tools">
+                <a class="tool" target="_blank" rel="noopener" href="https://github.com">GitHub</a>
+                <a class="tool" target="_blank" rel="noopener" href="https://vercel.com">Vercel</a>
+                <a class="tool" target="_blank" rel="noopener" href="https://dash.cloudflare.com">Cloudflare</a>
+                <a class="tool" target="_blank" rel="noopener" href="https://codepen.io">CodePen</a>
+              </div>
+            </div>
+
+            <div>
+              <div class="group-name">Content</div>
+              <div class="tools">
+                <a class="tool" target="_blank" rel="noopener" href="https://www.youtube.com">YouTube</a>
+                <a class="tool" target="_blank" rel="noopener" href="https://x.com">X</a>
+                <a class="tool" target="_blank" rel="noopener" href="https://www.tiktok.com">TikTok</a>
+                <a class="tool" target="_blank" rel="noopener" href="https://www.instagram.com">Instagram</a>
+              </div>
             </div>
           </div>
+
+          <div class="workspace-note">留一点空间，也留一点记录。</div>
         </section>
 
-        <section id="workspace">
-          <div class="workspace-shell">
-            <div class="section-title">
-              <h2>Workspace</h2>
-              <p>常用工具，点开即用。</p>
-            </div>
-
-            <div class="tool-groups">
-
-              <div class="group">
-                <div class="group-name">AI</div>
-                <div class="tools">
-                  <a class="tool" target="_blank" rel="noopener" href="https://chatgpt.com">ChatGPT</a>
-                  <a class="tool" target="_blank" rel="noopener" href="https://claude.ai">Claude</a>
-                  <a class="tool" target="_blank" rel="noopener" href="https://gemini.google.com">Gemini</a>
-                  <a class="tool" target="_blank" rel="noopener" href="https://www.perplexity.ai">Perplexity</a>
-                </div>
-              </div>
-
-              <div class="group">
-                <div class="group-name">Work</div>
-                <div class="tools">
-                  <a class="tool" target="_blank" rel="noopener" href="https://www.zhipin.com">BOSS直聘</a>
-                  <a class="tool" target="_blank" rel="noopener" href="https://www.linkedin.com">LinkedIn</a>
-                  <a class="tool" target="_blank" rel="noopener" href="https://mail.google.com">Gmail</a>
-                  <a class="tool" target="_blank" rel="noopener" href="https://www.feishu.cn">飞书</a>
-                </div>
-              </div>
-
-              <div class="group">
-                <div class="group-name">Build</div>
-                <div class="tools">
-                  <a class="tool" target="_blank" rel="noopener" href="https://github.com">GitHub</a>
-                  <a class="tool" target="_blank" rel="noopener" href="https://vercel.com">Vercel</a>
-                  <a class="tool" target="_blank" rel="noopener" href="https://dash.cloudflare.com">Cloudflare</a>
-                  <a class="tool" target="_blank" rel="noopener" href="https://codepen.io">CodePen</a>
-                </div>
-              </div>
-
-              <div class="group">
-                <div class="group-name">Content</div>
-                <div class="tools">
-                  <a class="tool" target="_blank" rel="noopener" href="https://www.youtube.com">YouTube</a>
-                  <a class="tool" target="_blank" rel="noopener" href="https://x.com">X</a>
-                  <a class="tool" target="_blank" rel="noopener" href="https://www.tiktok.com">TikTok</a>
-                  <a class="tool" target="_blank" rel="noopener" href="https://www.instagram.com">Instagram</a>
-                </div>
-              </div>
-
-            </div>
-
-            <div class="footer-note">
-              留一点空间，也留一点记录。
-            </div>
-          </div>
-        </section>
-
-        <section class="connection-path">
-          <div class="connection-head">
+        <section class="panel connection">
+          <div class="connection-title">
             <h2>外网连接路径</h2>
             <p>网吧 / 临时电脑恢复外网环境时，按顺序使用。</p>
           </div>
@@ -1105,181 +735,139 @@
             </a>
           </div>
 
-          <div class="path-note">
-            这一区只放“恢复外网环境”相关入口，和日常 Workspace 分开。
-          </div>
+          <div class="path-note">这一区只放恢复外网环境相关入口。</div>
         </section>
-
       </div>
 
-          <div class="mobile-dashboard">
-            <section class="mini-panel quote-panel">
-              <div class="mini-head">
-                <h3>一句话</h3>
-                <span>10 min refresh</span>
-              </div>
-              <div class="daily-quote" id="daily-quote-mobile"></div>
-            </section>
-
-            <section class="mini-panel">
-              <div class="mini-head">
-                <h3>今日日记</h3>
-                <span id="journal-date-mobile"></span>
-              </div>
-              <textarea class="journal-area" id="journal-mobile" placeholder="今天发生了什么，想到什么，就写一点。"></textarea>
-              <div class="save-hint">自动保存到当前浏览器</div>
-            </section>
-
-            <section class="mini-panel">
-              <div class="mini-head">
-                <h3>今日复盘</h3>
-                <span>Review</span>
-              </div>
-              <div class="review-grid">
-                <label>
-                  <span>今天做得不错的</span>
-                  <textarea id="review-good-mobile" placeholder="哪怕只是一件小事。"></textarea>
-                </label>
-                <label>
-                  <span>今天学到的</span>
-                  <textarea id="review-learn-mobile" placeholder="一个新认知、经验或教训。"></textarea>
-                </label>
-                <label>
-                  <span>明天想继续的</span>
-                  <textarea id="review-next-mobile" placeholder="不用列很多，写最重要的一件。"></textarea>
-                </label>
-              </div>
-              <div class="save-hint">自动保存到当前浏览器</div>
-            </section>
-
-            <section class="mini-panel">
-              <div class="mini-head">
-                <h3>快捷搜索</h3>
-                <span>Search</span>
-              </div>
-              <div class="search-box">
-                <div class="search-row">
-                  <input class="search-input" id="quick-search-mobile" placeholder="输入关键词..." onkeydown="if(event.key==='Enter') doSearch('google', true)">
-                  <button class="small-btn" onclick="doSearch('google', true)">搜索</button>
-                </div>
-                <div class="search-engines">
-                  <button class="small-btn" onclick="doSearch('google', true)">Google</button>
-                  <button class="small-btn" onclick="doSearch('youtube', true)">YouTube</button>
-                  <button class="small-btn" onclick="doSearch('github', true)">GitHub</button>
-                  <button class="small-btn" onclick="doSearch('boss', true)">BOSS</button>
-                </div>
-              </div>
-            </section>
-
-            <section class="mini-panel">
-              <div class="mini-head">
-                <h3>常用网址</h3>
-                <span>Local save</span>
-              </div>
-              <div class="custom-links" id="custom-links-mobile"></div>
-              <div class="add-link-grid">
-                <input class="url-name" id="link-name-mobile" placeholder="名称">
-                <input class="url-input" id="link-url-mobile" placeholder="https://...">
-                <button class="small-btn" onclick="addCustomLink(true)">+ 添加网址</button>
-              </div>
-            </section>
+      <aside class="right-stack">
+        <div class="panel side-panel">
+          <div class="panel-head">
+            <h3>快捷搜索</h3>
+            <span>Search</span>
           </div>
 
-      </div>
+          <div class="search-box">
+            <div class="search-row">
+              <input class="search-input" id="search-input" placeholder="输入关键词..." onkeydown="if(event.key==='Enter') searchWith('google')">
+              <button class="small-btn" onclick="searchWith('google')">搜索</button>
+            </div>
 
-        <aside class="side-stack">
-          <section class="mini-panel">
-            <div class="mini-head">
-              <h3>快捷搜索</h3>
-              <span>Search</span>
+            <div class="search-engines">
+              <button class="small-btn" onclick="searchWith('google')">Google</button>
+              <button class="small-btn" onclick="searchWith('youtube')">YouTube</button>
+              <button class="small-btn" onclick="searchWith('github')">GitHub</button>
+              <button class="small-btn" onclick="searchWith('boss')">BOSS</button>
             </div>
-            <div class="search-box">
-              <div class="search-row">
-                <input class="search-input" id="quick-search" placeholder="输入关键词..." onkeydown="if(event.key==='Enter') doSearch('google')">
-                <button class="small-btn" onclick="doSearch('google')">搜索</button>
-              </div>
-              <div class="search-engines">
-                <button class="small-btn" onclick="doSearch('google')">Google</button>
-                <button class="small-btn" onclick="doSearch('youtube')">YouTube</button>
-                <button class="small-btn" onclick="doSearch('github')">GitHub</button>
-                <button class="small-btn" onclick="doSearch('boss')">BOSS</button>
-              </div>
-            </div>
-          </section>
+          </div>
+        </div>
 
-          <section class="mini-panel">
-            <div class="mini-head">
-              <h3>常用网址</h3>
-              <span>Local save</span>
-            </div>
-            <div class="custom-links" id="custom-links"></div>
-            <div class="add-link-grid">
-              <input class="url-name" id="link-name" placeholder="名称，例如：知乎">
-              <input class="url-input" id="link-url" placeholder="网址，例如：https://...">
-              <button class="small-btn" onclick="addCustomLink()">+ 添加网址</button>
-            </div>
-          </section>
-        </aside>
+        <div class="panel side-panel">
+          <div class="panel-head">
+            <h3>常用网址</h3>
+            <span>Local save</span>
+          </div>
 
-    </div>
+          <div class="custom-links" id="custom-links"></div>
+
+          <div class="add-link">
+            <input class="url-input" id="link-name" placeholder="名称，例如：知乎">
+            <input class="url-input" id="link-url" placeholder="网址，例如：https://...">
+            <button class="small-btn" onclick="addLink()">+ 添加网址</button>
+          </div>
+        </div>
+      </aside>
+
+    </section>
   </main>
 
   <footer>© 2026 Suze OS</footer>
 
   <script>
-    function openSet(urls){
-      urls.forEach((url,i)=>{
-        setTimeout(()=>window.open(url,"_blank","noopener"),i*140);
-      });
+    const quotes = [
+      "别等状态来了再开始，开始本身会带来状态。",
+      "真正的底气，来自你知道自己能把事情做完。",
+      "你不需要一次解决全部问题，只需要解决下一个。",
+      "少一点自我证明，多一点实际积累。",
+      "执行一次，比设想十次更接近答案。",
+      "别怕慢，真正该怕的是原地打转。",
+      "把精力留给会产生复利的事情。",
+      "你不需要一直有动力，只需要始终知道下一步。",
+      "愿望负责指方向，习惯负责把你送到那里。",
+      "先赢下今天的一个小时。",
+      "困难不是结论，它只是告诉你哪里还需要继续拆解。",
+      "真正改变生活的，往往不是大决定，而是重复的小选择。",
+      "别因为暂时看不到结果，就否定正在发生的积累。",
+      "把能控制的事情做好，剩下的交给时间。",
+      "清醒地选择，比盲目地忙碌更重要。",
+      "很多能力，都是在一次次不熟练里长出来的。",
+      "先把事情做出来，再谈把它做到漂亮。",
+      "没有白走的路，只要你真的从里面带走了东西。",
+      "不要用今天的情绪，替未来做决定。",
+      "专注不是把所有事都做好，而是知道什么可以暂时不做。",
+      "你不需要追上所有趋势，只需要建立自己的判断。",
+      "稳定地前进，本身就是一种很强的能力。",
+      "把今天过扎实，未来就不会完全靠运气。",
+      "每次认真完成一件小事，都是在给自己增加信用。",
+      "真正的成长，往往发生在没人提醒你的时候。",
+      "做长期对自己有利的选择，而不是只满足当下情绪。",
+      "卡住的时候，把问题缩小到你现在能动手的程度。",
+      "不必赢过所有人，先别长期输给昨天的自己。",
+      "行动会暴露问题，而暴露问题正是变强的开始。",
+      "很多焦虑，都会在你开始具体行动后自动变小。",
+      "允许自己重新调整方向，这不叫失败，叫校准。",
+      "不要因为路还很远，就忽略自己已经走过的距离。",
+      "真正重要的事，很少靠一时兴奋完成。",
+      "把注意力从结果焦虑，拉回到下一步行动。",
+      "有些进步没有掌声，但依然算数。",
+      "你可以慢一点，但别把犹豫误当成思考。"
+    ];
+
+    function tenMinuteIndex() {
+      return Math.floor(Date.now() / 600000);
     }
 
-    function launchJobMode(){
-      openSet([
-        "https://www.zhipin.com",
-        "https://chatgpt.com",
-        "https://mail.google.com",
-        "https://www.linkedin.com"
-      ]);
+    function updateQuote() {
+      const el = document.getElementById("quote");
+      if (!el) return;
+      el.textContent = quotes[tenMinuteIndex() % quotes.length];
     }
 
-    function launchLearnMode(){
-      openSet([
-        "https://chatgpt.com",
-        "https://www.youtube.com",
-        "https://github.com",
-        "https://www.perplexity.ai"
-      ]);
+    function startQuoteRotation() {
+      updateQuote();
+      const remain = 600000 - (Date.now() % 600000);
+      setTimeout(() => {
+        updateQuote();
+        setInterval(updateQuote, 600000);
+      }, remain);
     }
 
-    function launchContentMode(){
-      openSet([
-        "https://www.youtube.com",
-        "https://x.com",
-        "https://www.tiktok.com",
-        "https://www.instagram.com"
-      ]);
-    }
-});
-          list.appendChild(label);
-        });
-
-        const done = state.filter(Boolean).length;
-        const bar = document.getElementById(barId);
-        const count = document.getElementById(countId);
-        const date = document.getElementById(dateId);
-        if(bar) bar.style.width = `${(done/defaultTasks.length)*100}%`;
-        if(count) count.textContent = `${done}/${defaultTasks.length}`;
-        if(date){
-          const d = new Date();
-          date.textContent = `${d.getMonth()+1}/${d.getDate()}`;
-        }
-      });
+    function todayKey() {
+      const d = new Date();
+      return `${d.getFullYear()}-${d.getMonth()+1}-${d.getDate()}`;
     }
 
-    function doSearch(engine, mobile=false){
-      const input = document.getElementById(mobile ? "quick-search-mobile" : "quick-search");
-      const q = (input?.value || "").trim();
-      if(!q) return;
+    function bindSavedText(id, prefix) {
+      const el = document.getElementById(id);
+      if (!el) return;
+      const key = prefix + todayKey();
+      el.value = localStorage.getItem(key) || "";
+      el.addEventListener("input", () => localStorage.setItem(key, el.value));
+    }
+
+    function initNotes() {
+      const d = new Date();
+      const dateEl = document.getElementById("journal-date");
+      if (dateEl) dateEl.textContent = `${d.getMonth()+1}/${d.getDate()}`;
+
+      bindSavedText("journal", "suze_journal_");
+      bindSavedText("review-good", "suze_review_good_");
+      bindSavedText("review-learn", "suze_review_learn_");
+      bindSavedText("review-next", "suze_review_next_");
+    }
+
+    function searchWith(engine) {
+      const q = (document.getElementById("search-input")?.value || "").trim();
+      if (!q) return;
 
       const urls = {
         google: "https://www.google.com/search?q=",
@@ -1291,284 +879,102 @@
       window.open(urls[engine] + encodeURIComponent(q), "_blank", "noopener");
     }
 
-    function loadCustomLinks(){
-      try{
-        return JSON.parse(localStorage.getItem("suze_custom_links")) || [
-          {name:"知乎",url:"https://www.zhihu.com"},
-          {name:"WPS",url:"https://www.wps.cn"}
-        ];
-      }catch(e){
+    function loadLinks() {
+      try {
+        return JSON.parse(localStorage.getItem("suze_custom_links")) || [];
+      } catch {
         return [];
       }
     }
 
-    function saveCustomLinks(links){
+    function saveLinks(links) {
       localStorage.setItem("suze_custom_links", JSON.stringify(links));
     }
 
-    function renderCustomLinks(){
-      const links = loadCustomLinks();
-      ["custom-links","custom-links-mobile"].forEach(id=>{
-        const box = document.getElementById(id);
-        if(!box) return;
-        box.innerHTML = "";
-        links.forEach((item,i)=>{
-          const row = document.createElement("div");
-          row.className = "custom-link";
-          row.innerHTML = `<a target="_blank" rel="noopener" href="${item.url}">${item.name}</a><button class="delete-link" title="删除">×</button>`;
-          row.querySelector(".delete-link").addEventListener("click",()=>{
-            const next = loadCustomLinks();
-            next.splice(i,1);
-            saveCustomLinks(next);
-        
-    const dailyQuotes = [
-      "不用急着成为谁，先把今天过得像自己。",
-      "真正的松弛，不是什么都不做，而是知道什么值得做。",
-      "允许自己慢一点，但别停在原地。",
-      "把注意力收回来，生活会重新变得清晰。",
-      "很多改变都很安静，直到某天你突然发现自己已经走了很远。",
-      "不必事事有答案，保持前进本身也是答案。",
-      "少一点比较，多一点自己的节奏。",
-      "能让你长期舒服的选择，通常比短暂刺激更值得。",
-      "今天不需要完美，只要真实地往前一点。",
-      "把复杂的事情慢慢拆开，焦虑就会失去一半力量。",
-      "有些路走得慢，是因为你在真正学会怎么走。",
-      "不要为了赶路，忘了自己为什么出发。",
-      "真正的底气，来自一次次把小事做好。",
-      "不用向所有人解释，结果会替你说话。",
-      "人生不是一次性决定，而是一连串小选择。",
-      "清醒一点，坚定一点，也允许自己轻松一点。",
-      "别把偶尔的低落，当成对未来的判断。",
-      "很多时候，你缺的不是能力，而是多坚持一会儿。",
-      "把精力留给值得的人和事，生活会简单很多。",
-      "与其反复想象，不如做一点能验证现实的事情。",
-      "成长最明显的时候，往往不是最舒服的时候。",
-      "你可以重新调整方向，不需要为过去的选择负责到底。",
-      "不必赢过所有人，只要别长期输给昨天的自己。",
-      "真正重要的事，很少靠一时兴奋完成。",
-      "别急着给自己下结论，你还在变化。",
-      "当你开始尊重自己的时间，很多问题会自动变简单。",
-      "不用追上所有趋势，建立自己的判断更重要。",
-      "有些进步没有掌声，但依然算数。",
-      "不要因为路远，就否定已经走过的距离。",
-      "做一个长期对自己有利的人，而不是只满足当下情绪的人。",
-      "生活需要目标，也需要一些没有目的的快乐。",
-      "你可以很有野心，也可以允许自己偶尔休息。",
-      "真正成熟的选择，通常不热闹。",
-      "不用把每一天都活成转折点，稳定本身就是力量。",
-      "世界很大，但你只需要先处理眼前这一小块。",
-      "慢慢来，很多好东西本来就需要时间。"
-    ];
+    function renderLinks() {
+      const box = document.getElementById("custom-links");
+      if (!box) return;
+      box.innerHTML = "";
 
-    function setRotatingQuote(){
-      // Every 10 minutes maps to one quote. Refreshing does not reset the cycle.
-      const tenMinuteBucket = Math.floor(Date.now() / (10 * 60 * 1000));
-      const quote = dailyQuotes[tenMinuteBucket % dailyQuotes.length];
+      loadLinks().forEach((item, index) => {
+        const row = document.createElement("div");
+        row.className = "custom-link";
 
-      ["daily-quote","daily-quote-mobile"].forEach(id=>{
-        const el = document.getElementById(id);
-        if(el) el.textContent = quote;
+        const link = document.createElement("a");
+        link.href = item.url;
+        link.target = "_blank";
+        link.rel = "noopener";
+        link.textContent = item.name;
+
+        const del = document.createElement("button");
+        del.className = "delete-link";
+        del.textContent = "×";
+        del.onclick = () => {
+          const links = loadLinks();
+          links.splice(index,1);
+          saveLinks(links);
+          renderLinks();
+        };
+
+        row.append(link, del);
+        box.appendChild(row);
       });
     }
 
-    function startQuoteRotation(){
-      setRotatingQuote();
-
-      const interval = 10 * 60 * 1000;
-      const delayToNextBoundary = interval - (Date.now() % interval);
-
-      setTimeout(()=>{
-        setRotatingQuote();
-        setInterval(setRotatingQuote, interval);
-      }, delayToNextBoundary);
-    }
-
-    function setJournalDate(){
-      const d = new Date();
-      const text = `${d.getMonth()+1}/${d.getDate()}`;
-      ["journal-date","journal-date-mobile"].forEach(id=>{
-        const el = document.getElementById(id);
-        if(el) el.textContent = text;
-      });
-    }
-
-    function bindSyncedTextarea(ids, key){
-      const els = ids.map(id=>document.getElementById(id)).filter(Boolean);
-      const saved = localStorage.getItem(key) || "";
-      els.forEach(el=>{
-        el.value = saved;
-        el.addEventListener("input",()=>{
-          localStorage.setItem(key, el.value);
-          els.forEach(other=>{
-            if(other !== el) other.value = el.value;
-          });
-        });
-      });
-    }
-
-    function initJournalAndReview(){
-      const key = todayKey();
-      bindSyncedTextarea(["journal","journal-mobile"], `suze_journal_${key}`);
-      bindSyncedTextarea(["review-good","review-good-mobile"], `suze_review_good_${key}`);
-      bindSyncedTextarea(["review-learn","review-learn-mobile"], `suze_review_learn_${key}`);
-      bindSyncedTextarea(["review-next","review-next-mobile"], `suze_review_next_${key}`);
-      startQuoteRotation();
-      setJournalDate();
-    }
-
-
-    initJournalAndReview();
-    renderCustomLinks();
-          });
-          box.appendChild(row);
-        });
-      });
-    }
-
-    function addCustomLink(mobile=false){
-      const nameEl = document.getElementById(mobile ? "link-name-mobile" : "link-name");
-      const urlEl = document.getElementById(mobile ? "link-url-mobile" : "link-url");
+    function addLink() {
+      const nameEl = document.getElementById("link-name");
+      const urlEl = document.getElementById("link-url");
       const name = (nameEl?.value || "").trim();
       let url = (urlEl?.value || "").trim();
 
-      if(!name || !url) return;
-      if(!/^https?:\/\//i.test(url)) url = "https://" + url;
+      if (!name || !url) return;
+      if (!/^https?:\/\//i.test(url)) url = "https://" + url;
 
-      const links = loadCustomLinks();
+      const links = loadLinks();
       links.push({name,url});
-      saveCustomLinks(links);
-      if(nameEl) nameEl.value = "";
-      if(urlEl) urlEl.value = "";
-  
-    const dailyQuotes = [
-      "别急着证明自己，先把今天过好。",
-      "把复杂的事做简单，把简单的事做稳定。",
-      "真正的积累，往往发生在没人注意的时候。",
-      "不用每天都很厉害，但可以每天都比昨天清楚一点。",
-      "行动不是为了显得忙，而是为了让生活真的往前走。",
-      "很多答案不是想出来的，是做着做着出现的。",
-      "保持好奇，也保持判断。",
-      "慢一点没关系，方向清楚比速度更重要。"
-    ];
+      saveLinks(links);
 
-    function todayKey(){
-      const d = new Date();
-      return `${d.getFullYear()}-${d.getMonth()+1}-${d.getDate()}`;
+      nameEl.value = "";
+      urlEl.value = "";
+      renderLinks();
     }
 
-    function setDailyQuote(){
-      const d = new Date();
-      const seed = d.getFullYear()*1000 + (d.getMonth()+1)*50 + d.getDate();
-      const quote = dailyQuotes[seed % dailyQuotes.length];
-      ["daily-quote","daily-quote-mobile"].forEach(id=>{
-        const el = document.getElementById(id);
-        if(el) el.textContent = quote;
+    function openSet(urls) {
+      urls.forEach((url,i) => {
+        setTimeout(() => window.open(url, "_blank", "noopener"), i * 140);
       });
     }
 
-    function setJournalDate(){
-      const d = new Date();
-      const text = `${d.getMonth()+1}/${d.getDate()}`;
-      ["journal-date","journal-date-mobile"].forEach(id=>{
-        const el = document.getElementById(id);
-        if(el) el.textContent = text;
-      });
+    function launchJobMode() {
+      openSet([
+        "https://www.zhipin.com",
+        "https://chatgpt.com",
+        "https://mail.google.com",
+        "https://www.linkedin.com"
+      ]);
     }
 
-    function bindSyncedTextarea(ids, key){
-      const els = ids.map(id=>document.getElementById(id)).filter(Boolean);
-      const saved = localStorage.getItem(key) || "";
-      els.forEach(el=>{
-        el.value = saved;
-        el.addEventListener("input",()=>{
-          localStorage.setItem(key, el.value);
-          els.forEach(other=>{
-            if(other !== el) other.value = el.value;
-          });
-        });
-      });
+    function launchLearnMode() {
+      openSet([
+        "https://chatgpt.com",
+        "https://www.youtube.com",
+        "https://github.com",
+        "https://www.perplexity.ai"
+      ]);
     }
 
-    function initJournalAndReview(){
-      const key = todayKey();
-      bindSyncedTextarea(["journal","journal-mobile"], `suze_journal_${key}`);
-      bindSyncedTextarea(["review-good","review-good-mobile"], `suze_review_good_${key}`);
-      bindSyncedTextarea(["review-learn","review-learn-mobile"], `suze_review_learn_${key}`);
-      bindSyncedTextarea(["review-next","review-next-mobile"], `suze_review_next_${key}`);
-      startQuoteRotation();
-      setJournalDate();
+    function launchContentMode() {
+      openSet([
+        "https://www.youtube.com",
+        "https://x.com",
+        "https://www.tiktok.com",
+        "https://www.instagram.com"
+      ]);
     }
 
-
-    initJournalAndReview();
-    renderCustomLinks();
-    }
-
-    renderTasks();
-
-    const dailyQuotes = [
-      "别急着证明自己，先把今天过好。",
-      "把复杂的事做简单，把简单的事做稳定。",
-      "真正的积累，往往发生在没人注意的时候。",
-      "不用每天都很厉害，但可以每天都比昨天清楚一点。",
-      "行动不是为了显得忙，而是为了让生活真的往前走。",
-      "很多答案不是想出来的，是做着做着出现的。",
-      "保持好奇，也保持判断。",
-      "慢一点没关系，方向清楚比速度更重要。"
-    ];
-
-    function todayKey(){
-      const d = new Date();
-      return `${d.getFullYear()}-${d.getMonth()+1}-${d.getDate()}`;
-    }
-
-    function setDailyQuote(){
-      const d = new Date();
-      const seed = d.getFullYear()*1000 + (d.getMonth()+1)*50 + d.getDate();
-      const quote = dailyQuotes[seed % dailyQuotes.length];
-      ["daily-quote","daily-quote-mobile"].forEach(id=>{
-        const el = document.getElementById(id);
-        if(el) el.textContent = quote;
-      });
-    }
-
-    function setJournalDate(){
-      const d = new Date();
-      const text = `${d.getMonth()+1}/${d.getDate()}`;
-      ["journal-date","journal-date-mobile"].forEach(id=>{
-        const el = document.getElementById(id);
-        if(el) el.textContent = text;
-      });
-    }
-
-    function bindSyncedTextarea(ids, key){
-      const els = ids.map(id=>document.getElementById(id)).filter(Boolean);
-      const saved = localStorage.getItem(key) || "";
-      els.forEach(el=>{
-        el.value = saved;
-        el.addEventListener("input",()=>{
-          localStorage.setItem(key, el.value);
-          els.forEach(other=>{
-            if(other !== el) other.value = el.value;
-          });
-        });
-      });
-    }
-
-    function initJournalAndReview(){
-      const key = todayKey();
-      bindSyncedTextarea(["journal","journal-mobile"], `suze_journal_${key}`);
-      bindSyncedTextarea(["review-good","review-good-mobile"], `suze_review_good_${key}`);
-      bindSyncedTextarea(["review-learn","review-learn-mobile"], `suze_review_learn_${key}`);
-      bindSyncedTextarea(["review-next","review-next-mobile"], `suze_review_next_${key}`);
-      startQuoteRotation();
-      setJournalDate();
-    }
-
-
-    initJournalAndReview();
-    renderCustomLinks();
-
+    startQuoteRotation();
+    initNotes();
+    renderLinks();
   </script>
 </body>
 </html>
