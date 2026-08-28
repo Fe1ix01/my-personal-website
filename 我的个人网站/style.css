@@ -663,3 +663,37 @@ section {
     line-height:1.8;
 
 }
+/* ===== 页面模块统一布局修复 ===== */
+
+#about,
+#os,
+#skills,
+#projects,
+#contact {
+
+    width:90%;
+
+    max-width:1000px;
+
+    margin:80px auto;
+
+}
+
+
+#about p {
+
+    max-width:700px;
+
+    margin:20px auto;
+
+    line-height:1.8;
+
+}
+
+
+.skills-list,
+.projects-list {
+
+    justify-content:center;
+
+}
