@@ -634,6 +634,102 @@
     }
 
 
+
+    .quote-panel{
+      text-align:left;
+    }
+
+    .daily-quote{
+      padding:14px 14px;
+      border-radius:14px;
+      background:rgba(255,255,255,.55);
+      border:1px solid rgba(23,32,43,.06);
+      font-size:13px;
+      line-height:1.75;
+      color:#31404e;
+    }
+
+    .daily-quote::before{
+      content:"“";
+      color:var(--accent-deep);
+      font-size:22px;
+      line-height:0;
+      margin-right:4px;
+      vertical-align:-3px;
+    }
+
+    .daily-quote::after{
+      content:"”";
+      color:var(--accent-deep);
+      font-size:22px;
+      line-height:0;
+      margin-left:4px;
+      vertical-align:-3px;
+    }
+
+    .journal-area,
+    .review-grid textarea{
+      width:100%;
+      resize:vertical;
+      border:1px solid rgba(23,32,43,.08);
+      background:rgba(255,255,255,.64);
+      color:var(--text);
+      border-radius:12px;
+      padding:11px 12px;
+      outline:none;
+      font:inherit;
+      font-size:12px;
+      line-height:1.6;
+    }
+
+    .journal-area{
+      min-height:150px;
+    }
+
+    .journal-area:focus,
+    .review-grid textarea:focus{
+      border-color:rgba(22,201,195,.38);
+      box-shadow:0 0 0 3px rgba(22,201,195,.08);
+    }
+
+    .save-hint{
+      margin-top:8px;
+      color:var(--muted);
+      font-size:9px;
+      text-align:right;
+    }
+
+    .review-grid{
+      display:grid;
+      gap:10px;
+    }
+
+    .review-grid label{
+      display:grid;
+      gap:6px;
+    }
+
+    .review-grid label > span{
+      color:#566371;
+      font-size:10px;
+      font-weight:700;
+    }
+
+    .review-grid textarea{
+      min-height:76px;
+    }
+
+    @media(max-width:760px){
+      .journal-area{
+        min-height:130px;
+      }
+
+      .review-grid textarea{
+        min-height:70px;
+      }
+    }
+
+
     footer{
       padding:14px 0 18px;
       text-align:center;
@@ -835,28 +931,43 @@
     <div class="desktop-dashboard">
 
         <aside class="side-stack">
-          <section class="mini-panel">
+          <section class="mini-panel quote-panel">
             <div class="mini-head">
-              <h3>今日任务</h3>
-              <span id="task-date"></span>
+              <h3>一句话</h3>
+              <span>Daily note</span>
             </div>
-            <div class="task-list" id="task-list"></div>
-            <div class="task-progress">
-              <div class="task-bar"><i id="task-progress-bar"></i></div>
-              <span class="task-count" id="task-count">0/3</span>
-            </div>
+            <div class="daily-quote" id="daily-quote"></div>
           </section>
 
           <section class="mini-panel">
             <div class="mini-head">
-              <h3>状态 / 提醒</h3>
-              <span>Focus</span>
+              <h3>今日日记</h3>
+              <span id="journal-date"></span>
             </div>
-            <div class="status-list">
-              <div class="status-row"><i class="status-dot"></i><span>主线优先：先完成最能提高收入确定性的事情。</span></div>
-              <div class="status-row"><i class="status-dot"></i><span>外网工具是手段，不是今天的主任务。</span></div>
-              <div class="status-row"><i class="status-dot"></i><span>先完成，再优化；避免为了页面细节反复折腾。</span></div>
+            <textarea class="journal-area" id="journal" placeholder="今天发生了什么，想到什么，就写一点。"></textarea>
+            <div class="save-hint" id="journal-hint">自动保存到当前浏览器</div>
+          </section>
+
+          <section class="mini-panel">
+            <div class="mini-head">
+              <h3>今日复盘</h3>
+              <span>Review</span>
             </div>
+            <div class="review-grid">
+              <label>
+                <span>今天做得不错的</span>
+                <textarea id="review-good" placeholder="哪怕只是一件小事。"></textarea>
+              </label>
+              <label>
+                <span>今天学到的</span>
+                <textarea id="review-learn" placeholder="一个新认知、经验或教训。"></textarea>
+              </label>
+              <label>
+                <span>明天想继续的</span>
+                <textarea id="review-next" placeholder="不用列很多，写最重要的一件。"></textarea>
+              </label>
+            </div>
+            <div class="save-hint">自动保存到当前浏览器</div>
           </section>
         </aside>
 
@@ -870,11 +981,6 @@
           <p class="desc">一个简单、快速、随时可用的个人工作入口。</p>
 
           <div class="hero-tools">
-            <div class="priority">
-              <strong>今日主线</strong>
-              先求职，再折腾工具
-            </div>
-
             <div class="modes">
               <button class="btn primary" onclick="launchJobMode()">💼 求职模式</button>
               <button class="btn" onclick="launchLearnMode()">🧠 学习模式</button>
@@ -935,7 +1041,7 @@
             </div>
 
             <div class="footer-note">
-              简洁，但不拥挤。
+              留一点空间，也留一点记录。
             </div>
           </div>
         </section>
@@ -986,28 +1092,43 @@
       </div>
 
           <div class="mobile-dashboard">
-            <section class="mini-panel">
+            <section class="mini-panel quote-panel">
               <div class="mini-head">
-                <h3>今日任务</h3>
-                <span id="task-date-mobile"></span>
+                <h3>一句话</h3>
+                <span>Daily note</span>
               </div>
-              <div class="task-list" id="task-list-mobile"></div>
-              <div class="task-progress">
-                <div class="task-bar"><i id="task-progress-bar-mobile"></i></div>
-                <span class="task-count" id="task-count-mobile">0/3</span>
-              </div>
+              <div class="daily-quote" id="daily-quote-mobile"></div>
             </section>
 
             <section class="mini-panel">
               <div class="mini-head">
-                <h3>状态 / 提醒</h3>
-                <span>Focus</span>
+                <h3>今日日记</h3>
+                <span id="journal-date-mobile"></span>
               </div>
-              <div class="status-list">
-                <div class="status-row"><i class="status-dot"></i><span>主线优先：先完成最能提高收入确定性的事情。</span></div>
-                <div class="status-row"><i class="status-dot"></i><span>外网工具是手段，不是今天的主任务。</span></div>
-                <div class="status-row"><i class="status-dot"></i><span>先完成，再优化；避免为了页面细节反复折腾。</span></div>
+              <textarea class="journal-area" id="journal-mobile" placeholder="今天发生了什么，想到什么，就写一点。"></textarea>
+              <div class="save-hint">自动保存到当前浏览器</div>
+            </section>
+
+            <section class="mini-panel">
+              <div class="mini-head">
+                <h3>今日复盘</h3>
+                <span>Review</span>
               </div>
+              <div class="review-grid">
+                <label>
+                  <span>今天做得不错的</span>
+                  <textarea id="review-good-mobile" placeholder="哪怕只是一件小事。"></textarea>
+                </label>
+                <label>
+                  <span>今天学到的</span>
+                  <textarea id="review-learn-mobile" placeholder="一个新认知、经验或教训。"></textarea>
+                </label>
+                <label>
+                  <span>明天想继续的</span>
+                  <textarea id="review-next-mobile" placeholder="不用列很多，写最重要的一件。"></textarea>
+                </label>
+              </div>
+              <div class="save-hint">自动保存到当前浏览器</div>
             </section>
 
             <section class="mini-panel">
@@ -1117,53 +1238,7 @@
         "https://www.instagram.com"
       ]);
     }
-  
-    const defaultTasks = [
-      "投递 10 个高匹配岗位",
-      "跟进昨日已读未回 HR",
-      "完成 1 次面试题训练"
-    ];
-
-    function getTodayKey(){
-      const d = new Date();
-      return `${d.getFullYear()}-${d.getMonth()+1}-${d.getDate()}`;
-    }
-
-    function loadTaskState(){
-      const key = "suze_tasks_" + getTodayKey();
-      try{
-        return JSON.parse(localStorage.getItem(key)) || [false,false,false];
-      }catch(e){
-        return [false,false,false];
-      }
-    }
-
-    function saveTaskState(state){
-      localStorage.setItem("suze_tasks_" + getTodayKey(), JSON.stringify(state));
-    }
-
-    function renderTasks(){
-      const state = loadTaskState();
-      const targets = [
-        ["task-list","task-progress-bar","task-count","task-date"],
-        ["task-list-mobile","task-progress-bar-mobile","task-count-mobile","task-date-mobile"]
-      ];
-
-      targets.forEach(([listId,barId,countId,dateId])=>{
-        const list = document.getElementById(listId);
-        if(!list) return;
-        list.innerHTML = "";
-
-        defaultTasks.forEach((task,i)=>{
-          const label = document.createElement("label");
-          label.className = "task-item" + (state[i] ? " done" : "");
-          label.innerHTML = `<input type="checkbox" ${state[i] ? "checked" : ""}><span>${task}</span>`;
-          label.querySelector("input").addEventListener("change",(e)=>{
-            const newState = loadTaskState();
-            newState[i] = e.target.checked;
-            saveTaskState(newState);
-            renderTasks();
-          });
+});
           list.appendChild(label);
         });
 
@@ -1224,7 +1299,69 @@
             const next = loadCustomLinks();
             next.splice(i,1);
             saveCustomLinks(next);
-            renderCustomLinks();
+        
+    const dailyQuotes = [
+      "别急着证明自己，先把今天过好。",
+      "把复杂的事做简单，把简单的事做稳定。",
+      "真正的积累，往往发生在没人注意的时候。",
+      "不用每天都很厉害，但可以每天都比昨天清楚一点。",
+      "行动不是为了显得忙，而是为了让生活真的往前走。",
+      "很多答案不是想出来的，是做着做着出现的。",
+      "保持好奇，也保持判断。",
+      "慢一点没关系，方向清楚比速度更重要。"
+    ];
+
+    function todayKey(){
+      const d = new Date();
+      return `${d.getFullYear()}-${d.getMonth()+1}-${d.getDate()}`;
+    }
+
+    function setDailyQuote(){
+      const d = new Date();
+      const seed = d.getFullYear()*1000 + (d.getMonth()+1)*50 + d.getDate();
+      const quote = dailyQuotes[seed % dailyQuotes.length];
+      ["daily-quote","daily-quote-mobile"].forEach(id=>{
+        const el = document.getElementById(id);
+        if(el) el.textContent = quote;
+      });
+    }
+
+    function setJournalDate(){
+      const d = new Date();
+      const text = `${d.getMonth()+1}/${d.getDate()}`;
+      ["journal-date","journal-date-mobile"].forEach(id=>{
+        const el = document.getElementById(id);
+        if(el) el.textContent = text;
+      });
+    }
+
+    function bindSyncedTextarea(ids, key){
+      const els = ids.map(id=>document.getElementById(id)).filter(Boolean);
+      const saved = localStorage.getItem(key) || "";
+      els.forEach(el=>{
+        el.value = saved;
+        el.addEventListener("input",()=>{
+          localStorage.setItem(key, el.value);
+          els.forEach(other=>{
+            if(other !== el) other.value = el.value;
+          });
+        });
+      });
+    }
+
+    function initJournalAndReview(){
+      const key = todayKey();
+      bindSyncedTextarea(["journal","journal-mobile"], `suze_journal_${key}`);
+      bindSyncedTextarea(["review-good","review-good-mobile"], `suze_review_good_${key}`);
+      bindSyncedTextarea(["review-learn","review-learn-mobile"], `suze_review_learn_${key}`);
+      bindSyncedTextarea(["review-next","review-next-mobile"], `suze_review_next_${key}`);
+      setDailyQuote();
+      setJournalDate();
+    }
+
+
+    initJournalAndReview();
+    renderCustomLinks();
           });
           box.appendChild(row);
         });
@@ -1245,10 +1382,134 @@
       saveCustomLinks(links);
       if(nameEl) nameEl.value = "";
       if(urlEl) urlEl.value = "";
-      renderCustomLinks();
+  
+    const dailyQuotes = [
+      "别急着证明自己，先把今天过好。",
+      "把复杂的事做简单，把简单的事做稳定。",
+      "真正的积累，往往发生在没人注意的时候。",
+      "不用每天都很厉害，但可以每天都比昨天清楚一点。",
+      "行动不是为了显得忙，而是为了让生活真的往前走。",
+      "很多答案不是想出来的，是做着做着出现的。",
+      "保持好奇，也保持判断。",
+      "慢一点没关系，方向清楚比速度更重要。"
+    ];
+
+    function todayKey(){
+      const d = new Date();
+      return `${d.getFullYear()}-${d.getMonth()+1}-${d.getDate()}`;
+    }
+
+    function setDailyQuote(){
+      const d = new Date();
+      const seed = d.getFullYear()*1000 + (d.getMonth()+1)*50 + d.getDate();
+      const quote = dailyQuotes[seed % dailyQuotes.length];
+      ["daily-quote","daily-quote-mobile"].forEach(id=>{
+        const el = document.getElementById(id);
+        if(el) el.textContent = quote;
+      });
+    }
+
+    function setJournalDate(){
+      const d = new Date();
+      const text = `${d.getMonth()+1}/${d.getDate()}`;
+      ["journal-date","journal-date-mobile"].forEach(id=>{
+        const el = document.getElementById(id);
+        if(el) el.textContent = text;
+      });
+    }
+
+    function bindSyncedTextarea(ids, key){
+      const els = ids.map(id=>document.getElementById(id)).filter(Boolean);
+      const saved = localStorage.getItem(key) || "";
+      els.forEach(el=>{
+        el.value = saved;
+        el.addEventListener("input",()=>{
+          localStorage.setItem(key, el.value);
+          els.forEach(other=>{
+            if(other !== el) other.value = el.value;
+          });
+        });
+      });
+    }
+
+    function initJournalAndReview(){
+      const key = todayKey();
+      bindSyncedTextarea(["journal","journal-mobile"], `suze_journal_${key}`);
+      bindSyncedTextarea(["review-good","review-good-mobile"], `suze_review_good_${key}`);
+      bindSyncedTextarea(["review-learn","review-learn-mobile"], `suze_review_learn_${key}`);
+      bindSyncedTextarea(["review-next","review-next-mobile"], `suze_review_next_${key}`);
+      setDailyQuote();
+      setJournalDate();
+    }
+
+
+    initJournalAndReview();
+    renderCustomLinks();
     }
 
     renderTasks();
+
+    const dailyQuotes = [
+      "别急着证明自己，先把今天过好。",
+      "把复杂的事做简单，把简单的事做稳定。",
+      "真正的积累，往往发生在没人注意的时候。",
+      "不用每天都很厉害，但可以每天都比昨天清楚一点。",
+      "行动不是为了显得忙，而是为了让生活真的往前走。",
+      "很多答案不是想出来的，是做着做着出现的。",
+      "保持好奇，也保持判断。",
+      "慢一点没关系，方向清楚比速度更重要。"
+    ];
+
+    function todayKey(){
+      const d = new Date();
+      return `${d.getFullYear()}-${d.getMonth()+1}-${d.getDate()}`;
+    }
+
+    function setDailyQuote(){
+      const d = new Date();
+      const seed = d.getFullYear()*1000 + (d.getMonth()+1)*50 + d.getDate();
+      const quote = dailyQuotes[seed % dailyQuotes.length];
+      ["daily-quote","daily-quote-mobile"].forEach(id=>{
+        const el = document.getElementById(id);
+        if(el) el.textContent = quote;
+      });
+    }
+
+    function setJournalDate(){
+      const d = new Date();
+      const text = `${d.getMonth()+1}/${d.getDate()}`;
+      ["journal-date","journal-date-mobile"].forEach(id=>{
+        const el = document.getElementById(id);
+        if(el) el.textContent = text;
+      });
+    }
+
+    function bindSyncedTextarea(ids, key){
+      const els = ids.map(id=>document.getElementById(id)).filter(Boolean);
+      const saved = localStorage.getItem(key) || "";
+      els.forEach(el=>{
+        el.value = saved;
+        el.addEventListener("input",()=>{
+          localStorage.setItem(key, el.value);
+          els.forEach(other=>{
+            if(other !== el) other.value = el.value;
+          });
+        });
+      });
+    }
+
+    function initJournalAndReview(){
+      const key = todayKey();
+      bindSyncedTextarea(["journal","journal-mobile"], `suze_journal_${key}`);
+      bindSyncedTextarea(["review-good","review-good-mobile"], `suze_review_good_${key}`);
+      bindSyncedTextarea(["review-learn","review-learn-mobile"], `suze_review_learn_${key}`);
+      bindSyncedTextarea(["review-next","review-next-mobile"], `suze_review_next_${key}`);
+      setDailyQuote();
+      setJournalDate();
+    }
+
+
+    initJournalAndReview();
     renderCustomLinks();
 
   </script>
