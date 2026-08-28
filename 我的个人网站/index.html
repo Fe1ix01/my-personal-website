@@ -360,6 +360,280 @@
     }
 
 
+
+    /* ===== Suze OS side dashboard ===== */
+    .desktop-dashboard{
+      width:min(calc(100% - 36px),1500px);
+      margin:0 auto 26px;
+      display:grid;
+      grid-template-columns:minmax(260px,1fr) minmax(600px,860px) minmax(260px,1fr);
+      gap:28px;
+      align-items:start;
+    }
+
+    .center-stack{
+      min-width:0;
+    }
+
+    .side-stack{
+      display:grid;
+      gap:18px;
+      padding-top:120px;
+    }
+
+    .mini-panel{
+      border:1px solid rgba(255,255,255,.58);
+      background:rgba(255,255,255,.38);
+      backdrop-filter:blur(16px);
+      border-radius:22px;
+      padding:18px;
+      box-shadow:0 18px 44px rgba(32,56,85,.08);
+    }
+
+    .mini-head{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      margin-bottom:14px;
+    }
+
+    .mini-head h3{
+      margin:0;
+      font-size:16px;
+      letter-spacing:-.2px;
+    }
+
+    .mini-head span{
+      color:var(--muted);
+      font-size:10px;
+    }
+
+    .task-list{
+      display:grid;
+      gap:9px;
+    }
+
+    .task-item{
+      display:flex;
+      align-items:flex-start;
+      gap:10px;
+      padding:10px 11px;
+      border-radius:12px;
+      background:rgba(255,255,255,.58);
+      border:1px solid rgba(23,32,43,.06);
+      font-size:12px;
+    }
+
+    .task-item input{
+      margin-top:2px;
+      accent-color:var(--accent);
+      width:15px;
+      height:15px;
+      cursor:pointer;
+    }
+
+    .task-item.done span{
+      text-decoration:line-through;
+      opacity:.48;
+    }
+
+    .task-progress{
+      margin-top:12px;
+      display:flex;
+      align-items:center;
+      gap:9px;
+    }
+
+    .task-bar{
+      flex:1;
+      height:6px;
+      border-radius:999px;
+      background:rgba(23,32,43,.08);
+      overflow:hidden;
+    }
+
+    .task-bar > i{
+      display:block;
+      height:100%;
+      width:0%;
+      background:var(--accent);
+      border-radius:999px;
+      transition:.2s ease;
+    }
+
+    .task-count{
+      min-width:30px;
+      text-align:right;
+      color:var(--muted);
+      font-size:10px;
+    }
+
+    .status-list{
+      display:grid;
+      gap:8px;
+    }
+
+    .status-row{
+      display:flex;
+      gap:9px;
+      align-items:flex-start;
+      padding:9px 10px;
+      border-radius:11px;
+      background:rgba(255,255,255,.50);
+      color:#3a4652;
+      font-size:11px;
+    }
+
+    .status-dot{
+      width:7px;
+      height:7px;
+      margin-top:5px;
+      flex:0 0 auto;
+      border-radius:50%;
+      background:var(--accent);
+    }
+
+    .search-box{
+      display:grid;
+      gap:10px;
+    }
+
+    .search-row{
+      display:grid;
+      grid-template-columns:1fr auto;
+      gap:8px;
+    }
+
+    .search-input,
+    .url-input,
+    .url-name{
+      width:100%;
+      border:1px solid rgba(23,32,43,.08);
+      background:rgba(255,255,255,.68);
+      color:var(--text);
+      border-radius:11px;
+      padding:10px 11px;
+      outline:none;
+      font:inherit;
+      font-size:12px;
+    }
+
+    .search-input:focus,
+    .url-input:focus,
+    .url-name:focus{
+      border-color:rgba(22,201,195,.38);
+      box-shadow:0 0 0 3px rgba(22,201,195,.08);
+    }
+
+    .search-engines{
+      display:grid;
+      grid-template-columns:repeat(2,minmax(0,1fr));
+      gap:8px;
+    }
+
+    .small-btn{
+      border:1px solid rgba(23,32,43,.07);
+      background:rgba(255,255,255,.60);
+      color:#27333f;
+      border-radius:10px;
+      padding:9px 10px;
+      cursor:pointer;
+      font-size:11px;
+      font-weight:700;
+      transition:.16s ease;
+    }
+
+    .small-btn:hover{
+      background:rgba(255,255,255,.84);
+      transform:translateY(-1px);
+    }
+
+    .custom-links{
+      display:grid;
+      gap:8px;
+      margin-bottom:10px;
+    }
+
+    .custom-link{
+      display:grid;
+      grid-template-columns:1fr auto;
+      gap:8px;
+      align-items:center;
+      padding:9px 10px;
+      border-radius:11px;
+      background:rgba(255,255,255,.54);
+      border:1px solid rgba(23,32,43,.06);
+    }
+
+    .custom-link a{
+      min-width:0;
+      overflow:hidden;
+      white-space:nowrap;
+      text-overflow:ellipsis;
+      font-size:11px;
+      font-weight:700;
+    }
+
+    .delete-link{
+      border:none;
+      background:transparent;
+      color:#9a6b6b;
+      cursor:pointer;
+      font-size:11px;
+      padding:2px 4px;
+    }
+
+    .add-link-grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:8px;
+    }
+
+    .add-link-grid .small-btn{
+      grid-column:1 / -1;
+    }
+
+    .mobile-dashboard{
+      display:none;
+    }
+
+    @media(max-width:1180px){
+      .desktop-dashboard{
+        width:min(calc(100% - 32px),980px);
+        grid-template-columns:1fr;
+        gap:20px;
+      }
+
+      .desktop-dashboard > .side-stack{
+        display:none;
+      }
+
+      .mobile-dashboard{
+        display:grid;
+        grid-template-columns:1fr 1fr;
+        gap:16px;
+        margin-top:24px;
+      }
+    }
+
+    @media(max-width:760px){
+      .mobile-dashboard{
+        grid-template-columns:1fr;
+        gap:14px;
+      }
+
+      .mini-panel{
+        padding:16px;
+        border-radius:18px;
+      }
+
+      .search-engines{
+        grid-template-columns:repeat(2,minmax(0,1fr));
+      }
+    }
+
+
     footer{
       padding:14px 0 18px;
       text-align:center;
@@ -558,8 +832,36 @@
   </header>
 
   <main id="top">
-    <div class="wrap">
-      <div class="layout">
+    <div class="desktop-dashboard">
+
+        <aside class="side-stack">
+          <section class="mini-panel">
+            <div class="mini-head">
+              <h3>今日任务</h3>
+              <span id="task-date"></span>
+            </div>
+            <div class="task-list" id="task-list"></div>
+            <div class="task-progress">
+              <div class="task-bar"><i id="task-progress-bar"></i></div>
+              <span class="task-count" id="task-count">0/3</span>
+            </div>
+          </section>
+
+          <section class="mini-panel">
+            <div class="mini-head">
+              <h3>状态 / 提醒</h3>
+              <span>Focus</span>
+            </div>
+            <div class="status-list">
+              <div class="status-row"><i class="status-dot"></i><span>主线优先：先完成最能提高收入确定性的事情。</span></div>
+              <div class="status-row"><i class="status-dot"></i><span>外网工具是手段，不是今天的主任务。</span></div>
+              <div class="status-row"><i class="status-dot"></i><span>先完成，再优化；避免为了页面细节反复折腾。</span></div>
+            </div>
+          </section>
+        </aside>
+
+      <div class="center-stack">
+<div class="layout">
 
         <section class="hero">
           <div class="eyebrow">PERSONAL WORKSPACE</div>
@@ -682,6 +984,101 @@
         </section>
 
       </div>
+
+          <div class="mobile-dashboard">
+            <section class="mini-panel">
+              <div class="mini-head">
+                <h3>今日任务</h3>
+                <span id="task-date-mobile"></span>
+              </div>
+              <div class="task-list" id="task-list-mobile"></div>
+              <div class="task-progress">
+                <div class="task-bar"><i id="task-progress-bar-mobile"></i></div>
+                <span class="task-count" id="task-count-mobile">0/3</span>
+              </div>
+            </section>
+
+            <section class="mini-panel">
+              <div class="mini-head">
+                <h3>状态 / 提醒</h3>
+                <span>Focus</span>
+              </div>
+              <div class="status-list">
+                <div class="status-row"><i class="status-dot"></i><span>主线优先：先完成最能提高收入确定性的事情。</span></div>
+                <div class="status-row"><i class="status-dot"></i><span>外网工具是手段，不是今天的主任务。</span></div>
+                <div class="status-row"><i class="status-dot"></i><span>先完成，再优化；避免为了页面细节反复折腾。</span></div>
+              </div>
+            </section>
+
+            <section class="mini-panel">
+              <div class="mini-head">
+                <h3>快捷搜索</h3>
+                <span>Search</span>
+              </div>
+              <div class="search-box">
+                <div class="search-row">
+                  <input class="search-input" id="quick-search-mobile" placeholder="输入关键词..." onkeydown="if(event.key==='Enter') doSearch('google', true)">
+                  <button class="small-btn" onclick="doSearch('google', true)">搜索</button>
+                </div>
+                <div class="search-engines">
+                  <button class="small-btn" onclick="doSearch('google', true)">Google</button>
+                  <button class="small-btn" onclick="doSearch('youtube', true)">YouTube</button>
+                  <button class="small-btn" onclick="doSearch('github', true)">GitHub</button>
+                  <button class="small-btn" onclick="doSearch('boss', true)">BOSS</button>
+                </div>
+              </div>
+            </section>
+
+            <section class="mini-panel">
+              <div class="mini-head">
+                <h3>常用网址</h3>
+                <span>Local save</span>
+              </div>
+              <div class="custom-links" id="custom-links-mobile"></div>
+              <div class="add-link-grid">
+                <input class="url-name" id="link-name-mobile" placeholder="名称">
+                <input class="url-input" id="link-url-mobile" placeholder="https://...">
+                <button class="small-btn" onclick="addCustomLink(true)">+ 添加网址</button>
+              </div>
+            </section>
+          </div>
+
+      </div>
+
+        <aside class="side-stack">
+          <section class="mini-panel">
+            <div class="mini-head">
+              <h3>快捷搜索</h3>
+              <span>Search</span>
+            </div>
+            <div class="search-box">
+              <div class="search-row">
+                <input class="search-input" id="quick-search" placeholder="输入关键词..." onkeydown="if(event.key==='Enter') doSearch('google')">
+                <button class="small-btn" onclick="doSearch('google')">搜索</button>
+              </div>
+              <div class="search-engines">
+                <button class="small-btn" onclick="doSearch('google')">Google</button>
+                <button class="small-btn" onclick="doSearch('youtube')">YouTube</button>
+                <button class="small-btn" onclick="doSearch('github')">GitHub</button>
+                <button class="small-btn" onclick="doSearch('boss')">BOSS</button>
+              </div>
+            </div>
+          </section>
+
+          <section class="mini-panel">
+            <div class="mini-head">
+              <h3>常用网址</h3>
+              <span>Local save</span>
+            </div>
+            <div class="custom-links" id="custom-links"></div>
+            <div class="add-link-grid">
+              <input class="url-name" id="link-name" placeholder="名称，例如：知乎">
+              <input class="url-input" id="link-url" placeholder="网址，例如：https://...">
+              <button class="small-btn" onclick="addCustomLink()">+ 添加网址</button>
+            </div>
+          </section>
+        </aside>
+
     </div>
   </main>
 
@@ -720,6 +1117,140 @@
         "https://www.instagram.com"
       ]);
     }
+  
+    const defaultTasks = [
+      "投递 10 个高匹配岗位",
+      "跟进昨日已读未回 HR",
+      "完成 1 次面试题训练"
+    ];
+
+    function getTodayKey(){
+      const d = new Date();
+      return `${d.getFullYear()}-${d.getMonth()+1}-${d.getDate()}`;
+    }
+
+    function loadTaskState(){
+      const key = "suze_tasks_" + getTodayKey();
+      try{
+        return JSON.parse(localStorage.getItem(key)) || [false,false,false];
+      }catch(e){
+        return [false,false,false];
+      }
+    }
+
+    function saveTaskState(state){
+      localStorage.setItem("suze_tasks_" + getTodayKey(), JSON.stringify(state));
+    }
+
+    function renderTasks(){
+      const state = loadTaskState();
+      const targets = [
+        ["task-list","task-progress-bar","task-count","task-date"],
+        ["task-list-mobile","task-progress-bar-mobile","task-count-mobile","task-date-mobile"]
+      ];
+
+      targets.forEach(([listId,barId,countId,dateId])=>{
+        const list = document.getElementById(listId);
+        if(!list) return;
+        list.innerHTML = "";
+
+        defaultTasks.forEach((task,i)=>{
+          const label = document.createElement("label");
+          label.className = "task-item" + (state[i] ? " done" : "");
+          label.innerHTML = `<input type="checkbox" ${state[i] ? "checked" : ""}><span>${task}</span>`;
+          label.querySelector("input").addEventListener("change",(e)=>{
+            const newState = loadTaskState();
+            newState[i] = e.target.checked;
+            saveTaskState(newState);
+            renderTasks();
+          });
+          list.appendChild(label);
+        });
+
+        const done = state.filter(Boolean).length;
+        const bar = document.getElementById(barId);
+        const count = document.getElementById(countId);
+        const date = document.getElementById(dateId);
+        if(bar) bar.style.width = `${(done/defaultTasks.length)*100}%`;
+        if(count) count.textContent = `${done}/${defaultTasks.length}`;
+        if(date){
+          const d = new Date();
+          date.textContent = `${d.getMonth()+1}/${d.getDate()}`;
+        }
+      });
+    }
+
+    function doSearch(engine, mobile=false){
+      const input = document.getElementById(mobile ? "quick-search-mobile" : "quick-search");
+      const q = (input?.value || "").trim();
+      if(!q) return;
+
+      const urls = {
+        google: "https://www.google.com/search?q=",
+        youtube: "https://www.youtube.com/results?search_query=",
+        github: "https://github.com/search?q=",
+        boss: "https://www.zhipin.com/web/geek/job?query="
+      };
+
+      window.open(urls[engine] + encodeURIComponent(q), "_blank", "noopener");
+    }
+
+    function loadCustomLinks(){
+      try{
+        return JSON.parse(localStorage.getItem("suze_custom_links")) || [
+          {name:"知乎",url:"https://www.zhihu.com"},
+          {name:"WPS",url:"https://www.wps.cn"}
+        ];
+      }catch(e){
+        return [];
+      }
+    }
+
+    function saveCustomLinks(links){
+      localStorage.setItem("suze_custom_links", JSON.stringify(links));
+    }
+
+    function renderCustomLinks(){
+      const links = loadCustomLinks();
+      ["custom-links","custom-links-mobile"].forEach(id=>{
+        const box = document.getElementById(id);
+        if(!box) return;
+        box.innerHTML = "";
+        links.forEach((item,i)=>{
+          const row = document.createElement("div");
+          row.className = "custom-link";
+          row.innerHTML = `<a target="_blank" rel="noopener" href="${item.url}">${item.name}</a><button class="delete-link" title="删除">×</button>`;
+          row.querySelector(".delete-link").addEventListener("click",()=>{
+            const next = loadCustomLinks();
+            next.splice(i,1);
+            saveCustomLinks(next);
+            renderCustomLinks();
+          });
+          box.appendChild(row);
+        });
+      });
+    }
+
+    function addCustomLink(mobile=false){
+      const nameEl = document.getElementById(mobile ? "link-name-mobile" : "link-name");
+      const urlEl = document.getElementById(mobile ? "link-url-mobile" : "link-url");
+      const name = (nameEl?.value || "").trim();
+      let url = (urlEl?.value || "").trim();
+
+      if(!name || !url) return;
+      if(!/^https?:\/\//i.test(url)) url = "https://" + url;
+
+      const links = loadCustomLinks();
+      links.push({name,url});
+      saveCustomLinks(links);
+      if(nameEl) nameEl.value = "";
+      if(urlEl) urlEl.value = "";
+      renderCustomLinks();
+    }
+
+    renderTasks();
+    renderCustomLinks();
+
   </script>
 </body>
 </html>
