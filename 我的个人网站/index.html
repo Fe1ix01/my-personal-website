@@ -196,8 +196,14 @@
 
     .tool-groups{
       display:grid;
-      grid-template-columns:1fr 1fr;
+      grid-template-columns:repeat(2,minmax(0,1fr));
       gap:20px 22px;
+    }
+
+    .group:nth-child(5){
+      grid-column:1 / -1;
+      width:calc(50% - 11px);
+      justify-self:center;
     }
 
     .group{
@@ -218,6 +224,10 @@
       display:grid;
       grid-template-columns:repeat(2,minmax(0,1fr));
       gap:10px;
+    }
+
+    .group:nth-child(5) .tools{
+      grid-template-columns:repeat(3,minmax(0,1fr));
     }
 
     .tool{
@@ -260,6 +270,8 @@
       main{padding-top:18px}
       .layout{gap:24px}
       .tool-groups{grid-template-columns:1fr}
+      .group:nth-child(5){grid-column:auto;width:100%}
+      .group:nth-child(5) .tools{grid-template-columns:repeat(2,minmax(0,1fr))}
       .workspace-shell{padding:20px 16px 16px}
       .hero{padding-top:12px}
       h1{font-size:48px}
@@ -339,6 +351,17 @@
                   <a class="tool" target="_blank" rel="noopener" href="https://vercel.com">Vercel</a>
                   <a class="tool" target="_blank" rel="noopener" href="https://dash.cloudflare.com">Cloudflare</a>
                   <a class="tool" target="_blank" rel="noopener" href="https://codepen.io">CodePen</a>
+                </div>
+              </div>
+
+              <div class="group">
+                <div class="group-name">Network</div>
+                <div class="tools">
+                  <a class="tool" target="_blank" rel="noopener" href="https://github.com/2dust/v2rayN/releases">v2rayN 下载</a>
+                  <a class="tool" target="_blank" rel="noopener" href="https://edgetunnel.github.io/edgetunnel/">EdgeTunnel</a>
+                  <a class="tool" target="_blank" rel="noopener" href="https://cf.090227.xyz/">CF 优选</a>
+                  <a class="tool" target="_blank" rel="noopener" href="https://github.com/LancelotRar/best-cf-ips">Best CF IPs</a>
+                  <a class="tool" target="_blank" rel="noopener" href="https://bestcf.pages.dev/">BestCF</a>
                 </div>
               </div>
 
