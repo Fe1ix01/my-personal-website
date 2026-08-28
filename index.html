@@ -965,43 +965,142 @@
       return `${d.getFullYear()}-${d.getMonth()+1}-${d.getDate()}`;
     }
 
+    let storageErrorNotified = false;
+
+    function notifyStorageError(message = "浏览器存储暂时不可用，请检查隐私设置或存储空间。") {
+      if (storageErrorNotified) return;
+      storageErrorNotified = true;
+      setTimeout(() => alert(message), 0);
+    }
+
+    function safeStorageGet(key, notify = true) {
+      try {
+        return {ok:true,value:localStorage.getItem(key)};
+      } catch {
+        if (notify) notifyStorageError();
+        return {ok:false,value:null};
+      }
+    }
+
+    function safeStorageSet(key, value, notify = true) {
+      try {
+        localStorage.setItem(key, value);
+        return true;
+      } catch {
+        if (notify) notifyStorageError();
+        return false;
+      }
+    }
+
+    function safeStorageRemove(key, notify = true) {
+      try {
+        localStorage.removeItem(key);
+        return true;
+      } catch {
+        if (notify) notifyStorageError();
+        return false;
+      }
+    }
+
     const saveTimers = new Map();
-    const pendingSaves = new Map();
+    const savedTextFields = new Map();
+    let activeNotesDate = todayKey();
+    let midnightTimer;
+
+    function updateSaveStatus(statusId) {
+      const status = document.getElementById(statusId);
+      if (!status) return;
+      const fields = [...savedTextFields.values()].filter((field) => field.statusId === statusId);
+      if (fields.some((field) => field.failed)) status.textContent = "保存失败";
+      else if (fields.some((field) => field.dirty)) status.textContent = "正在保存…";
+      else status.textContent = "已保存";
+    }
+
+    function flushSavedText(field) {
+      clearTimeout(saveTimers.get(field.id));
+      saveTimers.delete(field.id);
+      if (!field.dirty) return true;
+
+      const saved = safeStorageSet(field.prefix + activeNotesDate, field.el.value, false);
+      field.dirty = !saved;
+      field.failed = !saved;
+      updateSaveStatus(field.statusId);
+      return saved;
+    }
+
+    function flushAllSavedText(showError = false) {
+      let saved = true;
+      savedTextFields.forEach((field) => {
+        if (!flushSavedText(field)) saved = false;
+      });
+      if (!saved && showError) notifyStorageError("部分日记或复盘内容未能保存，请勿关闭页面并检查浏览器存储空间。");
+      return saved;
+    }
+
+    function loadNotesForDate(dateKey) {
+      let loaded = true;
+      savedTextFields.forEach((field) => {
+        const result = safeStorageGet(field.prefix + dateKey);
+        if (!result.ok) loaded = false;
+        field.el.value = result.value || "";
+        field.dirty = false;
+        field.failed = !result.ok;
+        updateSaveStatus(field.statusId);
+      });
+
+      const parts = dateKey.split("-");
+      const dateEl = document.getElementById("journal-date");
+      if (dateEl) dateEl.textContent = `${Number(parts[1])}/${Number(parts[2])}`;
+      return loaded;
+    }
+
+    function syncNotesDate() {
+      const currentDate = todayKey();
+      if (currentDate === activeNotesDate) return true;
+      if (!flushAllSavedText(true)) return false;
+      activeNotesDate = currentDate;
+      loadNotesForDate(activeNotesDate);
+      scheduleMidnightSync();
+      return true;
+    }
+
+    function scheduleMidnightSync() {
+      clearTimeout(midnightTimer);
+      const now = new Date();
+      const nextDay = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
+      midnightTimer = setTimeout(syncNotesDate, nextDay.getTime() - now.getTime() + 50);
+    }
 
     function bindSavedText(id, prefix, statusId) {
       const el = document.getElementById(id);
-      const status = document.getElementById(statusId);
       if (!el) return;
-      const key = prefix + todayKey();
-      el.value = localStorage.getItem(key) || "";
+      const field = {id, prefix, statusId, el, dirty:false, failed:false};
+      savedTextFields.set(id, field);
+      el.addEventListener("beforeinput", syncNotesDate);
       el.addEventListener("input", () => {
-        if (status) status.textContent = "正在保存…";
-        if (!pendingSaves.has(statusId)) pendingSaves.set(statusId, new Set());
-        pendingSaves.get(statusId).add(id);
+        field.dirty = true;
+        field.failed = false;
+        updateSaveStatus(statusId);
         clearTimeout(saveTimers.get(id));
         saveTimers.set(id, setTimeout(() => {
-          try {
-            localStorage.setItem(key, el.value);
-            pendingSaves.get(statusId).delete(id);
-            if (status && pendingSaves.get(statusId).size === 0) status.textContent = "已保存";
-          } catch {
-            pendingSaves.get(statusId).delete(id);
-            if (status) status.textContent = "保存失败";
-          }
-          saveTimers.delete(id);
+          flushSavedText(field);
         }, 400));
       });
     }
 
     function initNotes() {
-      const d = new Date();
-      const dateEl = document.getElementById("journal-date");
-      if (dateEl) dateEl.textContent = `${d.getMonth()+1}/${d.getDate()}`;
-
       bindSavedText("journal", "suze_journal_", "journal-save-status");
       bindSavedText("review-good", "suze_review_good_", "review-save-status");
       bindSavedText("review-learn", "suze_review_learn_", "review-save-status");
       bindSavedText("review-next", "suze_review_next_", "review-save-status");
+      loadNotesForDate(activeNotesDate);
+      scheduleMidnightSync();
+
+      window.addEventListener("pagehide", () => flushAllSavedText(false));
+      document.addEventListener("visibilitychange", () => {
+        if (document.visibilityState === "hidden") flushAllSavedText(false);
+        else syncNotesDate();
+      });
     }
 
     function searchWith(engine) {
@@ -1019,39 +1118,79 @@
     }
 
     function loadLinks() {
+      const result = safeStorageGet("suze_custom_links");
+      if (!result.ok || !result.value) return [];
       try {
-        return JSON.parse(localStorage.getItem("suze_custom_links")) || [];
+        const links = JSON.parse(result.value);
+        return validateCustomLinks(links) ? links : [];
       } catch {
         return [];
       }
     }
 
     function saveLinks(links) {
-      localStorage.setItem("suze_custom_links", JSON.stringify(links));
+      return safeStorageSet("suze_custom_links", JSON.stringify(links));
+    }
+
+    function normalizeHttpUrl(value, addDefaultProtocol = false) {
+      if (typeof value !== "string") return null;
+      let candidate = value.trim();
+      if (!candidate) return null;
+      if (addDefaultProtocol && !/^https?:/i.test(candidate)) {
+        if (/^[a-z][a-z\d+.-]*:(?!\d)/i.test(candidate)) return null;
+        candidate = "https://" + candidate;
+      }
+
+      try {
+        const url = new URL(candidate);
+        return url.protocol === "http:" || url.protocol === "https:" ? url.href : null;
+      } catch {
+        return null;
+      }
+    }
+
+    function validateCustomLinks(links) {
+      return Array.isArray(links) && links.every((item) =>
+        item && typeof item === "object" &&
+        typeof item.name === "string" && normalizeHttpUrl(item.url) !== null
+      );
     }
 
     function isSuzeStorageKey(key) {
-      return key === "suze_custom_links" ||
-        /^suze_(journal|review_good|review_learn|review_next)_\d{4}-\d{1,2}-\d{1,2}$/.test(key);
+      if (key === "suze_custom_links") return true;
+      const match = key.match(/^suze_(journal|review_good|review_learn|review_next)_(\d{4})-(\d{1,2})-(\d{1,2})$/);
+      if (!match) return false;
+      const year = Number(match[2]);
+      const month = Number(match[3]);
+      const day = Number(match[4]);
+      const date = new Date(year, month - 1, day);
+      return date.getFullYear() === year && date.getMonth() === month - 1 && date.getDate() === day;
     }
 
-    function getSuzeStorageData() {
+    function getSuzeStorageData(notify = true) {
       const data = {};
 
-      for (let i = 0; i < localStorage.length; i += 1) {
-        const key = localStorage.key(i);
-        if (key && isSuzeStorageKey(key)) data[key] = localStorage.getItem(key);
+      try {
+        for (let i = 0; i < localStorage.length; i += 1) {
+          const key = localStorage.key(i);
+          if (key && isSuzeStorageKey(key)) data[key] = localStorage.getItem(key);
+        }
+        return data;
+      } catch {
+        if (notify) notifyStorageError();
+        return null;
       }
-
-      return data;
     }
 
     function exportBackup() {
+      if (!flushAllSavedText(true)) return;
+      const data = getSuzeStorageData();
+      if (!data) return;
       const backup = {
         app: "Suze OS",
         version: 1,
         exportedAt: new Date().toISOString(),
-        data: getSuzeStorageData()
+        data
       };
       const blob = new Blob([JSON.stringify(backup, null, 2)], {type:"application/json"});
       const url = URL.createObjectURL(blob);
@@ -1082,13 +1221,22 @@
           } catch {
             throw new Error("备份中的常用网址格式不正确。");
           }
-          const validLinks = Array.isArray(links) && links.every((item) =>
-            item && typeof item === "object" &&
-            typeof item.name === "string" && typeof item.url === "string"
-          );
-          if (!validLinks) throw new Error("备份中的常用网址格式不正确。");
+          if (!validateCustomLinks(links)) throw new Error("备份中的常用网址格式不正确或包含不安全的网址协议。");
         }
       });
+    }
+
+    function replaceSuzeStorageData(data) {
+      const currentData = getSuzeStorageData(false);
+      if (!currentData) return false;
+
+      for (const key of Object.keys(currentData)) {
+        if (!safeStorageRemove(key, false)) return false;
+      }
+      for (const [key, value] of Object.entries(data)) {
+        if (!safeStorageSet(key, value, false)) return false;
+      }
+      return true;
     }
 
     async function importBackup(event) {
@@ -1106,15 +1254,15 @@
         validateBackup(backup);
 
         if (!confirm("导入备份将覆盖当前的 Suze OS 日记、复盘和常用网址数据。确定继续吗？")) return;
+        if (!flushAllSavedText(true)) throw new Error("当前日记或复盘尚未成功保存，已取消恢复。");
 
-        const previousData = getSuzeStorageData();
-        try {
-          Object.keys(previousData).forEach((key) => localStorage.removeItem(key));
-          Object.entries(backup.data).forEach(([key, value]) => localStorage.setItem(key, value));
-        } catch (error) {
-          Object.keys(getSuzeStorageData()).forEach((key) => localStorage.removeItem(key));
-          Object.entries(previousData).forEach(([key, value]) => localStorage.setItem(key, value));
-          throw new Error("恢复数据失败，原有数据已保留。");
+        const previousData = getSuzeStorageData(false);
+        if (!previousData) throw new Error("无法读取当前数据，已取消恢复。");
+
+        if (!replaceSuzeStorageData(backup.data)) {
+          const rolledBack = replaceSuzeStorageData(previousData);
+          if (rolledBack) throw new Error("恢复数据失败，已恢复导入前的数据。");
+          throw new Error("恢复和回滚均失败，请不要关闭页面，并使用此前导出的备份文件重试。");
         }
 
         alert("备份恢复成功，页面将自动刷新。");
@@ -1147,8 +1295,7 @@
         del.onclick = () => {
           const links = loadLinks();
           links.splice(index,1);
-          saveLinks(links);
-          renderLinks();
+          if (saveLinks(links)) renderLinks();
         };
 
         row.append(link, del);
@@ -1160,14 +1307,18 @@
       const nameEl = document.getElementById("link-name");
       const urlEl = document.getElementById("link-url");
       const name = (nameEl?.value || "").trim();
-      let url = (urlEl?.value || "").trim();
+      const rawUrl = (urlEl?.value || "").trim();
 
-      if (!name || !url) return;
-      if (!/^https?:\/\//i.test(url)) url = "https://" + url;
+      if (!name || !rawUrl) return;
+      const url = normalizeHttpUrl(rawUrl, true);
+      if (!url) {
+        alert("网址无效，只能添加 http:// 或 https:// 开头的网址。");
+        return;
+      }
 
       const links = loadLinks();
       links.push({name,url});
-      saveLinks(links);
+      if (!saveLinks(links)) return;
 
       nameEl.value = "";
       urlEl.value = "";
