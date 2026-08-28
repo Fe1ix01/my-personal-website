@@ -1,539 +1,980 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Suze OS - 个人一键工作台" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Suze OS - Personal Workspace">
   <title>Suze OS</title>
+
   <style>
-    :root{
-      --bg:#050505;
-      --panel:#111315;
-      --panel-2:#17191c;
-      --text:#f5f7fa;
-      --muted:#9ba3ad;
-      --line:#242a31;
-      --accent:#00e7e7;
-      --accent-soft:rgba(0,231,231,.12);
-      --max:1180px;
-      --radius:18px;
-      --shadow:0 16px 50px rgba(0,0,0,.32);
+    :root {
+      --bg1:#eef4f8;
+      --bg2:#dfe9f3;
+      --bg3:#d3e0eb;
+      --text:#17202b;
+      --muted:#65717d;
+      --line:rgba(23,32,43,.08);
+      --accent:#16c9c3;
+      --accent-deep:#0f8f8a;
+      --panel:rgba(255,255,255,.40);
+      --item:rgba(255,255,255,.60);
+      --shadow:0 18px 44px rgba(32,56,85,.08);
     }
 
-    *{box-sizing:border-box}
-    html{scroll-behavior:smooth}
-    body{
+    * { box-sizing:border-box; }
+    html { scroll-behavior:smooth; }
+
+    body {
       margin:0;
+      min-height:100vh;
+      color:var(--text);
+      font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,
+      "Segoe UI","PingFang SC","Microsoft YaHei",Arial,sans-serif;
       background:
-        radial-gradient(circle at 25% 0%, rgba(0,231,231,.08), transparent 28%),
-        radial-gradient(circle at 80% 10%, rgba(85,110,255,.08), transparent 28%),
-        var(--bg);
-      color:var(--text);
-      font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",
-      "PingFang SC","Microsoft YaHei",Arial,sans-serif;
-      line-height:1.5;
+        radial-gradient(circle at 13% 17%, rgba(22,201,195,.13), transparent 24%),
+        radial-gradient(circle at 86% 14%, rgba(116,152,255,.12), transparent 26%),
+        linear-gradient(180deg,var(--bg1) 0%,var(--bg2) 56%,var(--bg3) 100%);
+      line-height:1.45;
     }
 
-    a{color:inherit;text-decoration:none}
-    button{font:inherit}
+    a { text-decoration:none; color:inherit; }
+    button,input,textarea { font:inherit; }
+    button,a { -webkit-tap-highlight-color:transparent; }
 
-    .wrap{
-      width:min(calc(100% - 36px), var(--max));
+    header {
+      height:56px;
+      border-bottom:1px solid rgba(255,255,255,.45);
+      background:rgba(255,255,255,.24);
+      backdrop-filter:blur(12px);
+    }
+
+    .nav {
+      width:min(calc(100% - 36px),980px);
+      height:56px;
       margin:0 auto;
-    }
-
-    header{
-      position:sticky;
-      top:0;
-      z-index:20;
-      backdrop-filter:blur(16px);
-      background:rgba(5,5,5,.72);
-      border-bottom:1px solid rgba(255,255,255,.05);
-    }
-
-    .nav{
-      height:70px;
       display:flex;
       align-items:center;
       justify-content:space-between;
-      gap:24px;
     }
 
-    .brand{
-      font-size:22px;
-      font-weight:800;
-      letter-spacing:.4px;
-    }
-
-    .brand span{color:var(--accent)}
-
-    .nav-links{
-      display:flex;
-      align-items:center;
-      gap:26px;
-      font-size:14px;
-      color:var(--muted);
-    }
-
-    .nav-links a:hover{color:var(--text)}
-
-    .hero{
-      min-height:42vh;
-      display:flex;
-      align-items:center;
-      padding:72px 0 42px;
-    }
-
-    .hero-grid{
-      display:grid;
-      grid-template-columns:1.25fr .75fr;
-      gap:42px;
-      align-items:center;
-      width:100%;
-    }
-
-    .eyebrow{
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
-      padding:7px 11px;
-      border:1px solid rgba(0,231,231,.3);
-      background:var(--accent-soft);
-      color:var(--accent);
-      border-radius:999px;
-      font-size:13px;
-      font-weight:700;
-    }
-
-    h1{
-      margin:18px 0 8px;
-      font-size:clamp(46px,7vw,82px);
-      line-height:1;
-      letter-spacing:-2.5px;
-    }
-
-    .hero h2{
-      margin:0;
-      font-size:clamp(20px,2.4vw,30px);
-      font-weight:700;
-    }
-
-    .hero h2 span{color:var(--accent)}
-
-    .hero p{
-      margin:18px 0 0;
-      max-width:650px;
-      color:var(--muted);
-      font-size:16px;
-    }
-
-    .hero-actions{
-      margin-top:26px;
-      display:flex;
-      flex-wrap:wrap;
-      gap:12px;
-    }
-
-    .btn{
-      border:1px solid var(--line);
-      background:var(--panel);
-      color:var(--text);
-      padding:12px 18px;
-      border-radius:12px;
-      cursor:pointer;
-      transition:.18s ease;
-    }
-
-    .btn:hover{
-      transform:translateY(-2px);
-      border-color:#3b454f;
-      background:var(--panel-2);
-    }
-
-    .btn.primary{
-      background:var(--accent);
-      color:#001919;
-      border-color:var(--accent);
+    .brand {
+      font-size:17px;
       font-weight:800;
     }
 
-    .hero-card{
-      border:1px solid var(--line);
-      background:linear-gradient(180deg,rgba(255,255,255,.045),rgba(255,255,255,.018));
-      border-radius:22px;
-      padding:24px;
-      box-shadow:var(--shadow);
-    }
+    .brand span { color:var(--accent-deep); }
 
-    .status{
+    .nav-links {
       display:flex;
-      justify-content:space-between;
-      gap:16px;
-      margin-bottom:18px;
-      color:var(--muted);
-      font-size:13px;
-    }
-
-    .status b{color:#8fffe9}
-
-    .hero-card h3{
-      margin:0 0 8px;
-      font-size:22px;
-    }
-
-    .hero-card p{
-      margin:0;
-      font-size:14px;
-    }
-
-    section{
-      padding:34px 0 70px;
-    }
-
-    .section-head{
-      display:flex;
-      align-items:end;
-      justify-content:space-between;
       gap:20px;
-      margin-bottom:22px;
-    }
-
-    .section-head h2{
-      margin:0;
-      font-size:30px;
-    }
-
-    .section-head p{
-      margin:0;
       color:var(--muted);
-      font-size:14px;
+      font-size:12px;
     }
 
-    .os-panel{
-      border:1px solid var(--line);
-      background:rgba(12,13,15,.82);
-      border-radius:24px;
-      padding:24px;
-      box-shadow:var(--shadow);
+    .hero {
+      width:min(calc(100% - 36px),860px);
+      margin:0 auto;
+      padding:28px 0 30px;
+      text-align:center;
     }
 
-    .group + .group{margin-top:28px}
+    .eyebrow {
+      color:var(--accent-deep);
+      font-size:10px;
+      font-weight:800;
+      letter-spacing:1.35px;
+      margin-bottom:10px;
+    }
 
-    .group-title{
-      margin:0 0 12px;
+    h1 {
+      margin:0;
+      font-size:clamp(46px,6vw,68px);
+      line-height:.96;
+      letter-spacing:-2.3px;
+      color:#111923;
+    }
+
+    .subtitle {
+      margin-top:12px;
+      font-size:clamp(17px,1.9vw,21px);
+      font-weight:700;
+      color:#293541;
+    }
+
+    .desc {
+      margin:8px auto 0;
+      color:var(--muted);
+      font-size:12px;
+    }
+
+    .modes {
+      margin-top:18px;
       display:flex;
-      align-items:center;
+      justify-content:center;
       gap:10px;
-      font-size:15px;
-      color:#cbd2d9;
+      flex-wrap:wrap;
+    }
+
+    .btn {
+      padding:10px 16px;
+      border-radius:999px;
+      border:1px solid rgba(23,32,43,.08);
+      background:rgba(255,255,255,.62);
+      color:var(--text);
+      cursor:pointer;
+      font-size:12px;
+      box-shadow:var(--shadow);
+      transition:.16s ease;
+    }
+
+    .btn:hover {
+      transform:translateY(-1px);
+      background:rgba(255,255,255,.84);
+    }
+
+    .btn.primary {
+      background:var(--accent);
+      border-color:var(--accent);
+      color:#062321;
       font-weight:800;
     }
 
-    .tools{
+    /* 真正三栏：顶部天然平行 */
+    .dashboard {
+      width:min(calc(100% - 56px),1540px);
+      margin:0 auto 34px;
       display:grid;
-      grid-template-columns:repeat(4,minmax(0,1fr));
-      gap:12px;
+      grid-template-columns:280px minmax(620px,760px) 280px;
+      gap:86px;
+      justify-content:center;
+      align-items:start;
     }
 
-    .tool{
-      min-height:78px;
-      border:1px solid var(--line);
+    .left-stack,
+    .right-stack,
+    .center-stack {
+      min-width:0;
+      display:grid;
+      gap:18px;
+      align-content:start;
+    }
+
+    .panel {
+      border:1px solid rgba(255,255,255,.58);
       background:var(--panel);
+      backdrop-filter:blur(16px);
+      border-radius:22px;
+      box-shadow:var(--shadow);
+    }
+
+    .side-panel {
+      padding:18px;
+    }
+
+    .panel-head {
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:12px;
+      margin-bottom:13px;
+    }
+
+    .panel-head h3 {
+      margin:0;
+      font-size:16px;
+      letter-spacing:-.2px;
+    }
+
+    .panel-head span {
+      color:var(--muted);
+      font-size:9px;
+    }
+
+    .quote-box {
+      min-height:104px;
+      padding:16px;
+      display:flex;
+      align-items:center;
       border-radius:14px;
-      padding:15px 16px;
+      border:1px solid rgba(23,32,43,.06);
+      background:rgba(255,255,255,.56);
+      color:#31404e;
+      font-size:13px;
+      line-height:1.75;
+    }
+
+    .quote-box::before {
+      content:"“";
+      color:var(--accent-deep);
+      font-size:26px;
+      margin-right:6px;
+      align-self:flex-start;
+      line-height:1;
+    }
+
+    .journal-area,
+    .review-area {
+      width:100%;
+      border:1px solid rgba(23,32,43,.08);
+      background:rgba(255,255,255,.64);
+      color:var(--text);
+      border-radius:12px;
+      padding:11px 12px;
+      outline:none;
+      resize:vertical;
+      font-size:12px;
+      line-height:1.6;
+    }
+
+    .journal-area { min-height:160px; }
+    .review-area { min-height:72px; }
+
+    .journal-area:focus,
+    .review-area:focus,
+    .search-input:focus,
+    .url-input:focus {
+      border-color:rgba(22,201,195,.38);
+      box-shadow:0 0 0 3px rgba(22,201,195,.08);
+    }
+
+    .save-hint {
+      margin-top:7px;
+      color:var(--muted);
+      font-size:9px;
+      text-align:right;
+    }
+
+    .review-list {
+      display:grid;
+      gap:10px;
+    }
+
+    .review-list label {
+      display:grid;
+      gap:5px;
+    }
+
+    .review-list label span {
+      color:#566371;
+      font-size:10px;
+      font-weight:700;
+    }
+
+    .workspace {
+      padding:24px 24px 20px;
+    }
+
+    .section-title {
+      text-align:center;
+      margin-bottom:20px;
+    }
+
+    .section-title h2 {
+      margin:0;
+      font-size:27px;
+      letter-spacing:-.4px;
+    }
+
+    .section-title p {
+      margin:5px 0 0;
+      color:var(--muted);
+      font-size:11px;
+    }
+
+    .tool-groups {
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:20px 22px;
+    }
+
+    .group-name {
+      text-align:center;
+      margin-bottom:9px;
+      color:#7a8590;
+      font-size:10px;
+      font-weight:800;
+      letter-spacing:1.2px;
+      text-transform:uppercase;
+    }
+
+    .tools {
+      display:grid;
+      grid-template-columns:repeat(2,minmax(0,1fr));
+      gap:10px;
+    }
+
+    .tool {
+      min-height:54px;
+      padding:10px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      text-align:center;
+      border-radius:12px;
+      border:1px solid rgba(23,32,43,.07);
+      background:var(--item);
+      font-size:12px;
+      font-weight:700;
+      color:#24303c;
+      transition:.16s ease;
+    }
+
+    .tool:hover {
+      transform:translateY(-1px);
+      border-color:rgba(22,201,195,.26);
+      background:rgba(255,255,255,.82);
+    }
+
+    .workspace-note {
+      margin-top:17px;
+      color:var(--muted);
+      text-align:center;
+      font-size:10px;
+    }
+
+    .connection {
+      padding:22px 20px 18px;
+    }
+
+    .connection-title {
+      text-align:center;
+      margin-bottom:16px;
+    }
+
+    .connection-title h2 {
+      margin:0;
+      font-size:23px;
+    }
+
+    .connection-title p {
+      margin:5px 0 0;
+      color:var(--muted);
+      font-size:10px;
+    }
+
+    .path-steps {
+      display:grid;
+      grid-template-columns:repeat(5,minmax(0,1fr));
+      gap:10px;
+    }
+
+    .path-step {
+      min-height:82px;
+      padding:10px 7px;
       display:flex;
       flex-direction:column;
+      align-items:center;
       justify-content:center;
-      transition:.18s ease;
+      text-align:center;
+      border-radius:12px;
+      border:1px solid rgba(23,32,43,.07);
+      background:var(--item);
+      transition:.16s ease;
     }
 
-    .tool:hover{
-      transform:translateY(-2px);
-      border-color:rgba(0,231,231,.48);
-      background:#15191b;
-      box-shadow:0 10px 24px rgba(0,0,0,.2);
+    .path-step:hover {
+      transform:translateY(-1px);
+      border-color:rgba(22,201,195,.26);
+      background:rgba(255,255,255,.82);
     }
 
-    .tool strong{
-      font-size:15px;
-      margin-bottom:4px;
+    .num {
+      width:22px;
+      height:22px;
+      margin-bottom:7px;
+      display:grid;
+      place-items:center;
+      border-radius:50%;
+      background:rgba(22,201,195,.13);
+      color:var(--accent-deep);
+      font-size:10px;
+      font-weight:800;
     }
 
-    .tool small{
+    .path-step strong {
+      font-size:11px;
+      color:#24303c;
+    }
+
+    .path-step small {
+      margin-top:3px;
       color:var(--muted);
-      font-size:12px;
+      font-size:8px;
     }
 
-    .launch{
-      margin-top:26px;
+    .path-note {
+      margin-top:12px;
+      text-align:center;
+      color:var(--muted);
+      font-size:9px;
+    }
+
+    .search-box {
+      display:grid;
+      gap:10px;
+    }
+
+    .search-row {
       display:grid;
       grid-template-columns:1fr auto;
-      align-items:center;
-      gap:16px;
-      padding:18px;
-      border:1px solid rgba(0,231,231,.25);
-      background:linear-gradient(90deg,rgba(0,231,231,.09),rgba(0,231,231,.025));
-      border-radius:16px;
+      gap:8px;
     }
 
-    .launch h3{
-      margin:0 0 4px;
-      font-size:18px;
+    .search-input,
+    .url-input {
+      width:100%;
+      border:1px solid rgba(23,32,43,.08);
+      background:rgba(255,255,255,.68);
+      color:var(--text);
+      border-radius:11px;
+      padding:10px 11px;
+      outline:none;
+      font-size:11px;
     }
 
-    .launch p{
-      margin:0;
-      color:var(--muted);
-      font-size:13px;
+    .small-btn {
+      border:1px solid rgba(23,32,43,.07);
+      background:rgba(255,255,255,.60);
+      color:#27333f;
+      border-radius:10px;
+      padding:9px 10px;
+      cursor:pointer;
+      font-size:10px;
+      font-weight:700;
+      transition:.16s ease;
     }
 
-    .mini-grid{
+    .small-btn:hover {
+      background:rgba(255,255,255,.84);
+      transform:translateY(-1px);
+    }
+
+    .search-engines {
       display:grid;
-      grid-template-columns:repeat(3,minmax(0,1fr));
-      gap:16px;
+      grid-template-columns:1fr 1fr;
+      gap:8px;
     }
 
-    .card{
-      border:1px solid var(--line);
-      background:var(--panel);
-      border-radius:var(--radius);
-      padding:22px;
+    .custom-links {
+      display:grid;
+      gap:8px;
+      margin-bottom:10px;
     }
 
-    .card h3{
-      margin:0 0 8px;
-      font-size:18px;
+    .custom-link {
+      display:grid;
+      grid-template-columns:1fr auto;
+      gap:8px;
+      align-items:center;
+      padding:9px 10px;
+      border-radius:11px;
+      border:1px solid rgba(23,32,43,.06);
+      background:rgba(255,255,255,.54);
     }
 
-    .card p{
-      margin:0;
-      color:var(--muted);
-      font-size:14px;
+    .custom-link a {
+      overflow:hidden;
+      white-space:nowrap;
+      text-overflow:ellipsis;
+      font-size:11px;
+      font-weight:700;
     }
 
-    .contact{
+    .delete-link {
+      border:none;
+      background:transparent;
+      color:#a06f6f;
+      cursor:pointer;
+    }
+
+    .add-link {
+      display:grid;
+      gap:8px;
+    }
+
+    footer {
+      padding:14px 0 20px;
       text-align:center;
-      padding-bottom:90px;
+      color:#77818c;
+      font-size:10px;
     }
 
-    .contact p{
-      color:var(--muted);
-      margin:8px 0 0;
+    @media(max-width:1280px) {
+      .dashboard {
+        width:min(calc(100% - 32px),980px);
+        grid-template-columns:1fr;
+        gap:20px;
+      }
+
+      .center-stack { order:1; }
+      .left-stack { order:2; }
+      .right-stack { order:3; }
+
+      .left-stack,
+      .right-stack {
+        grid-template-columns:1fr 1fr;
+      }
+
+      .left-stack .side-panel:last-child {
+        grid-column:1/-1;
+      }
     }
 
-    footer{
-      border-top:1px solid var(--line);
-      color:#757d86;
-      font-size:12px;
-      padding:24px 0 34px;
-      text-align:center;
+    @media(max-width:760px) {
+      .hero {
+        padding:22px 0 22px;
+      }
+
+      h1 { font-size:46px; }
+
+      .dashboard {
+        width:min(calc(100% - 20px),980px);
+      }
+
+      .left-stack,
+      .right-stack {
+        grid-template-columns:1fr;
+      }
+
+      .left-stack .side-panel:last-child {
+        grid-column:auto;
+      }
+
+      .workspace {
+        padding:20px 16px 16px;
+      }
+
+      .tool-groups {
+        grid-template-columns:1fr;
+        gap:18px;
+      }
+
+      .path-steps {
+        grid-template-columns:1fr 1fr;
+      }
+
+      .journal-area {
+        min-height:130px;
+      }
     }
 
-    @media (max-width:900px){
-      .hero-grid{grid-template-columns:1fr}
-      .hero-card{display:none}
-      .tools{grid-template-columns:repeat(2,minmax(0,1fr))}
-      .mini-grid{grid-template-columns:1fr}
-      .launch{grid-template-columns:1fr}
-      .launch .btn{width:100%}
-      .nav-links{gap:16px}
-    }
+    @media(max-width:420px) {
+      .modes {
+        display:grid;
+        grid-template-columns:1fr;
+      }
 
-    @media (max-width:560px){
-      .nav-links a:nth-child(2),
-      .nav-links a:nth-child(3){display:none}
-      .hero{padding-top:52px;min-height:auto}
-      h1{letter-spacing:-1.5px}
-      .tools{grid-template-columns:1fr 1fr}
-      .os-panel{padding:16px}
-      .tool{min-height:72px}
+      .btn { width:100%; }
+
+      .tools {
+        grid-template-columns:1fr 1fr;
+      }
+
+      .path-steps {
+        grid-template-columns:1fr;
+      }
     }
   </style>
 </head>
 
 <body>
   <header>
-    <div class="wrap nav">
+    <div class="nav">
       <a class="brand" href="#top">Suze<span>.</span></a>
-      <nav class="nav-links">
-        <a href="#os">Suze OS</a>
-        <a href="#about">About</a>
-        <a href="#contact">Contact</a>
-      </nav>
+      <div class="nav-links">
+        <a href="#workspace">Workspace</a>
+        <a href="#top">Top</a>
+      </div>
     </div>
   </header>
 
   <main id="top">
     <section class="hero">
-      <div class="wrap hero-grid">
-        <div>
-          <div class="eyebrow">PERSONAL WORKSPACE</div>
-          <h1>Suze OS</h1>
-          <h2>AI × Web × <span>Digital Creator</span></h2>
-          <p>
-            一个为自己搭建的轻量工作入口。无论在家、网吧还是临时电脑，
-            打开一个网址，就能快速进入常用 AI、开发、内容和求职工具。
-          </p>
-          <div class="hero-actions">
-            <a class="btn primary" href="#os">进入工作台</a>
-            <button class="btn" onclick="launchWorkspace()">🚀 启动工作台</button>
-          </div>
-        </div>
+      <div class="eyebrow">PERSONAL WORKSPACE</div>
+      <h1>Suze OS</h1>
+      <div class="subtitle">AI × Web × Digital Creator</div>
+      <p class="desc">一个简单、快速、随时可用的个人工作入口。</p>
 
-        <aside class="hero-card">
-          <div class="status">
-            <span>WORKSPACE STATUS</span>
-            <b>● READY</b>
-          </div>
-          <h3>少折腾，多产出。</h3>
-          <p>把常用入口集中在一个页面里，减少找网站、翻收藏夹和重复打开标签页的时间。</p>
-        </aside>
+      <div class="modes">
+        <button class="btn primary" onclick="launchJobMode()">💼 求职模式</button>
+        <button class="btn" onclick="launchLearnMode()">🧠 学习模式</button>
+        <button class="btn" onclick="launchContentMode()">🌍 内容模式</button>
       </div>
     </section>
 
-    <section id="os">
-      <div class="wrap">
-        <div class="section-head">
-          <div>
-            <h2>Suze OS</h2>
-            <p>你的网吧 / 临时电脑一键工作台</p>
+    <section class="dashboard">
+
+      <aside class="left-stack">
+        <div class="panel side-panel">
+          <div class="panel-head">
+            <h3>一句话</h3>
+            <span>每 10 分钟更新</span>
           </div>
+          <div class="quote-box" id="quote"></div>
         </div>
 
-        <div class="os-panel">
-          <div class="group">
-            <div class="group-title">🤖 AI</div>
-            <div class="tools">
-              <a class="tool" target="_blank" rel="noopener" href="https://chatgpt.com">
-                <strong>ChatGPT</strong><small>主力 AI 工作区</small>
-              </a>
-              <a class="tool" target="_blank" rel="noopener" href="https://claude.ai">
-                <strong>Claude</strong><small>长文与分析</small>
-              </a>
-              <a class="tool" target="_blank" rel="noopener" href="https://gemini.google.com">
-                <strong>Gemini</strong><small>Google AI</small>
-              </a>
-              <a class="tool" target="_blank" rel="noopener" href="https://www.perplexity.ai">
-                <strong>Perplexity</strong><small>搜索与资料检索</small>
-              </a>
-            </div>
+        <div class="panel side-panel">
+          <div class="panel-head">
+            <h3>今日日记</h3>
+            <span id="journal-date"></span>
+          </div>
+          <textarea class="journal-area" id="journal" placeholder="今天发生了什么，想到什么，就写一点。"></textarea>
+          <div class="save-hint">自动保存到当前浏览器</div>
+        </div>
+
+        <div class="panel side-panel">
+          <div class="panel-head">
+            <h3>今日复盘</h3>
+            <span>Review</span>
+          </div>
+          <div class="review-list">
+            <label>
+              <span>今天做得不错的</span>
+              <textarea class="review-area" id="review-good" placeholder="哪怕只是一件小事。"></textarea>
+            </label>
+            <label>
+              <span>今天学到的</span>
+              <textarea class="review-area" id="review-learn" placeholder="一个新认知、经验或教训。"></textarea>
+            </label>
+            <label>
+              <span>明天想继续的</span>
+              <textarea class="review-area" id="review-next" placeholder="写最重要的一件。"></textarea>
+            </label>
+          </div>
+          <div class="save-hint">自动保存到当前浏览器</div>
+        </div>
+      </aside>
+
+      <div class="center-stack">
+        <section class="panel workspace" id="workspace">
+          <div class="section-title">
+            <h2>Workspace</h2>
+            <p>常用工具，点开即用。</p>
           </div>
 
-          <div class="group">
-            <div class="group-title">🛠 开发</div>
-            <div class="tools">
-              <a class="tool" target="_blank" rel="noopener" href="https://github.com">
-                <strong>GitHub</strong><small>代码与仓库</small>
-              </a>
-              <a class="tool" target="_blank" rel="noopener" href="https://vercel.com">
-                <strong>Vercel</strong><small>部署网站</small>
-              </a>
-              <a class="tool" target="_blank" rel="noopener" href="https://dash.cloudflare.com">
-                <strong>Cloudflare</strong><small>域名与网络</small>
-              </a>
-              <a class="tool" target="_blank" rel="noopener" href="https://codepen.io">
-                <strong>CodePen</strong><small>前端快速测试</small>
-              </a>
-            </div>
-          </div>
-
-          <div class="group">
-            <div class="group-title">🌍 内容</div>
-            <div class="tools">
-              <a class="tool" target="_blank" rel="noopener" href="https://www.youtube.com">
-                <strong>YouTube</strong><small>视频与学习</small>
-              </a>
-              <a class="tool" target="_blank" rel="noopener" href="https://x.com">
-                <strong>X</strong><small>资讯与趋势</small>
-              </a>
-              <a class="tool" target="_blank" rel="noopener" href="https://www.tiktok.com">
-                <strong>TikTok</strong><small>内容与海外平台</small>
-              </a>
-              <a class="tool" target="_blank" rel="noopener" href="https://www.instagram.com">
-                <strong>Instagram</strong><small>社媒内容</small>
-              </a>
-            </div>
-          </div>
-
-          <div class="group">
-            <div class="group-title">💼 工作</div>
-            <div class="tools">
-              <a class="tool" target="_blank" rel="noopener" href="https://www.zhipin.com">
-                <strong>BOSS直聘</strong><small>求职主入口</small>
-              </a>
-              <a class="tool" target="_blank" rel="noopener" href="https://www.linkedin.com">
-                <strong>LinkedIn</strong><small>职业与海外岗位</small>
-              </a>
-              <a class="tool" target="_blank" rel="noopener" href="https://www.feishu.cn">
-                <strong>飞书</strong><small>协作与文档</small>
-              </a>
-              <a class="tool" target="_blank" rel="noopener" href="https://mail.google.com">
-                <strong>Gmail</strong><small>邮箱</small>
-              </a>
-            </div>
-          </div>
-
-          <div class="launch">
+          <div class="tool-groups">
             <div>
-              <h3>🚀 一键启动核心工作台</h3>
-              <p>默认打开 ChatGPT、GitHub、BOSS直聘、YouTube。浏览器如果拦截多个标签页，请允许此网站弹出窗口。</p>
+              <div class="group-name">AI</div>
+              <div class="tools">
+                <a class="tool" target="_blank" rel="noopener" href="https://chatgpt.com">ChatGPT</a>
+                <a class="tool" target="_blank" rel="noopener" href="https://claude.ai">Claude</a>
+                <a class="tool" target="_blank" rel="noopener" href="https://gemini.google.com">Gemini</a>
+                <a class="tool" target="_blank" rel="noopener" href="https://www.perplexity.ai">Perplexity</a>
+              </div>
             </div>
-            <button class="btn primary" onclick="launchWorkspace()">立即启动</button>
-          </div>
-        </div>
-      </div>
-    </section>
 
-    <section id="about">
-      <div class="wrap">
-        <div class="section-head">
-          <div>
-            <h2>About</h2>
-            <p>让网站从“展示页”变成真正每天能用的工具。</p>
-          </div>
-        </div>
-        <div class="mini-grid">
-          <div class="card">
-            <h3>AI</h3>
-            <p>集中 AI 工具入口，用于搜索、分析、写作、学习和工作。</p>
-          </div>
-          <div class="card">
-            <h3>Web</h3>
-            <p>继续学习 HTML / CSS / JavaScript，并用 GitHub + Vercel 持续迭代。</p>
-          </div>
-          <div class="card">
-            <h3>Work</h3>
-            <p>优先把工具服务于实际工作、求职和收入，而不是无限折腾页面。</p>
-          </div>
-        </div>
-      </div>
-    </section>
+            <div>
+              <div class="group-name">Work</div>
+              <div class="tools">
+                <a class="tool" target="_blank" rel="noopener" href="https://www.zhipin.com">BOSS直聘</a>
+                <a class="tool" target="_blank" rel="noopener" href="https://www.linkedin.com">LinkedIn</a>
+                <a class="tool" target="_blank" rel="noopener" href="https://mail.google.com">Gmail</a>
+                <a class="tool" target="_blank" rel="noopener" href="https://www.feishu.cn">飞书</a>
+              </div>
+            </div>
 
-    <section id="contact" class="contact">
-      <div class="wrap">
-        <h2>Keep Building.</h2>
-        <p>Suze OS · Personal Workspace</p>
+            <div>
+              <div class="group-name">Build</div>
+              <div class="tools">
+                <a class="tool" target="_blank" rel="noopener" href="https://github.com">GitHub</a>
+                <a class="tool" target="_blank" rel="noopener" href="https://vercel.com">Vercel</a>
+                <a class="tool" target="_blank" rel="noopener" href="https://dash.cloudflare.com">Cloudflare</a>
+                <a class="tool" target="_blank" rel="noopener" href="https://codepen.io">CodePen</a>
+              </div>
+            </div>
+
+            <div>
+              <div class="group-name">Content</div>
+              <div class="tools">
+                <a class="tool" target="_blank" rel="noopener" href="https://www.youtube.com">YouTube</a>
+                <a class="tool" target="_blank" rel="noopener" href="https://x.com">X</a>
+                <a class="tool" target="_blank" rel="noopener" href="https://www.tiktok.com">TikTok</a>
+                <a class="tool" target="_blank" rel="noopener" href="https://www.instagram.com">Instagram</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="workspace-note">留一点空间，也留一点记录。</div>
+        </section>
+
+        <section class="panel connection">
+          <div class="connection-title">
+            <h2>外网连接路径</h2>
+            <p>网吧 / 临时电脑恢复外网环境时，按顺序使用。</p>
+          </div>
+
+          <div class="path-steps">
+            <a class="path-step" target="_blank" rel="noopener" href="https://github.com/2dust/v2rayN/releases">
+              <span class="num">1</span>
+              <strong>v2rayN 下载</strong>
+              <small>下载客户端</small>
+            </a>
+
+            <a class="path-step" target="_blank" rel="noopener" href="https://edgetunnel.github.io/edgetunnel/">
+              <span class="num">2</span>
+              <strong>EdgeTunnel</strong>
+              <small>节点 / 隧道入口</small>
+            </a>
+
+            <a class="path-step" target="_blank" rel="noopener" href="https://fe1ix202671.pages.dev/admin">
+              <span class="num">3</span>
+              <strong>EdgeTunnel Admin</strong>
+              <small>管理 / 复制订阅</small>
+            </a>
+
+            <a class="path-step" target="_blank" rel="noopener" href="https://github.com/LancelotRar/best-cf-ips">
+              <span class="num">4</span>
+              <strong>Best CF IPs</strong>
+              <small>IP 数据源</small>
+            </a>
+
+            <a class="path-step" target="_blank" rel="noopener" href="https://bestcf.pages.dev/">
+              <span class="num">5</span>
+              <strong>BestCF</strong>
+              <small>备用优选入口</small>
+            </a>
+          </div>
+
+          <div class="path-note">这一区只放恢复外网环境相关入口。</div>
+        </section>
       </div>
+
+      <aside class="right-stack">
+        <div class="panel side-panel">
+          <div class="panel-head">
+            <h3>快捷搜索</h3>
+            <span>Search</span>
+          </div>
+
+          <div class="search-box">
+            <div class="search-row">
+              <input class="search-input" id="search-input" placeholder="输入关键词..." onkeydown="if(event.key==='Enter') searchWith('google')">
+              <button class="small-btn" onclick="searchWith('google')">搜索</button>
+            </div>
+
+            <div class="search-engines">
+              <button class="small-btn" onclick="searchWith('google')">Google</button>
+              <button class="small-btn" onclick="searchWith('youtube')">YouTube</button>
+              <button class="small-btn" onclick="searchWith('github')">GitHub</button>
+              <button class="small-btn" onclick="searchWith('boss')">BOSS</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel side-panel">
+          <div class="panel-head">
+            <h3>常用网址</h3>
+            <span>Local save</span>
+          </div>
+
+          <div class="custom-links" id="custom-links"></div>
+
+          <div class="add-link">
+            <input class="url-input" id="link-name" placeholder="名称，例如：知乎">
+            <input class="url-input" id="link-url" placeholder="网址，例如：https://...">
+            <button class="small-btn" onclick="addLink()">+ 添加网址</button>
+          </div>
+        </div>
+      </aside>
+
     </section>
   </main>
 
-  <footer>
-    <div class="wrap">© 2026 Suze OS</div>
-  </footer>
+  <footer>© 2026 Suze OS</footer>
 
   <script>
-    function launchWorkspace(){
-      const urls = [
-        "https://chatgpt.com",
-        "https://github.com",
-        "https://www.zhipin.com",
-        "https://www.youtube.com"
-      ];
+    const quotes = [
+      "别等状态来了再开始，开始本身会带来状态。",
+      "真正的底气，来自你知道自己能把事情做完。",
+      "你不需要一次解决全部问题，只需要解决下一个。",
+      "少一点自我证明，多一点实际积累。",
+      "执行一次，比设想十次更接近答案。",
+      "别怕慢，真正该怕的是原地打转。",
+      "把精力留给会产生复利的事情。",
+      "你不需要一直有动力，只需要始终知道下一步。",
+      "愿望负责指方向，习惯负责把你送到那里。",
+      "先赢下今天的一个小时。",
+      "困难不是结论，它只是告诉你哪里还需要继续拆解。",
+      "真正改变生活的，往往不是大决定，而是重复的小选择。",
+      "别因为暂时看不到结果，就否定正在发生的积累。",
+      "把能控制的事情做好，剩下的交给时间。",
+      "清醒地选择，比盲目地忙碌更重要。",
+      "很多能力，都是在一次次不熟练里长出来的。",
+      "先把事情做出来，再谈把它做到漂亮。",
+      "没有白走的路，只要你真的从里面带走了东西。",
+      "不要用今天的情绪，替未来做决定。",
+      "专注不是把所有事都做好，而是知道什么可以暂时不做。",
+      "你不需要追上所有趋势，只需要建立自己的判断。",
+      "稳定地前进，本身就是一种很强的能力。",
+      "把今天过扎实，未来就不会完全靠运气。",
+      "每次认真完成一件小事，都是在给自己增加信用。",
+      "真正的成长，往往发生在没人提醒你的时候。",
+      "做长期对自己有利的选择，而不是只满足当下情绪。",
+      "卡住的时候，把问题缩小到你现在能动手的程度。",
+      "不必赢过所有人，先别长期输给昨天的自己。",
+      "行动会暴露问题，而暴露问题正是变强的开始。",
+      "很多焦虑，都会在你开始具体行动后自动变小。",
+      "允许自己重新调整方向，这不叫失败，叫校准。",
+      "不要因为路还很远，就忽略自己已经走过的距离。",
+      "真正重要的事，很少靠一时兴奋完成。",
+      "把注意力从结果焦虑，拉回到下一步行动。",
+      "有些进步没有掌声，但依然算数。",
+      "你可以慢一点，但别把犹豫误当成思考。"
+    ];
 
-      urls.forEach((url, i) => {
-        setTimeout(() => window.open(url, "_blank", "noopener"), i * 120);
+    function tenMinuteIndex() {
+      return Math.floor(Date.now() / 600000);
+    }
+
+    function updateQuote() {
+      const el = document.getElementById("quote");
+      if (!el) return;
+      el.textContent = quotes[tenMinuteIndex() % quotes.length];
+    }
+
+    function startQuoteRotation() {
+      updateQuote();
+      const remain = 600000 - (Date.now() % 600000);
+      setTimeout(() => {
+        updateQuote();
+        setInterval(updateQuote, 600000);
+      }, remain);
+    }
+
+    function todayKey() {
+      const d = new Date();
+      return `${d.getFullYear()}-${d.getMonth()+1}-${d.getDate()}`;
+    }
+
+    function bindSavedText(id, prefix) {
+      const el = document.getElementById(id);
+      if (!el) return;
+      const key = prefix + todayKey();
+      el.value = localStorage.getItem(key) || "";
+      el.addEventListener("input", () => localStorage.setItem(key, el.value));
+    }
+
+    function initNotes() {
+      const d = new Date();
+      const dateEl = document.getElementById("journal-date");
+      if (dateEl) dateEl.textContent = `${d.getMonth()+1}/${d.getDate()}`;
+
+      bindSavedText("journal", "suze_journal_");
+      bindSavedText("review-good", "suze_review_good_");
+      bindSavedText("review-learn", "suze_review_learn_");
+      bindSavedText("review-next", "suze_review_next_");
+    }
+
+    function searchWith(engine) {
+      const q = (document.getElementById("search-input")?.value || "").trim();
+      if (!q) return;
+
+      const urls = {
+        google: "https://www.google.com/search?q=",
+        youtube: "https://www.youtube.com/results?search_query=",
+        github: "https://github.com/search?q=",
+        boss: "https://www.zhipin.com/web/geek/job?query="
+      };
+
+      window.open(urls[engine] + encodeURIComponent(q), "_blank", "noopener");
+    }
+
+    function loadLinks() {
+      try {
+        return JSON.parse(localStorage.getItem("suze_custom_links")) || [];
+      } catch {
+        return [];
+      }
+    }
+
+    function saveLinks(links) {
+      localStorage.setItem("suze_custom_links", JSON.stringify(links));
+    }
+
+    function renderLinks() {
+      const box = document.getElementById("custom-links");
+      if (!box) return;
+      box.innerHTML = "";
+
+      loadLinks().forEach((item, index) => {
+        const row = document.createElement("div");
+        row.className = "custom-link";
+
+        const link = document.createElement("a");
+        link.href = item.url;
+        link.target = "_blank";
+        link.rel = "noopener";
+        link.textContent = item.name;
+
+        const del = document.createElement("button");
+        del.className = "delete-link";
+        del.textContent = "×";
+        del.onclick = () => {
+          const links = loadLinks();
+          links.splice(index,1);
+          saveLinks(links);
+          renderLinks();
+        };
+
+        row.append(link, del);
+        box.appendChild(row);
       });
     }
+
+    function addLink() {
+      const nameEl = document.getElementById("link-name");
+      const urlEl = document.getElementById("link-url");
+      const name = (nameEl?.value || "").trim();
+      let url = (urlEl?.value || "").trim();
+
+      if (!name || !url) return;
+      if (!/^https?:\/\//i.test(url)) url = "https://" + url;
+
+      const links = loadLinks();
+      links.push({name,url});
+      saveLinks(links);
+
+      nameEl.value = "";
+      urlEl.value = "";
+      renderLinks();
+    }
+
+    function openSet(urls) {
+      urls.forEach((url,i) => {
+        setTimeout(() => window.open(url, "_blank", "noopener"), i * 140);
+      });
+    }
+
+    function launchJobMode() {
+      openSet([
+        "https://www.zhipin.com",
+        "https://chatgpt.com",
+        "https://mail.google.com",
+        "https://www.linkedin.com"
+      ]);
+    }
+
+    function launchLearnMode() {
+      openSet([
+        "https://chatgpt.com",
+        "https://www.youtube.com",
+        "https://github.com",
+        "https://www.perplexity.ai"
+      ]);
+    }
+
+    function launchContentMode() {
+      openSet([
+        "https://www.youtube.com",
+        "https://x.com",
+        "https://www.tiktok.com",
+        "https://www.instagram.com"
+      ]);
+    }
+
+    startQuoteRotation();
+    initNotes();
+    renderLinks();
   </script>
 </body>
 </html>
