@@ -940,9 +940,22 @@
     }
 
     function openSet(urls) {
-      urls.forEach((url,i) => {
-        setTimeout(() => window.open(url, "_blank", "noopener"), i * 140);
+      let blockedCount = 0;
+
+      urls.forEach((url) => {
+        const tab = window.open("about:blank", "_blank");
+        if (!tab) {
+          blockedCount += 1;
+          return;
+        }
+
+        tab.opener = null;
+        tab.location.replace(url);
       });
+
+      if (blockedCount > 0) {
+        alert(`浏览器阻止了 ${blockedCount} 个标签页，请允许此网站打开弹出式窗口后重试。`);
+      }
     }
 
     function launchJobMode() {
