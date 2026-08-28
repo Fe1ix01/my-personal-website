@@ -200,12 +200,6 @@
       gap:20px 22px;
     }
 
-    .group:nth-child(5){
-      grid-column:1 / -1;
-      width:calc(50% - 11px);
-      justify-self:center;
-    }
-
     .group{
       min-width:0;
     }
@@ -224,10 +218,6 @@
       display:grid;
       grid-template-columns:repeat(2,minmax(0,1fr));
       gap:10px;
-    }
-
-    .group:nth-child(5) .tools{
-      grid-template-columns:repeat(3,minmax(0,1fr));
     }
 
     .tool{
@@ -259,6 +249,104 @@
       font-size:10px;
     }
 
+
+    .connection-path{
+      margin-top:34px;
+      padding:22px 24px 20px;
+      border-radius:22px;
+      border:1px solid rgba(255,255,255,.58);
+      background:rgba(255,255,255,.32);
+      backdrop-filter:blur(14px);
+      box-shadow:0 18px 48px rgba(29,47,76,.07);
+    }
+
+    .connection-head{
+      text-align:center;
+      margin-bottom:16px;
+    }
+
+    .connection-head h2{
+      margin:0;
+      font-size:23px;
+      letter-spacing:-.3px;
+    }
+
+    .connection-head p{
+      margin:5px 0 0;
+      color:var(--muted);
+      font-size:11px;
+    }
+
+    .path-steps{
+      display:grid;
+      grid-template-columns:repeat(5,minmax(0,1fr));
+      gap:10px;
+      align-items:stretch;
+    }
+
+    .path-step{
+      position:relative;
+      min-height:78px;
+      padding:12px 10px;
+      border-radius:13px;
+      border:1px solid rgba(23,32,43,.07);
+      background:rgba(255,255,255,.58);
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      text-align:center;
+      transition:.16s ease;
+    }
+
+    .path-step:hover{
+      transform:translateY(-1px);
+      background:rgba(255,255,255,.82);
+      border-color:rgba(22,201,195,.26);
+    }
+
+    .path-step .num{
+      width:22px;
+      height:22px;
+      border-radius:999px;
+      display:grid;
+      place-items:center;
+      margin-bottom:7px;
+      background:rgba(22,201,195,.13);
+      color:var(--accent-deep);
+      font-size:10px;
+      font-weight:800;
+    }
+
+    .path-step strong{
+      font-size:12px;
+      color:#24303c;
+    }
+
+    .path-step small{
+      margin-top:3px;
+      color:var(--muted);
+      font-size:9px;
+    }
+
+    .path-note{
+      margin-top:12px;
+      text-align:center;
+      color:var(--muted);
+      font-size:10px;
+    }
+
+    @media (max-width:760px){
+      .path-steps{
+        grid-template-columns:1fr;
+      }
+
+      .path-step{
+        min-height:60px;
+      }
+    }
+
+
     footer{
       padding:14px 0 18px;
       text-align:center;
@@ -270,8 +358,6 @@
       main{padding-top:18px}
       .layout{gap:24px}
       .tool-groups{grid-template-columns:1fr}
-      .group:nth-child(5){grid-column:auto;width:100%}
-      .group:nth-child(5) .tools{grid-template-columns:repeat(2,minmax(0,1fr))}
       .workspace-shell{padding:20px 16px 16px}
       .hero{padding-top:12px}
       h1{font-size:48px}
@@ -355,17 +441,6 @@
               </div>
 
               <div class="group">
-                <div class="group-name">Network</div>
-                <div class="tools">
-                  <a class="tool" target="_blank" rel="noopener" href="https://github.com/2dust/v2rayN/releases">v2rayN 下载</a>
-                  <a class="tool" target="_blank" rel="noopener" href="https://edgetunnel.github.io/edgetunnel/">EdgeTunnel</a>
-                  <a class="tool" target="_blank" rel="noopener" href="https://cf.090227.xyz/">CF 优选</a>
-                  <a class="tool" target="_blank" rel="noopener" href="https://github.com/LancelotRar/best-cf-ips">Best CF IPs</a>
-                  <a class="tool" target="_blank" rel="noopener" href="https://bestcf.pages.dev/">BestCF</a>
-                </div>
-              </div>
-
-              <div class="group">
                 <div class="group-name">Content</div>
                 <div class="tools">
                   <a class="tool" target="_blank" rel="noopener" href="https://www.youtube.com">YouTube</a>
@@ -380,6 +455,49 @@
             <div class="footer-note">
               简洁，但不拥挤。
             </div>
+          </div>
+        </section>
+
+        <section class="connection-path">
+          <div class="connection-head">
+            <h2>外网连接路径</h2>
+            <p>网吧 / 临时电脑恢复外网环境时，按顺序使用。</p>
+          </div>
+
+          <div class="path-steps">
+            <a class="path-step" target="_blank" rel="noopener" href="https://github.com/2dust/v2rayN/releases">
+              <span class="num">1</span>
+              <strong>v2rayN 下载</strong>
+              <small>下载客户端</small>
+            </a>
+
+            <a class="path-step" target="_blank" rel="noopener" href="https://edgetunnel.github.io/edgetunnel/">
+              <span class="num">2</span>
+              <strong>EdgeTunnel</strong>
+              <small>节点 / 隧道入口</small>
+            </a>
+
+            <a class="path-step" target="_blank" rel="noopener" href="https://cf.090227.xyz/">
+              <span class="num">3</span>
+              <strong>CF 优选</strong>
+              <small>优选 Cloudflare</small>
+            </a>
+
+            <a class="path-step" target="_blank" rel="noopener" href="https://github.com/LancelotRar/best-cf-ips">
+              <span class="num">4</span>
+              <strong>Best CF IPs</strong>
+              <small>IP 数据源</small>
+            </a>
+
+            <a class="path-step" target="_blank" rel="noopener" href="https://bestcf.pages.dev/">
+              <span class="num">5</span>
+              <strong>BestCF</strong>
+              <small>备用优选入口</small>
+            </a>
+          </div>
+
+          <div class="path-note">
+            这一区只放“恢复外网环境”相关入口，和日常 Workspace 分开。
           </div>
         </section>
 
