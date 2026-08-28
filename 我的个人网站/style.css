@@ -555,8 +555,12 @@ gap:15px;
 /* ===== Suze OS 工作台 ===== */
 
 #os {
-    margin-top: 80px;
+    width: 90%;
+    max-width: 1000px;
+    margin: 80px auto;
     text-align: center;
+    position: relative;
+    z-index: 2;
 }
 
 
@@ -573,30 +577,42 @@ gap:15px;
 
 
 .os-grid {
+
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+
+    grid-template-columns: repeat(3,1fr);
+
     gap: 25px;
-    max-width: 900px;
-    margin: auto;
+
+    margin-top:40px;
+
 }
 
 
 .os-grid a {
-    display: block;
-    padding: 25px;
 
-    color: white;
-    text-decoration: none;
+    display:flex;
 
-    background: rgba(255,255,255,0.08);
+    justify-content:center;
 
-    border: 1px solid rgba(255,255,255,0.2);
+    align-items:center;
 
-    border-radius: 20px;
+    height:80px;
 
-    font-size: 20px;
+    color:white;
 
-    transition: 0.3s;
+    text-decoration:none;
+
+    background:rgba(255,255,255,0.08);
+
+    border:1px solid rgba(0,255,255,0.3);
+
+    border-radius:20px;
+
+    font-size:20px;
+
+    transition:.3s;
+
 }
 
 
@@ -605,5 +621,14 @@ gap:15px;
     transform: translateY(-8px);
 
     background: rgba(255,255,255,0.15);
+
+}
+@media(max-width:700px){
+
+.os-grid{
+
+grid-template-columns:1fr;
+
+}
 
 }
