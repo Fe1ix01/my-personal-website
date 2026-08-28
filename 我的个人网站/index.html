@@ -7,14 +7,19 @@
   <meta name="description" content="Suze OS - Personal Workspace">
   <style>
     :root{
-      --bg:#050505;
-      --text:#f5f5f5;
-      --muted:#8f949b;
-      --line:#202226;
-      --card:#0d0e10;
-      --accent:#00e6df;
-      --max:900px;
+      --bg1:#edf2f7;
+      --bg2:#dfe9f3;
+      --bg3:#cfdce9;
+      --panel:rgba(255,255,255,.48);
+      --panel-strong:rgba(255,255,255,.62);
+      --text:#17202b;
+      --muted:#5f6b78;
+      --line:rgba(23,32,43,.10);
+      --accent:#14c8c2;
+      --accent-deep:#0f8f8b;
+      --max:920px;
       --radius:16px;
+      --shadow:0 18px 50px rgba(32,56,85,.08);
     }
 
     *{box-sizing:border-box}
@@ -22,29 +27,37 @@
 
     body{
       margin:0;
-      background:var(--bg);
       color:var(--text);
       font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,
       "Segoe UI","PingFang SC","Microsoft YaHei",Arial,sans-serif;
       line-height:1.5;
+      background:
+        radial-gradient(circle at 15% 20%, rgba(20,200,194,.16), transparent 26%),
+        radial-gradient(circle at 82% 18%, rgba(123,162,255,.16), transparent 28%),
+        radial-gradient(circle at 50% 75%, rgba(255,255,255,.62), transparent 34%),
+        linear-gradient(180deg, var(--bg1) 0%, var(--bg2) 50%, var(--bg3) 100%);
+      min-height:100vh;
     }
 
     a{text-decoration:none;color:inherit}
     button{font:inherit}
 
     .wrap{
-      width:min(calc(100% - 36px),var(--max));
+      width:min(calc(100% - 36px), var(--max));
       margin:0 auto;
     }
 
     header{
-      height:64px;
-      display:flex;
-      align-items:center;
-      border-bottom:1px solid rgba(255,255,255,.05);
+      position:sticky;
+      top:0;
+      z-index:20;
+      backdrop-filter:blur(14px);
+      background:rgba(255,255,255,.30);
+      border-bottom:1px solid rgba(255,255,255,.35);
     }
 
     .nav{
+      height:64px;
       display:flex;
       align-items:center;
       justify-content:space-between;
@@ -56,11 +69,11 @@
       letter-spacing:.2px;
     }
 
-    .brand span{color:var(--accent)}
+    .brand span{color:var(--accent-deep)}
 
     .nav-links{
       display:flex;
-      gap:22px;
+      gap:20px;
       color:var(--muted);
       font-size:13px;
     }
@@ -68,40 +81,41 @@
     .nav-links a:hover{color:var(--text)}
 
     .hero{
-      min-height:68vh;
+      min-height:56vh;
       display:flex;
       align-items:center;
       justify-content:center;
       text-align:center;
-      padding:68px 0 48px;
+      padding:52px 0 18px;
     }
 
     .hero-inner{
-      width:min(100%,760px);
+      width:min(100%, 760px);
       margin:0 auto;
     }
 
     .eyebrow{
       display:inline-block;
-      color:var(--accent);
+      color:var(--accent-deep);
       font-size:12px;
       font-weight:800;
-      letter-spacing:1.5px;
-      margin-bottom:18px;
+      letter-spacing:1.4px;
+      margin-bottom:16px;
     }
 
     h1{
       margin:0;
-      font-size:clamp(48px,9vw,86px);
+      font-size:clamp(48px,8vw,84px);
       letter-spacing:-3px;
       line-height:.95;
+      color:#0f1821;
     }
 
     .subtitle{
-      margin:18px auto 0;
-      color:#d7d9dd;
-      font-size:clamp(17px,2.2vw,22px);
-      font-weight:600;
+      margin:16px auto 0;
+      font-size:clamp(17px,2.1vw,23px);
+      font-weight:700;
+      color:#263240;
     }
 
     .desc{
@@ -112,23 +126,25 @@
     }
 
     .priority{
-      margin:28px auto 0;
-      max-width:620px;
-      padding:14px 18px;
-      border:1px solid rgba(0,230,223,.23);
-      background:rgba(0,230,223,.045);
-      border-radius:14px;
-      color:#d9fbf9;
+      margin:24px auto 0;
+      max-width:560px;
+      padding:12px 16px;
+      border:1px solid rgba(20,200,194,.18);
+      background:rgba(255,255,255,.48);
+      backdrop-filter:blur(8px);
+      border-radius:999px;
+      color:#33404d;
       font-size:13px;
+      box-shadow:var(--shadow);
     }
 
     .priority strong{
-      color:var(--accent);
-      margin-right:7px;
+      color:var(--accent-deep);
+      margin-right:6px;
     }
 
     .modes{
-      margin:22px auto 0;
+      margin:20px auto 0;
       display:flex;
       justify-content:center;
       flex-wrap:wrap;
@@ -136,96 +152,112 @@
     }
 
     .btn{
-      border:1px solid var(--line);
-      background:#0b0c0e;
+      border:1px solid rgba(23,32,43,.10);
+      background:rgba(255,255,255,.56);
       color:var(--text);
-      padding:11px 17px;
+      padding:11px 16px;
       border-radius:999px;
       cursor:pointer;
       transition:.18s ease;
+      backdrop-filter:blur(8px);
+      box-shadow:var(--shadow);
     }
 
     .btn:hover{
       transform:translateY(-1px);
-      border-color:#34373d;
-      background:#111316;
+      background:rgba(255,255,255,.76);
+      border-color:rgba(23,32,43,.14);
     }
 
     .btn.primary{
       background:var(--accent);
       border-color:var(--accent);
-      color:#001a19;
+      color:#062322;
       font-weight:800;
     }
 
     section{
-      padding:20px 0 76px;
+      padding:6px 0 64px;
+    }
+
+    .workspace-shell{
+      width:min(100%, 760px);
+      margin:0 auto;
+      padding:26px 24px 22px;
+      border:1px solid rgba(255,255,255,.52);
+      background:rgba(255,255,255,.36);
+      backdrop-filter:blur(16px);
+      border-radius:26px;
+      box-shadow:0 22px 60px rgba(29,47,76,.10);
     }
 
     .section-title{
       text-align:center;
-      margin-bottom:22px;
+      margin-bottom:18px;
     }
 
     .section-title h2{
       margin:0;
-      font-size:24px;
+      font-size:30px;
+      letter-spacing:-.5px;
     }
 
     .section-title p{
-      margin:5px 0 0;
+      margin:6px 0 0;
       color:var(--muted);
       font-size:13px;
     }
 
     .tool-groups{
       display:grid;
-      gap:18px;
+      gap:14px;
     }
 
     .group{
-      border-top:1px solid var(--line);
-      padding-top:18px;
+      padding-top:2px;
     }
 
     .group-name{
-      color:var(--muted);
-      font-size:12px;
+      color:#7a8590;
+      font-size:11px;
       text-transform:uppercase;
-      letter-spacing:1.1px;
-      margin-bottom:10px;
+      letter-spacing:1.35px;
+      margin:0 0 8px;
       text-align:center;
+      font-weight:700;
     }
 
     .tools{
       display:grid;
-      grid-template-columns:repeat(4,minmax(0,1fr));
+      grid-template-columns:repeat(4, minmax(0,1fr));
       gap:10px;
     }
 
     .tool{
-      min-height:64px;
-      border:1px solid var(--line);
-      background:var(--card);
+      min-height:58px;
+      border:1px solid rgba(23,32,43,.08);
+      background:rgba(255,255,255,.54);
       border-radius:12px;
-      padding:12px;
+      padding:12px 10px;
       display:flex;
       align-items:center;
       justify-content:center;
       text-align:center;
       font-size:13px;
       font-weight:700;
+      color:#1f2b37;
       transition:.18s ease;
+      backdrop-filter:blur(8px);
     }
 
     .tool:hover{
-      border-color:rgba(0,230,223,.42);
       transform:translateY(-1px);
-      background:#111316;
+      background:rgba(255,255,255,.74);
+      border-color:rgba(20,200,194,.28);
     }
 
     .footer-note{
-      margin-top:28px;
+      margin-top:18px;
       text-align:center;
       color:var(--muted);
       font-size:12px;
@@ -233,17 +265,35 @@
 
     footer{
       text-align:center;
-      color:#656a72;
+      color:#73808d;
       font-size:11px;
-      border-top:1px solid rgba(255,255,255,.05);
-      padding:24px 0 30px;
+      border-top:1px solid rgba(255,255,255,.36);
+      padding:22px 0 28px;
+      background:rgba(255,255,255,.18);
+      backdrop-filter:blur(8px);
     }
 
     @media(max-width:720px){
-      .tools{grid-template-columns:repeat(2,minmax(0,1fr))}
-      .hero{min-height:auto;padding-top:82px;padding-bottom:62px}
-      .nav-links a:nth-child(2){display:none}
-      h1{letter-spacing:-2px}
+      .hero{
+        min-height:auto;
+        padding:74px 0 18px;
+      }
+      .tools{
+        grid-template-columns:repeat(2,minmax(0,1fr));
+      }
+      .workspace-shell{
+        padding:22px 16px 18px;
+        border-radius:20px;
+      }
+      .nav-links a:nth-child(2){
+        display:none;
+      }
+      h1{
+        letter-spacing:-2px;
+      }
+      .priority{
+        border-radius:16px;
+      }
     }
   </style>
 </head>
@@ -266,9 +316,7 @@
           <div class="eyebrow">PERSONAL WORKSPACE</div>
           <h1>Suze OS</h1>
           <div class="subtitle">AI × Web × Digital Creator</div>
-          <p class="desc">
-            一个简单、快速、随时可用的个人工作入口。
-          </p>
+          <p class="desc">一个简单、快速、随时可用的个人工作入口。</p>
 
           <div class="priority">
             <strong>今日主线</strong>
@@ -286,57 +334,59 @@
 
     <section id="tools">
       <div class="wrap">
-        <div class="section-title">
-          <h2>Workspace</h2>
-          <p>常用工具，点开即用。</p>
-        </div>
-
-        <div class="tool-groups">
-
-          <div class="group">
-            <div class="group-name">AI</div>
-            <div class="tools">
-              <a class="tool" target="_blank" rel="noopener" href="https://chatgpt.com">ChatGPT</a>
-              <a class="tool" target="_blank" rel="noopener" href="https://claude.ai">Claude</a>
-              <a class="tool" target="_blank" rel="noopener" href="https://gemini.google.com">Gemini</a>
-              <a class="tool" target="_blank" rel="noopener" href="https://www.perplexity.ai">Perplexity</a>
-            </div>
+        <div class="workspace-shell">
+          <div class="section-title">
+            <h2>Workspace</h2>
+            <p>常用工具，点开即用。</p>
           </div>
 
-          <div class="group">
-            <div class="group-name">Work</div>
-            <div class="tools">
-              <a class="tool" target="_blank" rel="noopener" href="https://www.zhipin.com">BOSS直聘</a>
-              <a class="tool" target="_blank" rel="noopener" href="https://www.linkedin.com">LinkedIn</a>
-              <a class="tool" target="_blank" rel="noopener" href="https://mail.google.com">Gmail</a>
-              <a class="tool" target="_blank" rel="noopener" href="https://www.feishu.cn">飞书</a>
+          <div class="tool-groups">
+
+            <div class="group">
+              <div class="group-name">AI</div>
+              <div class="tools">
+                <a class="tool" target="_blank" rel="noopener" href="https://chatgpt.com">ChatGPT</a>
+                <a class="tool" target="_blank" rel="noopener" href="https://claude.ai">Claude</a>
+                <a class="tool" target="_blank" rel="noopener" href="https://gemini.google.com">Gemini</a>
+                <a class="tool" target="_blank" rel="noopener" href="https://www.perplexity.ai">Perplexity</a>
+              </div>
             </div>
+
+            <div class="group">
+              <div class="group-name">Work</div>
+              <div class="tools">
+                <a class="tool" target="_blank" rel="noopener" href="https://www.zhipin.com">BOSS直聘</a>
+                <a class="tool" target="_blank" rel="noopener" href="https://www.linkedin.com">LinkedIn</a>
+                <a class="tool" target="_blank" rel="noopener" href="https://mail.google.com">Gmail</a>
+                <a class="tool" target="_blank" rel="noopener" href="https://www.feishu.cn">飞书</a>
+              </div>
+            </div>
+
+            <div class="group">
+              <div class="group-name">Build</div>
+              <div class="tools">
+                <a class="tool" target="_blank" rel="noopener" href="https://github.com">GitHub</a>
+                <a class="tool" target="_blank" rel="noopener" href="https://vercel.com">Vercel</a>
+                <a class="tool" target="_blank" rel="noopener" href="https://dash.cloudflare.com">Cloudflare</a>
+                <a class="tool" target="_blank" rel="noopener" href="https://codepen.io">CodePen</a>
+              </div>
+            </div>
+
+            <div class="group">
+              <div class="group-name">Content</div>
+              <div class="tools">
+                <a class="tool" target="_blank" rel="noopener" href="https://www.youtube.com">YouTube</a>
+                <a class="tool" target="_blank" rel="noopener" href="https://x.com">X</a>
+                <a class="tool" target="_blank" rel="noopener" href="https://www.tiktok.com">TikTok</a>
+                <a class="tool" target="_blank" rel="noopener" href="https://www.instagram.com">Instagram</a>
+              </div>
+            </div>
+
           </div>
 
-          <div class="group">
-            <div class="group-name">Build</div>
-            <div class="tools">
-              <a class="tool" target="_blank" rel="noopener" href="https://github.com">GitHub</a>
-              <a class="tool" target="_blank" rel="noopener" href="https://vercel.com">Vercel</a>
-              <a class="tool" target="_blank" rel="noopener" href="https://dash.cloudflare.com">Cloudflare</a>
-              <a class="tool" target="_blank" rel="noopener" href="https://codepen.io">CodePen</a>
-            </div>
+          <div class="footer-note">
+            少一点压抑感，少一点折腾，多一点真正完成的事情。
           </div>
-
-          <div class="group">
-            <div class="group-name">Content</div>
-            <div class="tools">
-              <a class="tool" target="_blank" rel="noopener" href="https://www.youtube.com">YouTube</a>
-              <a class="tool" target="_blank" rel="noopener" href="https://x.com">X</a>
-              <a class="tool" target="_blank" rel="noopener" href="https://www.tiktok.com">TikTok</a>
-              <a class="tool" target="_blank" rel="noopener" href="https://www.instagram.com">Instagram</a>
-            </div>
-          </div>
-
-        </div>
-
-        <div class="footer-note">
-          少一点页面，少一点折腾，多一点真正完成的事情。
         </div>
       </div>
     </section>
