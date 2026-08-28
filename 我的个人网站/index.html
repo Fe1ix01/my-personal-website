@@ -2,6 +2,7 @@
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
+  <!-- 单文件页面：不依赖外部字体、图片或 CDN，尽量降低不同网络环境下的加载失败概率 -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Suze OS</title>
   <meta name="description" content="Suze OS - Personal Workspace">
@@ -37,7 +38,19 @@
 
     a{text-decoration:none;color:inherit}
     button{font:inherit}
-    .wrap{width:min(calc(100% - 36px),var(--max));margin:0 auto}
+    .wrap{
+      width:min(calc(100% - 36px),var(--max));
+      margin:0 auto;
+    }
+
+    img,svg,video,canvas{
+      max-width:100%;
+      height:auto;
+    }
+
+    button,a{
+      -webkit-tap-highlight-color:transparent;
+    }
 
     header{
       height:56px;
@@ -354,14 +367,181 @@
       font-size:10px;
     }
 
+    @media (max-width:900px){
+      .wrap{
+        width:min(calc(100% - 28px),var(--max));
+      }
+
+      .layout{
+        width:min(100%,780px);
+      }
+    }
+
     @media (max-width:760px){
-      main{padding-top:18px}
-      .layout{gap:24px}
-      .tool-groups{grid-template-columns:1fr}
-      .workspace-shell{padding:20px 16px 16px}
-      .hero{padding-top:12px}
-      h1{font-size:48px}
-      .nav-links a:nth-child(2){display:none}
+      header,
+      .nav{
+        height:54px;
+      }
+
+      main{
+        padding:16px 0 18px;
+      }
+
+      .layout{
+        gap:24px;
+      }
+
+      .hero{
+        padding:10px 0 2px;
+      }
+
+      h1{
+        font-size:48px;
+        letter-spacing:-1.8px;
+      }
+
+      .subtitle{
+        font-size:17px;
+      }
+
+      .desc{
+        font-size:12px;
+        padding:0 8px;
+      }
+
+      .priority{
+        width:min(100%,500px);
+        border-radius:16px;
+        padding:10px 14px;
+      }
+
+      .modes{
+        width:100%;
+        max-width:520px;
+        margin:0 auto;
+      }
+
+      .btn{
+        min-height:42px;
+        padding:10px 14px;
+      }
+
+      .workspace-shell{
+        padding:20px 16px 16px;
+        border-radius:20px;
+      }
+
+      .tool-groups{
+        grid-template-columns:1fr;
+        gap:18px;
+      }
+
+      .group{
+        width:100%;
+      }
+
+      .tools{
+        grid-template-columns:repeat(2,minmax(0,1fr));
+        gap:10px;
+      }
+
+      .tool{
+        min-height:50px;
+        font-size:12px;
+      }
+
+      .connection-path{
+        margin-top:24px;
+        padding:20px 16px 16px;
+        border-radius:20px;
+      }
+
+      .path-steps{
+        grid-template-columns:1fr 1fr;
+        gap:10px;
+      }
+
+      .path-step{
+        min-height:74px;
+      }
+
+      .nav-links{
+        gap:14px;
+      }
+    }
+
+    @media (max-width:520px){
+      .wrap{
+        width:min(calc(100% - 20px),var(--max));
+      }
+
+      .nav-links a:nth-child(2){
+        display:none;
+      }
+
+      .eyebrow{
+        font-size:9px;
+      }
+
+      h1{
+        font-size:42px;
+      }
+
+      .subtitle{
+        font-size:16px;
+      }
+
+      .hero-tools{
+        gap:10px;
+      }
+
+      .modes{
+        display:grid;
+        grid-template-columns:1fr;
+        gap:8px;
+        max-width:360px;
+      }
+
+      .btn{
+        width:100%;
+      }
+
+      .tools{
+        grid-template-columns:1fr 1fr;
+        gap:8px;
+      }
+
+      .tool{
+        min-height:48px;
+        padding:9px 6px;
+      }
+
+      .section-title h2,
+      .connection-head h2{
+        font-size:22px;
+      }
+
+      .path-steps{
+        grid-template-columns:1fr;
+      }
+
+      .path-step{
+        min-height:62px;
+      }
+    }
+
+    @media (max-width:380px){
+      .tools{
+        grid-template-columns:1fr;
+      }
+
+      .tool{
+        min-height:46px;
+      }
+
+      h1{
+        font-size:38px;
+      }
     }
   </style>
 </head>
