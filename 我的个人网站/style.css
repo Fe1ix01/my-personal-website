@@ -632,3 +632,34 @@ grid-template-columns:1fr;
 }
 
 }
+/* 页面区域统一居中修复 */
+
+section {
+
+    width:90%;
+
+    max-width:1000px;
+
+    margin:80px auto;
+
+}
+
+
+#about,
+#os,
+#skills,
+#projects,
+#contact {
+
+    text-align:center;
+
+}
+#about p {
+
+    max-width:700px;
+
+    margin:20px auto;
+
+    line-height:1.8;
+
+}
