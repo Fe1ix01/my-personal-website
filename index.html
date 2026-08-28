@@ -492,6 +492,82 @@
       gap:8px;
     }
 
+    .mode-dialog {
+      width:min(calc(100% - 32px),420px);
+      padding:0;
+      border:1px solid rgba(255,255,255,.72);
+      border-radius:22px;
+      background:rgba(238,244,248,.94);
+      color:var(--text);
+      box-shadow:0 24px 70px rgba(32,56,85,.22);
+      backdrop-filter:blur(18px);
+    }
+
+    .mode-dialog::backdrop {
+      background:rgba(23,32,43,.24);
+      backdrop-filter:blur(3px);
+    }
+
+    .mode-dialog-inner {
+      padding:20px;
+    }
+
+    .mode-dialog-head {
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      margin-bottom:14px;
+    }
+
+    .mode-dialog-head h3 {
+      margin:0;
+      font-size:18px;
+    }
+
+    .mode-close {
+      width:30px;
+      height:30px;
+      padding:0;
+      border:none;
+      border-radius:50%;
+      background:rgba(255,255,255,.60);
+      color:var(--muted);
+      cursor:pointer;
+      font-size:18px;
+    }
+
+    .mode-link-list {
+      display:grid;
+      gap:8px;
+    }
+
+    .mode-link-row {
+      display:grid;
+      grid-template-columns:1fr auto;
+      align-items:center;
+      gap:10px;
+      padding:10px 11px;
+      border:1px solid rgba(23,32,43,.07);
+      border-radius:12px;
+      background:var(--item);
+    }
+
+    .mode-link-row span {
+      overflow:hidden;
+      white-space:nowrap;
+      text-overflow:ellipsis;
+      font-size:12px;
+      font-weight:700;
+    }
+
+    .mode-dialog-actions {
+      display:flex;
+      justify-content:flex-end;
+      gap:8px;
+      margin-top:14px;
+    }
+
     footer {
       padding:14px 0 20px;
       text-align:center;
@@ -780,6 +856,20 @@
     </section>
   </main>
 
+  <dialog class="mode-dialog" id="mode-dialog" aria-labelledby="mode-dialog-title">
+    <div class="mode-dialog-inner">
+      <div class="mode-dialog-head">
+        <h3 id="mode-dialog-title"></h3>
+        <button class="mode-close" type="button" onclick="closeModePanel()" aria-label="关闭">×</button>
+      </div>
+      <div class="mode-link-list" id="mode-link-list"></div>
+      <div class="mode-dialog-actions">
+        <button class="small-btn" type="button" onclick="closeModePanel()">取消</button>
+        <button class="btn primary" type="button" onclick="openAllModeLinks()">全部打开</button>
+      </div>
+    </div>
+  </dialog>
+
   <footer>© 2026 Suze OS</footer>
 
   <script>
@@ -939,49 +1029,81 @@
       renderLinks();
     }
 
-    function openSet(urls) {
+    let activeModeLinks = [];
+
+    function openSet(title, links) {
+      const dialog = document.getElementById("mode-dialog");
+      const titleEl = document.getElementById("mode-dialog-title");
+      const list = document.getElementById("mode-link-list");
+      if (!dialog || !titleEl || !list) return;
+
+      activeModeLinks = links;
+      titleEl.textContent = title;
+      list.innerHTML = "";
+
+      links.forEach((item) => {
+        const row = document.createElement("div");
+        row.className = "mode-link-row";
+
+        const name = document.createElement("span");
+        name.textContent = item.name;
+
+        const link = document.createElement("a");
+        link.className = "small-btn";
+        link.href = item.url;
+        link.target = "_blank";
+        link.rel = "noopener";
+        link.textContent = "打开";
+
+        row.append(name, link);
+        list.appendChild(row);
+      });
+
+      dialog.showModal();
+    }
+
+    function closeModePanel() {
+      document.getElementById("mode-dialog")?.close();
+    }
+
+    function openAllModeLinks() {
       let blockedCount = 0;
 
-      urls.forEach((url) => {
-        const tab = window.open("about:blank", "_blank");
-        if (!tab) {
-          blockedCount += 1;
-          return;
-        }
-
-        tab.opener = null;
-        tab.location.replace(url);
+      activeModeLinks.forEach((item) => {
+        const tab = window.open(item.url, "_blank");
+        if (tab) tab.opener = null;
+        else blockedCount += 1;
       });
 
       if (blockedCount > 0) {
-        alert(`浏览器阻止了 ${blockedCount} 个标签页，请允许此网站打开弹出式窗口后重试。`);
+        alert(`浏览器阻止了 ${blockedCount} 个标签页，请使用面板中的“打开”按钮逐个打开。`);
       }
     }
 
     function launchJobMode() {
-      openSet([
-        "https://www.zhipin.com",
-        "https://chatgpt.com",
-        "https://mail.google.com",
-        "https://www.linkedin.com"
+      openSet("求职模式", [
+        {name:"BOSS直聘",url:"https://www.zhipin.com"},
+        {name:"ChatGPT",url:"https://chatgpt.com"},
+        {name:"Gmail",url:"https://mail.google.com"},
+        {name:"LinkedIn",url:"https://www.linkedin.com"}
       ]);
     }
 
     function launchLearnMode() {
-      openSet([
-        "https://chatgpt.com",
-        "https://www.youtube.com",
-        "https://github.com",
-        "https://www.perplexity.ai"
+      openSet("学习模式", [
+        {name:"ChatGPT",url:"https://chatgpt.com"},
+        {name:"YouTube",url:"https://www.youtube.com"},
+        {name:"GitHub",url:"https://github.com"},
+        {name:"Perplexity",url:"https://www.perplexity.ai"}
       ]);
     }
 
     function launchContentMode() {
-      openSet([
-        "https://www.youtube.com",
-        "https://x.com",
-        "https://www.tiktok.com",
-        "https://www.instagram.com"
+      openSet("内容模式", [
+        {name:"YouTube",url:"https://www.youtube.com"},
+        {name:"X",url:"https://x.com"},
+        {name:"TikTok",url:"https://www.tiktok.com"},
+        {name:"Instagram",url:"https://www.instagram.com"}
       ]);
     }
 
