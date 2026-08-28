@@ -84,6 +84,41 @@
       padding:72px 0 42px;
     }
 
+    .priority{
+      margin-top:22px;
+      max-width:720px;
+      border:1px solid rgba(0,231,231,.22);
+      background:rgba(0,231,231,.055);
+      border-radius:14px;
+      padding:14px 16px;
+      display:flex;
+      gap:12px;
+      align-items:flex-start;
+    }
+
+    .priority-icon{
+      width:34px;
+      height:34px;
+      flex:0 0 34px;
+      border-radius:10px;
+      display:grid;
+      place-items:center;
+      background:var(--accent-soft);
+      color:var(--accent);
+    }
+
+    .priority strong{
+      display:block;
+      margin-bottom:3px;
+      font-size:14px;
+    }
+
+    .priority span{
+      display:block;
+      color:var(--muted);
+      font-size:13px;
+    }
+
     .hero-grid{
       display:grid;
       grid-template-columns:1.25fr .75fr;
@@ -264,8 +299,43 @@
       font-size:12px;
     }
 
-    .launch{
+    .mode-grid{
       margin-top:26px;
+      display:grid;
+      grid-template-columns:repeat(3,minmax(0,1fr));
+      gap:14px;
+    }
+
+    .mode-card{
+      border:1px solid var(--line);
+      background:linear-gradient(180deg,rgba(255,255,255,.035),rgba(255,255,255,.015));
+      border-radius:16px;
+      padding:18px;
+    }
+
+    .mode-card.featured{
+      border-color:rgba(0,231,231,.34);
+      background:linear-gradient(180deg,rgba(0,231,231,.08),rgba(0,231,231,.025));
+    }
+
+    .mode-card h3{
+      margin:0 0 6px;
+      font-size:17px;
+    }
+
+    .mode-card p{
+      margin:0 0 15px;
+      color:var(--muted);
+      font-size:12px;
+      min-height:36px;
+    }
+
+    .mode-card .btn{
+      width:100%;
+    }
+
+    .launch{
+      margin-top:18px;
       display:grid;
       grid-template-columns:1fr auto;
       align-items:center;
@@ -334,6 +404,7 @@
       .hero-card{display:none}
       .tools{grid-template-columns:repeat(2,minmax(0,1fr))}
       .mini-grid{grid-template-columns:1fr}
+      .mode-grid{grid-template-columns:1fr}
       .launch{grid-template-columns:1fr}
       .launch .btn{width:100%}
       .nav-links{gap:16px}
@@ -374,9 +445,18 @@
             一个为自己搭建的轻量工作入口。无论在家、网吧还是临时电脑，
             打开一个网址，就能快速进入常用 AI、开发、内容和求职工具。
           </p>
+
+          <div class="priority">
+            <div class="priority-icon">◎</div>
+            <div>
+              <strong>今日主线：先求职，再折腾工具</strong>
+              <span>先完成最能提高收入确定性的任务，再把时间留给学习、技术和娱乐。</span>
+            </div>
+          </div>
+
           <div class="hero-actions">
-            <a class="btn primary" href="#os">进入工作台</a>
-            <button class="btn" onclick="launchWorkspace()">🚀 启动工作台</button>
+            <button class="btn primary" onclick="launchJobMode()">💼 求职模式</button>
+            <a class="btn" href="#os">进入完整工作台</a>
           </div>
         </div>
 
@@ -473,12 +553,32 @@
             </div>
           </div>
 
+          <div class="mode-grid">
+            <div class="mode-card featured">
+              <h3>💼 求职模式</h3>
+              <p>打开 BOSS直聘、ChatGPT、Gmail、LinkedIn，进入今天最重要的主线。</p>
+              <button class="btn primary" onclick="launchJobMode()">启动求职模式</button>
+            </div>
+
+            <div class="mode-card">
+              <h3>🧠 学习模式</h3>
+              <p>打开 ChatGPT、YouTube、GitHub、Perplexity，用于学习和技能提升。</p>
+              <button class="btn" onclick="launchLearnMode()">启动学习模式</button>
+            </div>
+
+            <div class="mode-card">
+              <h3>🌍 内容模式</h3>
+              <p>打开 YouTube、X、TikTok、Instagram，用于内容观察和趋势浏览。</p>
+              <button class="btn" onclick="launchContentMode()">启动内容模式</button>
+            </div>
+          </div>
+
           <div class="launch">
             <div>
-              <h3>🚀 一键启动核心工作台</h3>
-              <p>默认打开 ChatGPT、GitHub、BOSS直聘、YouTube。浏览器如果拦截多个标签页，请允许此网站弹出窗口。</p>
+              <h3>🚀 全部核心工作台</h3>
+              <p>一次打开 ChatGPT、GitHub、BOSS直聘、YouTube。若浏览器拦截，请允许此网站弹出窗口。</p>
             </div>
-            <button class="btn primary" onclick="launchWorkspace()">立即启动</button>
+            <button class="btn primary" onclick="launchWorkspace()">全部启动</button>
           </div>
         </div>
       </div>
@@ -522,17 +622,46 @@
   </footer>
 
   <script>
+    function openSet(urls){
+      urls.forEach((url, i) => {
+        setTimeout(() => window.open(url, "_blank", "noopener"), i * 140);
+      });
+    }
+
+    function launchJobMode(){
+      openSet([
+        "https://www.zhipin.com",
+        "https://chatgpt.com",
+        "https://mail.google.com",
+        "https://www.linkedin.com"
+      ]);
+    }
+
+    function launchLearnMode(){
+      openSet([
+        "https://chatgpt.com",
+        "https://www.youtube.com",
+        "https://github.com",
+        "https://www.perplexity.ai"
+      ]);
+    }
+
+    function launchContentMode(){
+      openSet([
+        "https://www.youtube.com",
+        "https://x.com",
+        "https://www.tiktok.com",
+        "https://www.instagram.com"
+      ]);
+    }
+
     function launchWorkspace(){
-      const urls = [
+      openSet([
         "https://chatgpt.com",
         "https://github.com",
         "https://www.zhipin.com",
         "https://www.youtube.com"
-      ];
-
-      urls.forEach((url, i) => {
-        setTimeout(() => window.open(url, "_blank", "noopener"), i * 120);
-      });
+      ]);
     }
   </script>
 </body>
