@@ -378,18 +378,18 @@
     .side-stack{
       display:grid;
       gap:18px;
-      padding-top:205px;
+      padding-top:255px;
     }
 
     @media(max-width:1400px){
       .side-stack{
-        padding-top:190px;
+        padding-top:240px;
       }
     }
 
     @media(max-width:1280px){
       .side-stack{
-        padding-top:176px;
+        padding-top:225px;
       }
     }
 
@@ -946,7 +946,7 @@
           <section class="mini-panel quote-panel">
             <div class="mini-head">
               <h3>一句话</h3>
-              <span>Daily note</span>
+              <span>每 10 分钟更新</span>
             </div>
             <div class="daily-quote" id="daily-quote"></div>
           </section>
@@ -1107,7 +1107,7 @@
             <section class="mini-panel quote-panel">
               <div class="mini-head">
                 <h3>一句话</h3>
-                <span>Daily note</span>
+                <span>每 10 分钟更新</span>
               </div>
               <div class="daily-quote" id="daily-quote-mobile"></div>
             </section>
@@ -1313,29 +1313,53 @@
             saveCustomLinks(next);
         
     const dailyQuotes = [
-      "别急着证明自己，先把今天过好。",
+      "别急着证明自己，先把眼前这一小步走稳。",
       "把复杂的事做简单，把简单的事做稳定。",
       "真正的积累，往往发生在没人注意的时候。",
-      "不用每天都很厉害，但可以每天都比昨天清楚一点。",
-      "行动不是为了显得忙，而是为了让生活真的往前走。",
+      "今天不需要完美，只需要比刚才更清楚一点。",
       "很多答案不是想出来的，是做着做着出现的。",
       "保持好奇，也保持判断。",
-      "慢一点没关系，方向清楚比速度更重要。"
+      "慢一点没关系，方向清楚比速度更重要。",
+      "不要被短暂的情绪，替你做长期的决定。",
+      "能持续做下去的节奏，比偶尔爆发更有力量。",
+      "先开始，再在行动里修正。",
+      "注意力放在哪里，生活就会慢慢长成什么样。",
+      "真正拉开差距的，通常是那些没人催你做的事。",
+      "把今天过扎实，本身就是一种进步。",
+      "不必追赶所有东西，只抓住真正重要的几个。",
+      "允许自己慢慢变强，不必急着让别人看见。",
+      "少一点内耗，多一点具体行动。",
+      "清醒地选择，比盲目地努力更重要。",
+      "不要害怕重新开始，真正危险的是一直停在原地。",
+      "一个好的决定，往往比十个忙碌的动作更值钱。",
+      "把注意力从结果焦虑，拉回到下一步行动。",
+      "你不需要一次解决全部问题，只要解决下一个。",
+      "今天留下的一点积累，会成为以后轻松的原因。",
+      "长期主义不是慢，而是不被短期噪音带走。",
+      "想清楚，然后去做；做完以后，再复盘。"
     ];
 
-    function todayKey(){
-      const d = new Date();
-      return `${d.getFullYear()}-${d.getMonth()+1}-${d.getDate()}`;
-    }
+    function setRotatingQuote(){
+      // Every 10 minutes maps to one quote. Refreshing does not reset the cycle.
+      const tenMinuteBucket = Math.floor(Date.now() / (10 * 60 * 1000));
+      const quote = dailyQuotes[tenMinuteBucket % dailyQuotes.length];
 
-    function setDailyQuote(){
-      const d = new Date();
-      const seed = d.getFullYear()*1000 + (d.getMonth()+1)*50 + d.getDate();
-      const quote = dailyQuotes[seed % dailyQuotes.length];
       ["daily-quote","daily-quote-mobile"].forEach(id=>{
         const el = document.getElementById(id);
         if(el) el.textContent = quote;
       });
+    }
+
+    function startQuoteRotation(){
+      setRotatingQuote();
+
+      const interval = 10 * 60 * 1000;
+      const delayToNextBoundary = interval - (Date.now() % interval);
+
+      setTimeout(()=>{
+        setRotatingQuote();
+        setInterval(setRotatingQuote, interval);
+      }, delayToNextBoundary);
     }
 
     function setJournalDate(){
@@ -1367,7 +1391,7 @@
       bindSyncedTextarea(["review-good","review-good-mobile"], `suze_review_good_${key}`);
       bindSyncedTextarea(["review-learn","review-learn-mobile"], `suze_review_learn_${key}`);
       bindSyncedTextarea(["review-next","review-next-mobile"], `suze_review_next_${key}`);
-      setDailyQuote();
+      startQuoteRotation();
       setJournalDate();
     }
 
@@ -1450,7 +1474,7 @@
       bindSyncedTextarea(["review-good","review-good-mobile"], `suze_review_good_${key}`);
       bindSyncedTextarea(["review-learn","review-learn-mobile"], `suze_review_learn_${key}`);
       bindSyncedTextarea(["review-next","review-next-mobile"], `suze_review_next_${key}`);
-      setDailyQuote();
+      startQuoteRotation();
       setJournalDate();
     }
 
@@ -1516,7 +1540,7 @@
       bindSyncedTextarea(["review-good","review-good-mobile"], `suze_review_good_${key}`);
       bindSyncedTextarea(["review-learn","review-learn-mobile"], `suze_review_learn_${key}`);
       bindSyncedTextarea(["review-next","review-next-mobile"], `suze_review_next_${key}`);
-      setDailyQuote();
+      startQuoteRotation();
       setJournalDate();
     }
 
