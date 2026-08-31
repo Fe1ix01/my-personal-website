@@ -453,10 +453,13 @@
     }
 
     .download-source-note {
+      max-width:100%;
       margin:7px 0 0;
       color:#7a858f;
       font-size:8px;
       line-height:1.45;
+      overflow-wrap:anywhere;
+      word-break:break-word;
     }
 
     .path-note {
@@ -1624,7 +1627,8 @@ codex</code>
       const status = document.getElementById(statusId);
       if (!status) return;
       const fields = [...savedTextFields.values()].filter((field) => field.statusId === statusId);
-      if (fields.some((field) => field.failed)) status.textContent = "保存失败";
+      if (fields.some((field) => field.conflicted)) status.textContent = "其他标签页已更新，请确认后再覆盖";
+      else if (fields.some((field) => field.failed)) status.textContent = "保存失败";
       else if (fields.some((field) => field.dirty)) status.textContent = "正在保存…";
       else status.textContent = "已保存";
     }
@@ -1633,6 +1637,7 @@ codex</code>
       clearTimeout(saveTimers.get(field.id));
       saveTimers.delete(field.id);
       if (!field.dirty) return true;
+      if (field.conflicted) return false;
 
       const saved = safeStorageSet(field.prefix + activeNotesDate, field.el.value, false);
       field.dirty = !saved;
@@ -1646,7 +1651,13 @@ codex</code>
       savedTextFields.forEach((field) => {
         if (!flushSavedText(field)) saved = false;
       });
-      if (!saved && showError) notifyStorageError("部分日记或复盘内容未能保存，请勿关闭页面并检查浏览器存储空间。");
+      if (!saved && showError) {
+        if ([...savedTextFields.values()].some((field) => field.conflicted)) {
+          alert("其他标签页已更新日记或复盘，请先回到对应输入框确认使用哪个版本。");
+        } else {
+          notifyStorageError("部分日记或复盘内容未能保存，请勿关闭页面并检查浏览器存储空间。");
+        }
+      }
       return saved;
     }
 
@@ -1658,6 +1669,8 @@ codex</code>
         field.el.value = result.value || "";
         field.dirty = false;
         field.failed = !result.ok;
+        field.conflicted = false;
+        field.externalValue = null;
         updateSaveStatus(field.statusId);
       });
 
@@ -1687,9 +1700,31 @@ codex</code>
     function bindSavedText(id, prefix, statusId) {
       const el = document.getElementById(id);
       if (!el) return;
-      const field = {id, prefix, statusId, el, dirty:false, failed:false};
+      const field = {id, prefix, statusId, el, dirty:false, failed:false, conflicted:false, externalValue:null};
       savedTextFields.set(id, field);
-      el.addEventListener("beforeinput", syncNotesDate);
+      el.addEventListener("beforeinput", (event) => {
+        if (!syncNotesDate()) {
+          event.preventDefault();
+          return;
+        }
+        if (!field.conflicted) return;
+
+        const overwrite = confirm("其他标签页已更新此内容。是否使用当前标签页的内容覆盖外部更新？");
+        if (overwrite) {
+          field.conflicted = false;
+          field.externalValue = null;
+          updateSaveStatus(field.statusId);
+          return;
+        }
+
+        field.el.value = field.externalValue || "";
+        field.dirty = false;
+        field.failed = false;
+        field.conflicted = false;
+        field.externalValue = null;
+        updateSaveStatus(field.statusId);
+        event.preventDefault();
+      });
       el.addEventListener("input", () => {
         field.dirty = true;
         field.failed = false;
@@ -1698,6 +1733,29 @@ codex</code>
         saveTimers.set(id, setTimeout(() => {
           flushSavedText(field);
         }, 400));
+      });
+    }
+
+    function handleExternalStorageChange(event) {
+      savedTextFields.forEach((field) => {
+        if (event.key !== field.prefix + activeNotesDate) return;
+
+        const externalValue = event.newValue || "";
+        if (!field.dirty || externalValue === field.el.value) {
+          clearTimeout(saveTimers.get(field.id));
+          saveTimers.delete(field.id);
+          field.el.value = externalValue;
+          field.dirty = false;
+          field.failed = false;
+          field.conflicted = false;
+          field.externalValue = null;
+        } else {
+          clearTimeout(saveTimers.get(field.id));
+          saveTimers.delete(field.id);
+          field.conflicted = true;
+          field.externalValue = externalValue;
+        }
+        updateSaveStatus(field.statusId);
       });
     }
 
@@ -1710,6 +1768,7 @@ codex</code>
       scheduleMidnightSync();
 
       window.addEventListener("pagehide", () => flushAllSavedText(false));
+      window.addEventListener("storage", handleExternalStorageChange);
       document.addEventListener("visibilitychange", () => {
         if (document.visibilityState === "hidden") flushAllSavedText(false);
         else syncNotesDate();
@@ -1869,7 +1928,7 @@ codex</code>
       if (!confirm("确定要清除 Suze OS 的全部本地数据吗？此操作无法撤销。")) return;
       if (!confirm("请再次确认：将删除日记、复盘和常用网址，然后刷新页面。")) return;
       if (!flushAllSavedText(true)) return;
-      if (!replaceSuzeStorageData({})) {
+      if (!replaceSuzeStorageData({}).ok) {
         alert("清除本地数据失败，请检查浏览器存储权限后重试。");
         return;
       }
@@ -1954,17 +2013,47 @@ codex</code>
       });
     }
 
-    function replaceSuzeStorageData(data) {
+    function restoreSuzeStorageSnapshot(snapshot) {
       const currentData = getSuzeStorageData(false);
       if (!currentData) return false;
 
+      let restored = true;
       for (const key of Object.keys(currentData)) {
-        if (!safeStorageRemove(key, false)) return false;
+        if (!safeStorageRemove(key, false)) restored = false;
       }
+      for (const [key, value] of Object.entries(snapshot)) {
+        if (!safeStorageSet(key, value, false)) restored = false;
+      }
+      return restored;
+    }
+
+    function replaceSuzeStorageData(data, previousData = null) {
+      const snapshot = previousData || getSuzeStorageData(false);
+      if (!snapshot) return {ok:false,rolledBack:false};
+
+      let written = true;
       for (const [key, value] of Object.entries(data)) {
-        if (!safeStorageSet(key, value, false)) return false;
+        if (!safeStorageSet(key, value, false)) {
+          written = false;
+          break;
+        }
       }
-      return true;
+
+      if (written) {
+        const storedData = getSuzeStorageData(false);
+        if (!storedData) written = false;
+        else {
+          for (const key of Object.keys(storedData)) {
+            if (!Object.prototype.hasOwnProperty.call(data, key) && !safeStorageRemove(key, false)) {
+              written = false;
+              break;
+            }
+          }
+        }
+      }
+
+      if (written) return {ok:true,rolledBack:true};
+      return {ok:false,rolledBack:restoreSuzeStorageSnapshot(snapshot)};
     }
 
     async function importBackup(event) {
@@ -1987,9 +2076,9 @@ codex</code>
         const previousData = getSuzeStorageData(false);
         if (!previousData) throw new Error("无法读取当前数据，已取消恢复。");
 
-        if (!replaceSuzeStorageData(backup.data)) {
-          const rolledBack = replaceSuzeStorageData(previousData);
-          if (rolledBack) throw new Error("恢复数据失败，已恢复导入前的数据。");
+        const restored = replaceSuzeStorageData(backup.data, previousData);
+        if (!restored.ok) {
+          if (restored.rolledBack) throw new Error("恢复数据失败，已恢复导入前的数据。");
           throw new Error("恢复和回滚均失败，请不要关闭页面，并使用此前导出的备份文件重试。");
         }
 
