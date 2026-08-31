@@ -354,17 +354,17 @@
 
     .path-steps {
       display:grid;
-      grid-template-columns:repeat(5,minmax(0,1fr));
+      grid-template-columns:repeat(4,minmax(0,1fr));
       gap:10px;
     }
 
     .path-step {
-      min-height:82px;
-      padding:10px 7px;
+      min-height:142px;
+      padding:12px 10px;
       display:flex;
       flex-direction:column;
       align-items:center;
-      justify-content:center;
+      justify-content:flex-start;
       text-align:center;
       border-radius:12px;
       border:1px solid rgba(23,32,43,.07);
@@ -399,7 +399,46 @@
     .path-step small {
       margin-top:3px;
       color:var(--muted);
+      font-size:9px;
+      line-height:1.5;
+    }
+
+    .path-actions {
+      width:100%;
+      margin-top:auto;
+      padding-top:10px;
+      display:flex;
+      justify-content:center;
+      gap:6px;
+      flex-wrap:wrap;
+    }
+
+    .path-link {
+      padding:6px 8px;
+      border:1px solid rgba(23,32,43,.07);
+      border-radius:8px;
+      background:rgba(255,255,255,.64);
+      color:#27333f;
       font-size:8px;
+      font-weight:700;
+    }
+
+    .path-link:hover {
+      border-color:rgba(22,201,195,.26);
+      background:rgba(255,255,255,.88);
+    }
+
+    .path-link.is-disabled {
+      color:#8b949d;
+      cursor:not-allowed;
+      pointer-events:none;
+    }
+
+    .download-source-note {
+      margin:7px 0 0;
+      color:#7a858f;
+      font-size:8px;
+      line-height:1.45;
     }
 
     .path-note {
@@ -802,38 +841,83 @@
           </div>
 
           <div class="path-steps">
-            <a class="path-step" target="_blank" rel="noopener" href="https://github.com/2dust/v2rayN/releases">
-              <span class="num">1</span>
-              <strong>v2rayN 下载</strong>
-              <small>下载客户端</small>
-            </a>
+            <div class="path-step">
+              <span class="num">01</span>
+              <strong>DNSHE</strong>
+              <small>DNS / 域名相关管理入口</small>
+              <div class="path-actions">
+                <a class="path-link" id="dnshe-entry" target="_blank" rel="noopener">打开 DNSHE</a>
+              </div>
+            </div>
 
-            <a class="path-step" target="_blank" rel="noopener" href="https://edgetunnel.github.io/edgetunnel/">
-              <span class="num">2</span>
+            <div class="path-step">
+              <span class="num">02</span>
+              <strong>Cloudflare</strong>
+              <small>Cloudflare 控制台</small>
+              <div class="path-actions">
+                <a class="path-link" id="cloudflare-entry" target="_blank" rel="noopener">打开控制台</a>
+              </div>
+            </div>
+
+            <div class="path-step">
+              <span class="num">03</span>
+              <strong>v2rayN</strong>
+              <small>Windows 外网客户端</small>
+              <div class="path-actions">
+                <a class="path-link" id="v2rayn-cn-download" target="_blank" rel="noopener">v2rayN 国内加速入口</a>
+                <a class="path-link" id="v2rayn-official-download" target="_blank" rel="noopener">v2rayN 官方 GitHub</a>
+              </div>
+              <p class="download-source-note" id="v2rayn-cn-download-note"></p>
+              <p class="download-source-note">官方地址：https://github.com/2dust/v2RayN/releases</p>
+            </div>
+
+            <div class="path-step">
+              <span class="num">04</span>
               <strong>EdgeTunnel</strong>
-              <small>节点 / 隧道入口</small>
-            </a>
+              <small>进入管理页，复制个人订阅，在 v2rayN 中添加订阅并连接。</small>
+              <div class="path-actions">
+                <a class="path-link" id="edgetunnel-admin" target="_blank" rel="noopener">打开管理入口</a>
+              </div>
+            </div>
 
-            <a class="path-step" target="_blank" rel="noopener" href="https://fe1ix202671.pages.dev/admin">
-              <span class="num">3</span>
-              <strong>EdgeTunnel Admin</strong>
-              <small>管理 / 复制订阅</small>
-            </a>
-
-            <a class="path-step" target="_blank" rel="noopener" href="https://github.com/LancelotRar/best-cf-ips">
-              <span class="num">4</span>
+            <div class="path-step">
+              <span class="num">05</span>
               <strong>Best CF IPs</strong>
-              <small>IP 数据源</small>
-            </a>
+              <small>Cloudflare 优选 IP 工具</small>
+              <div class="path-actions">
+                <a class="path-link" id="best-cf-ips-entry" target="_blank" rel="noopener">打开线路一</a>
+              </div>
+            </div>
 
-            <a class="path-step" target="_blank" rel="noopener" href="https://bestcf.pages.dev/">
-              <span class="num">5</span>
+            <div class="path-step">
+              <span class="num">06</span>
+              <strong>CFData-WEB</strong>
+              <small>Cloudflare IP 测试与筛选工具</small>
+              <div class="path-actions">
+                <a class="path-link" id="cfdata-web-entry" target="_blank" rel="noopener">打开线路二</a>
+              </div>
+            </div>
+
+            <div class="path-step">
+              <span class="num">07</span>
+              <strong>CF 优选</strong>
+              <small>备用 Cloudflare 优选入口</small>
+              <div class="path-actions">
+                <a class="path-link" id="cf-preferred-entry" target="_blank" rel="noopener">打开线路三</a>
+              </div>
+            </div>
+
+            <div class="path-step">
+              <span class="num">08</span>
               <strong>BestCF</strong>
-              <small>备用优选入口</small>
-            </a>
+              <small>备用优选 / 检测入口</small>
+              <div class="path-actions">
+                <a class="path-link" id="bestcf-entry" target="_blank" rel="noopener">打开线路四</a>
+              </div>
+            </div>
           </div>
 
-          <div class="path-note">这一区只放恢复外网环境相关入口。</div>
+          <div class="path-note">按顺序完成域名与 Cloudflare 管理、客户端安装、订阅连接和线路优选；优选入口可按速度切换。</div>
         </section>
       </div>
 
@@ -902,6 +986,18 @@
   </footer>
 
   <script>
+    const V2RAYN_CN_DOWNLOAD_URL = "https://gh-proxy.com/";
+    const CONNECTION_LINKS = {
+      dnshe: "https://my.dnshe.com/clientarea.php?language=chinese&autolang=1#",
+      cloudflare: "https://dash.cloudflare.com/5717e7b403866afc95710debf56f1ce1/home",
+      v2raynOfficial: "https://github.com/2dust/v2rayN/releases",
+      edgeTunnelAdmin: "https://fe1ix202671.pages.dev/admin",
+      bestCfIps: "https://github.com/LancelotRar/best-cf-ips",
+      cfDataWeb: "https://github.com/PoemMisty/CFData-WEB",
+      cfPreferred: "https://cf.090227.xyz/",
+      bestCf: "https://bestcf.pages.dev/"
+    };
+
     const quotes = [
       "别等状态来了再开始，开始本身会带来状态。",
       "真正的底气，来自你知道自己能把事情做完。",
@@ -1147,6 +1243,43 @@
       } catch {
         return null;
       }
+    }
+
+    function setSafeExternalLink(id, value) {
+      const link = document.getElementById(id);
+      if (!link) return false;
+      const safeUrl = normalizeHttpUrl(value);
+      if (!safeUrl) {
+        link.removeAttribute("href");
+        link.classList.add("is-disabled");
+        link.setAttribute("aria-disabled", "true");
+        return false;
+      }
+      link.href = safeUrl;
+      link.classList.remove("is-disabled");
+      link.removeAttribute("aria-disabled");
+      return true;
+    }
+
+    function initConnectionLinks() {
+      const domesticReady = setSafeExternalLink("v2rayn-cn-download", V2RAYN_CN_DOWNLOAD_URL);
+      const domesticLink = document.getElementById("v2rayn-cn-download");
+      const domesticNote = document.getElementById("v2rayn-cn-download-note");
+      if (domesticLink) domesticLink.textContent = domesticReady ? "v2rayN 国内加速入口" : "v2rayN 国内加速入口（待配置）";
+      if (domesticNote) {
+        domesticNote.textContent = domesticReady
+          ? "打开后粘贴官方 v2rayN Releases 链接进行加速下载"
+          : "国内下载源待配置，请暂时使用官方 GitHub。";
+      }
+
+      setSafeExternalLink("dnshe-entry", CONNECTION_LINKS.dnshe);
+      setSafeExternalLink("cloudflare-entry", CONNECTION_LINKS.cloudflare);
+      setSafeExternalLink("v2rayn-official-download", CONNECTION_LINKS.v2raynOfficial);
+      setSafeExternalLink("edgetunnel-admin", CONNECTION_LINKS.edgeTunnelAdmin);
+      setSafeExternalLink("best-cf-ips-entry", CONNECTION_LINKS.bestCfIps);
+      setSafeExternalLink("cfdata-web-entry", CONNECTION_LINKS.cfDataWeb);
+      setSafeExternalLink("cf-preferred-entry", CONNECTION_LINKS.cfPreferred);
+      setSafeExternalLink("bestcf-entry", CONNECTION_LINKS.bestCf);
     }
 
     function validateCustomLinks(links) {
@@ -1406,6 +1539,7 @@
     startQuoteRotation();
     initNotes();
     renderLinks();
+    initConnectionLinks();
   </script>
 </body>
 </html>
