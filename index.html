@@ -448,6 +448,107 @@
       font-size:9px;
     }
 
+    .recovery {
+      padding:20px;
+    }
+
+    .recovery summary {
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:16px;
+      cursor:pointer;
+      list-style:none;
+    }
+
+    .recovery summary::-webkit-details-marker { display:none; }
+
+    .recovery-summary-copy h2 { margin:0; font-size:20px; }
+
+    .recovery-summary-copy p {
+      margin:4px 0 0;
+      color:var(--muted);
+      font-size:10px;
+    }
+
+    .recovery-toggle {
+      flex:0 0 auto;
+      padding:7px 10px;
+      border:1px solid rgba(23,32,43,.07);
+      border-radius:999px;
+      background:rgba(255,255,255,.54);
+      color:#52606c;
+      font-size:9px;
+      font-weight:700;
+    }
+
+    .recovery[open] .recovery-toggle::after { content:"收起"; }
+    .recovery:not([open]) .recovery-toggle::after { content:"展开恢复步骤"; }
+
+    .recovery-steps {
+      margin-top:16px;
+      display:grid;
+      grid-template-columns:1fr;
+      gap:10px;
+    }
+
+    .recovery-step {
+      min-width:0;
+      padding:13px;
+      border:1px solid rgba(23,32,43,.07);
+      border-radius:13px;
+      background:var(--item);
+    }
+
+    .recovery-step-head { display:flex; align-items:flex-start; gap:9px; }
+    .recovery-step h3 { margin:1px 0 0; font-size:12px; }
+
+    .recovery-step p {
+      margin:3px 0 0;
+      color:var(--muted);
+      font-size:9px;
+      line-height:1.5;
+    }
+
+    .recovery-actions {
+      margin-top:10px;
+      display:flex;
+      gap:7px;
+      flex-wrap:wrap;
+    }
+
+    .command-box {
+      margin-top:10px;
+      display:grid;
+      grid-template-columns:minmax(0,1fr) auto;
+      gap:7px;
+      align-items:start;
+    }
+
+    .command-box code {
+      min-width:0;
+      padding:9px 10px;
+      overflow-x:auto;
+      border:1px solid rgba(23,32,43,.06);
+      border-radius:9px;
+      background:rgba(255,255,255,.62);
+      color:#344250;
+      font-family:Consolas,"SFMono-Regular",Menlo,monospace;
+      font-size:9px;
+      line-height:1.6;
+      white-space:pre-wrap;
+      overflow-wrap:anywhere;
+    }
+
+    .copy-command { min-width:58px; }
+
+    .recovery-note {
+      margin:13px 0 0;
+      text-align:center;
+      color:var(--muted);
+      font-size:9px;
+    }
+
     .search-box {
       display:grid;
       gap:10px;
@@ -655,6 +756,10 @@
       .left-stack .side-panel:last-child {
         grid-column:1/-1;
       }
+
+      .right-stack .recovery {
+        grid-column:1/-1;
+      }
     }
 
     @media(max-width:760px) {
@@ -710,6 +815,10 @@
       .path-steps {
         grid-template-columns:1fr;
       }
+
+      .recovery summary { align-items:flex-start; }
+      .command-box { grid-template-columns:1fr; }
+      .copy-command { width:100%; }
     }
   </style>
 </head>
@@ -957,6 +1066,100 @@
             <button class="small-btn" onclick="addLink()">+ 添加网址</button>
           </div>
         </div>
+
+        <details class="panel recovery">
+          <summary>
+            <div class="recovery-summary-copy">
+              <h2>新电脑 / 网吧快速恢复</h2>
+              <p>按顺序恢复 Windows 开发与外网环境。</p>
+            </div>
+            <span class="recovery-toggle" aria-hidden="true"></span>
+          </summary>
+
+          <div class="recovery-steps">
+            <section class="recovery-step">
+              <div class="recovery-step-head">
+                <span class="num">01</span>
+                <div><h3>v2rayN</h3><p>先建立外网连接</p></div>
+              </div>
+              <div class="recovery-actions">
+                <a class="path-link" id="recovery-v2rayn-cn" target="_blank" rel="noopener">v2rayN 国内加速入口</a>
+                <a class="path-link" id="recovery-v2rayn-official" target="_blank" rel="noopener">v2rayN 官方 GitHub</a>
+              </div>
+            </section>
+
+            <section class="recovery-step">
+              <div class="recovery-step-head">
+                <span class="num">02</span>
+                <div><h3>Node.js LTS</h3><p>Codex 运行环境</p></div>
+              </div>
+              <div class="recovery-actions">
+                <a class="path-link" id="recovery-nodejs" target="_blank" rel="noopener">下载 Node.js</a>
+              </div>
+            </section>
+
+            <section class="recovery-step">
+              <div class="recovery-step-head">
+                <span class="num">03</span>
+                <div><h3>Git for Windows</h3><p>用于拉取和提交 GitHub 项目</p></div>
+              </div>
+              <div class="recovery-actions">
+                <a class="path-link" id="recovery-git" target="_blank" rel="noopener">下载 Git</a>
+              </div>
+            </section>
+
+            <section class="recovery-step">
+              <div class="recovery-step-head">
+                <span class="num">04</span>
+                <div><h3>安装 Codex</h3></div>
+              </div>
+              <div class="command-box">
+                <code>npm install -g @openai/codex</code>
+                <button class="small-btn copy-command" type="button" data-copy="npm install -g @openai/codex">复制命令</button>
+              </div>
+            </section>
+
+            <section class="recovery-step">
+              <div class="recovery-step-head">
+                <span class="num">05</span>
+                <div><h3>恢复网站项目</h3></div>
+              </div>
+              <div class="command-box">
+                <code>cd %USERPROFILE%\Desktop
+git clone https://github.com/Fe1ix01/suze-os.git
+cd suze-os</code>
+                <button class="small-btn copy-command" type="button" data-copy="cd %USERPROFILE%\Desktop&#10;git clone https://github.com/Fe1ix01/suze-os.git&#10;cd suze-os">复制命令</button>
+              </div>
+            </section>
+
+            <section class="recovery-step">
+              <div class="recovery-step-head">
+                <span class="num">06</span>
+                <div><h3>GitHub 连接异常时</h3><p>仅当 git clone 出现 Connection reset / timeout 时使用。</p></div>
+              </div>
+              <div class="command-box">
+                <code>git config --global http.proxy http://127.0.0.1:10808
+git config --global https.proxy http://127.0.0.1:10808</code>
+                <button class="small-btn copy-command" type="button" data-copy="git config --global http.proxy http://127.0.0.1:10808&#10;git config --global https.proxy http://127.0.0.1:10808">复制命令</button>
+              </div>
+              <p>10808 是当前默认示例；如果本地代理端口不同，请修改端口。</p>
+            </section>
+
+            <section class="recovery-step">
+              <div class="recovery-step-head">
+                <span class="num">07</span>
+                <div><h3>启动 Codex</h3></div>
+              </div>
+              <div class="command-box">
+                <code>cd %USERPROFILE%\Desktop\suze-os
+codex</code>
+                <button class="small-btn copy-command" type="button" data-copy="cd %USERPROFILE%\Desktop\suze-os&#10;codex">复制命令</button>
+              </div>
+            </section>
+          </div>
+
+          <p class="recovery-note">推荐顺序：v2rayN → Node.js → Git → Codex → clone Suze OS → 开始工作。</p>
+        </details>
       </aside>
 
     </section>
@@ -996,6 +1199,10 @@
       cfDataWeb: "https://github.com/PoemMisty/CFData-WEB",
       cfPreferred: "https://cf.090227.xyz/",
       bestCf: "https://bestcf.pages.dev/"
+    };
+    const RECOVERY_LINKS = {
+      nodejs: "https://nodejs.org/",
+      git: "https://git-scm.com/install/windows"
     };
 
     const quotes = [
@@ -1282,6 +1489,41 @@
       setSafeExternalLink("bestcf-entry", CONNECTION_LINKS.bestCf);
     }
 
+    function initRecoveryTools() {
+      setSafeExternalLink("recovery-v2rayn-cn", V2RAYN_CN_DOWNLOAD_URL);
+      setSafeExternalLink("recovery-v2rayn-official", CONNECTION_LINKS.v2raynOfficial);
+      setSafeExternalLink("recovery-nodejs", RECOVERY_LINKS.nodejs);
+      setSafeExternalLink("recovery-git", RECOVERY_LINKS.git);
+
+      document.querySelectorAll(".copy-command").forEach((button) => {
+        button.addEventListener("click", async () => {
+          const command = button.dataset.copy || "";
+          if (!command) return;
+          try {
+            if (navigator.clipboard && window.isSecureContext) {
+              await navigator.clipboard.writeText(command);
+            } else {
+              const copyArea = document.createElement("textarea");
+              copyArea.value = command;
+              copyArea.setAttribute("readonly", "");
+              copyArea.style.position = "fixed";
+              copyArea.style.opacity = "0";
+              document.body.appendChild(copyArea);
+              copyArea.select();
+              const copied = document.execCommand("copy");
+              copyArea.remove();
+              if (!copied) throw new Error("Copy unavailable");
+            }
+            const originalText = button.textContent;
+            button.textContent = "已复制";
+            setTimeout(() => { button.textContent = originalText; }, 1600);
+          } catch {
+            alert("复制失败，请手动选择命令复制。");
+          }
+        });
+      });
+    }
+
     function validateCustomLinks(links) {
       return Array.isArray(links) && links.every((item) =>
         item && typeof item === "object" &&
@@ -1540,6 +1782,7 @@
     initNotes();
     renderLinks();
     initConnectionLinks();
+    initRecoveryTools();
   </script>
 </body>
 </html>
