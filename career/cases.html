@@ -64,6 +64,149 @@
       font-size:11px;
     }
 
+    .real-case {
+      margin-top:16px;
+    }
+
+    .real-case-head {
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:18px;
+    }
+
+    .real-case-title {
+      margin:3px 0 0;
+      font-size:22px;
+      letter-spacing:-.4px;
+    }
+
+    .real-case-tags {
+      display:flex;
+      flex-wrap:wrap;
+      justify-content:flex-end;
+      gap:8px;
+    }
+
+    .real-case-tag {
+      min-height:30px;
+      padding:6px 10px;
+      display:inline-flex;
+      align-items:center;
+      border:1px solid rgba(22,201,195,.20);
+      border-radius:999px;
+      background:rgba(22,201,195,.08);
+      color:var(--accent-deep);
+      font-size:10px;
+      font-weight:800;
+    }
+
+    .real-case-meta {
+      margin-top:16px;
+      padding:12px 14px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:14px;
+      border:1px solid rgba(23,32,43,.06);
+      border-radius:12px;
+      background:rgba(255,255,255,.42);
+    }
+
+    .real-case-meta-label {
+      color:var(--muted);
+      font-size:10px;
+      font-weight:800;
+    }
+
+    .real-case-meta-value {
+      color:#344250;
+      font-size:12px;
+      font-weight:800;
+    }
+
+    .real-case-section {
+      margin-top:18px;
+      padding-top:18px;
+      border-top:1px solid rgba(23,32,43,.07);
+    }
+
+    .real-case-section h3 {
+      margin:0 0 9px;
+      color:#344250;
+      font-size:13px;
+      letter-spacing:-.1px;
+    }
+
+    .real-case-section p {
+      margin:0;
+      color:#566371;
+      font-size:12px;
+      line-height:1.75;
+    }
+
+    .real-case-actions {
+      margin:0;
+      padding:0;
+      display:grid;
+      gap:9px;
+      list-style:none;
+    }
+
+    .real-case-actions li {
+      position:relative;
+      padding-left:18px;
+      color:#566371;
+      font-size:12px;
+      line-height:1.65;
+    }
+
+    .real-case-actions li::before {
+      content:"";
+      position:absolute;
+      top:8px;
+      left:2px;
+      width:6px;
+      height:6px;
+      border-radius:50%;
+      background:var(--accent);
+    }
+
+    .real-case-results {
+      display:grid;
+      grid-template-columns:repeat(2,minmax(0,1fr));
+      gap:12px;
+    }
+
+    .real-case-result {
+      padding:14px;
+      border:1px solid rgba(22,201,195,.16);
+      border-radius:13px;
+      background:rgba(22,201,195,.07);
+    }
+
+    .real-case-result strong {
+      display:block;
+      color:var(--accent-deep);
+      font-size:20px;
+      letter-spacing:-.3px;
+    }
+
+    .real-case-result span {
+      display:block;
+      margin-top:4px;
+      color:#566371;
+      font-size:10px;
+      font-weight:800;
+    }
+
+    .real-case-story {
+      padding:16px;
+      border-left:3px solid var(--accent);
+      border-radius:0 13px 13px 0;
+      background:rgba(255,255,255,.48);
+    }
+
     .case-editor {
       margin-top:16px;
     }
@@ -205,6 +348,20 @@
         flex-direction:column;
       }
 
+      .real-case-head,
+      .real-case-meta {
+        align-items:flex-start;
+        flex-direction:column;
+      }
+
+      .real-case-tags {
+        justify-content:flex-start;
+      }
+
+      .real-case-results {
+        grid-template-columns:1fr;
+      }
+
       .case-editor-category,
       .case-editor-select {
         width:100%;
@@ -285,6 +442,70 @@
           </ul>
         </article>
       </div>
+
+      <article class="record-card real-case" aria-labelledby="klook-case-title">
+        <div class="real-case-head">
+          <div>
+            <div class="record-kicker">REAL CASE 01</div>
+            <h2 class="real-case-title" id="klook-case-title">Klook 抖音达人增长项目</h2>
+          </div>
+          <div class="real-case-tags" aria-label="案例分类">
+            <span class="real-case-tag">达人运营</span>
+            <span class="real-case-tag">直播</span>
+            <span class="real-case-tag">电商</span>
+          </div>
+        </div>
+
+        <div class="real-case-meta">
+          <span class="real-case-meta-label">公司名称</span>
+          <span class="real-case-meta-value">Klook</span>
+        </div>
+
+        <section class="real-case-section">
+          <h3>项目背景</h3>
+          <p>Klook 围绕旅游产品在抖音开展达人增长与直播转化项目，希望通过达人内容和直播场景扩大产品触达，并持续提升交易转化。</p>
+        </section>
+
+        <section class="real-case-section">
+          <h3>项目目标</h3>
+          <p>连接达人内容、重点直播场次与交易结果，验证抖音达人增长对旅游产品成交的推动作用。</p>
+        </section>
+
+        <section class="real-case-section">
+          <h3>我的职责</h3>
+          <p>负责抖音达人增长项目推进，围绕达人合作、直播转化和项目数据结果，协同项目各环节落地并完成复盘。</p>
+        </section>
+
+        <section class="real-case-section">
+          <h3>执行动作</h3>
+          <ul class="real-case-actions">
+            <li>围绕旅游产品和直播场景梳理达人合作方向，推进达人内容与直播转化。</li>
+            <li>跟进长隆直播等重点场次，持续关注执行进度与交易结果。</li>
+            <li>沉淀项目 GMV 数据，通过阶段复盘验证达人增长与直播转化效果。</li>
+          </ul>
+        </section>
+
+        <section class="real-case-section">
+          <h3>数据结果</h3>
+          <div class="real-case-results">
+            <div class="real-case-result">
+              <strong>100 万+</strong>
+              <span>长隆直播单场 GMV</span>
+            </div>
+            <div class="real-case-result">
+              <strong>5390 万</strong>
+              <span>项目累计 GMV</span>
+            </div>
+          </div>
+        </section>
+
+        <section class="real-case-section">
+          <h3>面试表达</h3>
+          <div class="real-case-story">
+            <p>在 Klook 抖音达人增长项目中，我围绕旅游产品的达人合作与直播转化推进项目。我的重点是把达人内容、直播场次和交易结果串联起来，并持续跟进关键场次与数据复盘。最终，长隆直播单场 GMV 达到 100 万+，项目累计 GMV 达到 5390 万。这个案例体现了我在达人运营、直播项目推进和结果复盘上的能力。</p>
+          </div>
+        </section>
+      </article>
 
       <form class="record-card case-editor" aria-label="职业案例卡片">
         <div class="record-card-head case-editor-head">
