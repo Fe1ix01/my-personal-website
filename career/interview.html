@@ -5,6 +5,152 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>面试库 · Suze OS</title>
   <link rel="stylesheet" href="career.css">
+  <style>
+    .interview-card-head {
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:16px;
+    }
+
+    .interview-result {
+      flex:0 0 auto;
+    }
+
+    .interview-result-select {
+      min-height:36px;
+      padding:7px 30px 7px 12px;
+      border:1px solid rgba(22,201,195,.24);
+      border-radius:999px;
+      background:rgba(22,201,195,.12);
+      color:var(--accent-deep);
+      cursor:pointer;
+      font:inherit;
+      font-size:11px;
+      font-weight:800;
+      outline:none;
+    }
+
+    .interview-stage-wrap {
+      margin:18px 0 0;
+      padding:14px;
+      display:grid;
+      gap:9px;
+      border:1px solid rgba(23,32,43,.06);
+      border-radius:13px;
+      background:rgba(255,255,255,.42);
+    }
+
+    .interview-stage-title {
+      color:#566371;
+      font-size:10px;
+      font-weight:800;
+    }
+
+    .interview-stages {
+      display:flex;
+      align-items:center;
+      flex-wrap:wrap;
+      gap:8px;
+    }
+
+    .interview-stage {
+      min-height:30px;
+      padding:6px 10px;
+      display:inline-flex;
+      align-items:center;
+      border:1px solid rgba(23,32,43,.08);
+      border-radius:999px;
+      background:rgba(255,255,255,.66);
+      color:#566371;
+      font-size:10px;
+      font-weight:800;
+    }
+
+    .interview-stage-active {
+      border-color:rgba(22,201,195,.24);
+      background:rgba(22,201,195,.10);
+      color:var(--accent-deep);
+    }
+
+    .interview-section {
+      margin-top:18px;
+      padding-top:18px;
+      border-top:1px solid rgba(23,32,43,.07);
+    }
+
+    .interview-section-head {
+      margin-bottom:12px;
+    }
+
+    .interview-section-kicker {
+      color:var(--accent-deep);
+      font-size:9px;
+      font-weight:800;
+      letter-spacing:1.1px;
+    }
+
+    .interview-section h3 {
+      margin:3px 0 0;
+      font-size:16px;
+      letter-spacing:-.2px;
+    }
+
+    .interview-textarea {
+      min-height:150px;
+    }
+
+    .interview-result-select:focus {
+      border-color:rgba(22,201,195,.46);
+      box-shadow:0 0 0 3px rgba(22,201,195,.09);
+    }
+
+    .sr-only {
+      position:absolute;
+      width:1px;
+      height:1px;
+      padding:0;
+      margin:-1px;
+      overflow:hidden;
+      clip:rect(0,0,0,0);
+      white-space:nowrap;
+      border:0;
+    }
+
+    @media(max-width:768px) {
+      .interview-card-head {
+        align-items:flex-start;
+        flex-direction:column;
+      }
+
+      .interview-result,
+      .interview-result-select {
+        width:100%;
+      }
+
+      .interview-result-select {
+        font-size:16px;
+      }
+
+      .interview-stage-wrap {
+        padding:12px;
+      }
+
+      .interview-stages {
+        display:grid;
+        grid-template-columns:repeat(2,minmax(0,1fr));
+      }
+
+      .interview-stage {
+        justify-content:center;
+        text-align:center;
+      }
+
+      .interview-textarea {
+        min-height:132px;
+      }
+    }
+  </style>
 </head>
 <body>
   <header class="career-header">
@@ -24,34 +170,101 @@
         <a class="back-button tracker-back" href="../index.html">返回首页</a>
       </div>
 
-      <div class="record-card">
-        <div class="record-card-head">
-          <div class="record-kicker">INTERVIEW CARD</div>
-          <h2>面试记录</h2>
+      <form class="record-card" aria-label="面试记录卡片">
+        <div class="record-card-head interview-card-head">
+          <div>
+            <div class="record-kicker">INTERVIEW CARD</div>
+            <h2>面试记录卡片</h2>
+          </div>
+          <label class="interview-result">
+            <span class="sr-only">结果状态</span>
+            <select class="interview-result-select" name="result-status">
+              <option>待反馈</option>
+              <option>通过</option>
+              <option>淘汰</option>
+              <option>Offer</option>
+            </select>
+          </label>
         </div>
+
         <div class="record-grid">
           <label class="record-field">
-            <span>公司</span>
+            <span>公司名称</span>
             <input type="text" name="company" placeholder="填写公司名称" autocomplete="organization">
           </label>
+
           <label class="record-field">
-            <span>岗位</span>
+            <span>岗位名称</span>
             <input type="text" name="position" placeholder="填写面试岗位" autocomplete="organization-title">
           </label>
-          <label class="record-field record-field-wide">
-            <span>面试问题</span>
-            <textarea name="question" placeholder="记录面试官提出的问题"></textarea>
+
+          <label class="record-field">
+            <span>面试日期</span>
+            <input type="date" name="interview-date">
           </label>
-          <label class="record-field record-field-wide">
-            <span>我的回答</span>
-            <textarea name="answer" placeholder="整理当时的回答内容"></textarea>
-          </label>
-          <label class="record-field record-field-wide">
-            <span>复盘</span>
-            <textarea name="review" placeholder="记录做得好的地方、问题和下次改进方向"></textarea>
+
+          <label class="record-field">
+            <span>面试阶段</span>
+            <select name="interview-stage">
+              <option>HR面</option>
+              <option>一面</option>
+              <option>二面</option>
+              <option>终面</option>
+              <option>Offer</option>
+            </select>
           </label>
         </div>
-      </div>
+
+        <div class="interview-stage-wrap">
+          <div class="interview-stage-title">面试流程</div>
+          <div class="interview-stages" aria-label="面试阶段">
+            <span class="interview-stage interview-stage-active">HR 面</span>
+            <span class="interview-stage">一面</span>
+            <span class="interview-stage">二面</span>
+            <span class="interview-stage">终面</span>
+            <span class="interview-stage">Offer</span>
+          </div>
+        </div>
+
+        <section class="interview-section" aria-labelledby="interview-question-title">
+          <div class="interview-section-head">
+            <div class="interview-section-kicker">INTERVIEW QUESTIONS</div>
+            <h3 id="interview-question-title">面试问题记录</h3>
+          </div>
+          <label class="record-field record-field-wide">
+            <span>问题与追问</span>
+            <textarea class="interview-textarea" name="questions" placeholder="记录面试官提出的问题、追问和重点要求"></textarea>
+          </label>
+        </section>
+
+        <section class="interview-section" aria-labelledby="interview-answer-title">
+          <div class="interview-section-head">
+            <div class="interview-section-kicker">MY ANSWERS</div>
+            <h3 id="interview-answer-title">我的回答记录</h3>
+          </div>
+          <label class="record-field record-field-wide">
+            <span>回答内容</span>
+            <textarea class="interview-textarea" name="answers" placeholder="整理当时的回答逻辑、案例和数据表达"></textarea>
+          </label>
+        </section>
+
+        <section class="interview-section" aria-labelledby="interview-review-title">
+          <div class="interview-section-head">
+            <div class="interview-section-kicker">REVIEW</div>
+            <h3 id="interview-review-title">面试复盘</h3>
+          </div>
+          <div class="record-grid">
+            <label class="record-field record-field-wide">
+              <span>表现亮点</span>
+              <textarea name="review-strengths" placeholder="记录回答清晰、案例有效或得到认可的部分"></textarea>
+            </label>
+            <label class="record-field record-field-wide">
+              <span>改进方向</span>
+              <textarea name="review-improvements" placeholder="记录回答不足、缺失信息和下一次改进动作"></textarea>
+            </label>
+          </div>
+        </section>
+      </form>
     </section>
   </main>
 </body>
