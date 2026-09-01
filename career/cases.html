@@ -5,6 +5,221 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>案例库 · Suze OS</title>
   <link rel="stylesheet" href="career.css">
+  <style>
+    .case-category-panel {
+      margin-bottom:16px;
+      padding:14px;
+      display:grid;
+      gap:9px;
+      border:1px solid rgba(23,32,43,.07);
+      border-radius:16px;
+      background:rgba(255,255,255,.45);
+    }
+
+    .case-category-title {
+      color:#566371;
+      font-size:10px;
+      font-weight:800;
+    }
+
+    .case-categories {
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+    }
+
+    .case-category {
+      min-height:34px;
+      padding:7px 12px;
+      border:1px solid rgba(23,32,43,.08);
+      border-radius:999px;
+      background:rgba(255,255,255,.66);
+      color:#566371;
+      cursor:pointer;
+      font:inherit;
+      font-size:11px;
+      font-weight:800;
+      outline:none;
+    }
+
+    .case-category-active {
+      border-color:rgba(22,201,195,.28);
+      background:rgba(22,201,195,.12);
+      color:var(--accent-deep);
+    }
+
+    .case-overview-head {
+      margin:4px 0 14px;
+    }
+
+    .case-overview-title {
+      margin:0;
+      font-size:16px;
+      letter-spacing:-.2px;
+    }
+
+    .case-overview-copy {
+      margin:4px 0 0;
+      color:var(--muted);
+      font-size:11px;
+    }
+
+    .case-editor {
+      margin-top:16px;
+    }
+
+    .case-editor-head {
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:16px;
+    }
+
+    .case-editor-category {
+      flex:0 0 auto;
+    }
+
+    .case-editor-select {
+      min-height:36px;
+      padding:7px 30px 7px 12px;
+      border:1px solid rgba(22,201,195,.24);
+      border-radius:999px;
+      background:rgba(22,201,195,.12);
+      color:var(--accent-deep);
+      cursor:pointer;
+      font:inherit;
+      font-size:11px;
+      font-weight:800;
+      outline:none;
+    }
+
+    .case-section {
+      margin-top:18px;
+      padding-top:18px;
+      border-top:1px solid rgba(23,32,43,.07);
+    }
+
+    .case-section-head {
+      margin-bottom:14px;
+    }
+
+    .case-section-kicker {
+      color:var(--accent-deep);
+      font-size:9px;
+      font-weight:800;
+      letter-spacing:1.1px;
+    }
+
+    .case-section h3 {
+      margin:3px 0 0;
+      font-size:16px;
+      letter-spacing:-.2px;
+    }
+
+    .star-grid {
+      display:grid;
+      grid-template-columns:repeat(2,minmax(0,1fr));
+      gap:14px;
+    }
+
+    .star-card {
+      min-width:0;
+      padding:14px;
+      display:grid;
+      gap:9px;
+      border:1px solid rgba(23,32,43,.06);
+      border-radius:13px;
+      background:rgba(255,255,255,.42);
+    }
+
+    .star-label {
+      display:flex;
+      align-items:center;
+      gap:8px;
+      color:#344250;
+      font-size:11px;
+      font-weight:800;
+    }
+
+    .star-letter {
+      width:26px;
+      height:26px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      border-radius:50%;
+      background:rgba(22,201,195,.12);
+      color:var(--accent-deep);
+      font-size:11px;
+    }
+
+    .star-card textarea {
+      min-height:120px;
+    }
+
+    .experience-tags {
+      margin-top:10px;
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+    }
+
+    .experience-tag {
+      min-height:30px;
+      padding:6px 10px;
+      display:inline-flex;
+      align-items:center;
+      border:1px solid rgba(22,201,195,.20);
+      border-radius:999px;
+      background:rgba(22,201,195,.08);
+      color:var(--accent-deep);
+      font-size:10px;
+      font-weight:800;
+    }
+
+    .case-category:focus-visible,
+    .case-editor-select:focus {
+      border-color:rgba(22,201,195,.46);
+      box-shadow:0 0 0 3px rgba(22,201,195,.09);
+    }
+
+    .sr-only {
+      position:absolute;
+      width:1px;
+      height:1px;
+      padding:0;
+      margin:-1px;
+      overflow:hidden;
+      clip:rect(0,0,0,0);
+      white-space:nowrap;
+      border:0;
+    }
+
+    @media(max-width:768px) {
+      .case-category-panel {
+        padding:12px;
+      }
+
+      .case-editor-head {
+        align-items:flex-start;
+        flex-direction:column;
+      }
+
+      .case-editor-category,
+      .case-editor-select {
+        width:100%;
+      }
+
+      .case-category,
+      .case-editor-select {
+        font-size:16px;
+      }
+
+      .star-grid {
+        grid-template-columns:1fr;
+      }
+    }
+  </style>
 </head>
 <body>
   <header class="career-header">
@@ -22,6 +237,23 @@
           <p class="tracker-page-copy">沉淀可用于简历和面试的代表案例。</p>
         </div>
         <a class="back-button tracker-back" href="../index.html">返回首页</a>
+      </div>
+
+      <section class="case-category-panel" aria-label="案例分类">
+        <div class="case-category-title">案例分类标签</div>
+        <div class="case-categories">
+          <button class="case-category case-category-active" type="button">全部案例</button>
+          <button class="case-category" type="button">达人运营</button>
+          <button class="case-category" type="button">品牌增长</button>
+          <button class="case-category" type="button">直播</button>
+          <button class="case-category" type="button">电商</button>
+          <button class="case-category" type="button">内容营销</button>
+        </div>
+      </section>
+
+      <div class="case-overview-head">
+        <h2 class="case-overview-title">案例成果概览</h2>
+        <p class="case-overview-copy">保留可直接用于简历和面试的数据成果。</p>
       </div>
 
       <div class="case-grid">
@@ -53,6 +285,120 @@
           </ul>
         </article>
       </div>
+
+      <form class="record-card case-editor" aria-label="职业案例卡片">
+        <div class="record-card-head case-editor-head">
+          <div>
+            <div class="record-kicker">CAREER CASE CARD</div>
+            <h2>案例记录卡片</h2>
+          </div>
+          <label class="case-editor-category">
+            <span class="sr-only">案例分类</span>
+            <select class="case-editor-select" name="case-category">
+              <option>达人运营</option>
+              <option>品牌增长</option>
+              <option>直播</option>
+              <option>电商</option>
+              <option>内容营销</option>
+            </select>
+          </label>
+        </div>
+
+        <div class="record-grid">
+          <label class="record-field">
+            <span>项目名称</span>
+            <input type="text" name="project-name" placeholder="填写项目名称">
+          </label>
+
+          <label class="record-field">
+            <span>公司名称</span>
+            <input type="text" name="company" placeholder="填写公司名称" autocomplete="organization">
+          </label>
+
+          <label class="record-field record-field-wide">
+            <span>项目时间</span>
+            <input type="text" name="project-period" placeholder="例如：2024.03–2024.08">
+          </label>
+
+          <label class="record-field record-field-wide">
+            <span>项目背景</span>
+            <textarea name="project-background" placeholder="记录业务背景、市场环境和项目起因"></textarea>
+          </label>
+
+          <label class="record-field record-field-wide">
+            <span>项目目标</span>
+            <textarea name="project-goal" placeholder="记录项目需要解决的问题和目标指标"></textarea>
+          </label>
+
+          <label class="record-field record-field-wide">
+            <span>我的职责</span>
+            <textarea name="responsibilities" placeholder="记录个人负责范围、协作角色和关键责任"></textarea>
+          </label>
+
+          <label class="record-field record-field-wide">
+            <span>执行动作</span>
+            <textarea name="actions" placeholder="按步骤记录策略、资源协调和具体执行动作"></textarea>
+          </label>
+
+          <label class="record-field record-field-wide">
+            <span>数据结果</span>
+            <textarea name="results" placeholder="用 GMV、转化率、曝光量或合作数量记录成果"></textarea>
+          </label>
+        </div>
+
+        <section class="case-section" aria-labelledby="case-interview-title">
+          <div class="case-section-head">
+            <div class="case-section-kicker">INTERVIEW STORY</div>
+            <h3 id="case-interview-title">面试表达</h3>
+          </div>
+          <label class="record-field record-field-wide">
+            <span>三分钟案例表达</span>
+            <textarea name="interview-story" placeholder="整理适合面试口述的案例开场、关键动作、结果和个人价值"></textarea>
+          </label>
+        </section>
+
+        <section class="case-section" aria-labelledby="case-star-title">
+          <div class="case-section-head">
+            <div class="case-section-kicker">STAR FRAMEWORK</div>
+            <h3 id="case-star-title">STAR 结构记录</h3>
+          </div>
+          <div class="star-grid">
+            <label class="star-card record-field">
+              <span class="star-label"><span class="star-letter">S</span>情境 Situation</span>
+              <textarea name="star-situation" placeholder="当时的业务背景和挑战是什么？"></textarea>
+            </label>
+            <label class="star-card record-field">
+              <span class="star-label"><span class="star-letter">T</span>任务 Task</span>
+              <textarea name="star-task" placeholder="你的目标和责任是什么？"></textarea>
+            </label>
+            <label class="star-card record-field">
+              <span class="star-label"><span class="star-letter">A</span>行动 Action</span>
+              <textarea name="star-action" placeholder="你具体采取了哪些行动？"></textarea>
+            </label>
+            <label class="star-card record-field">
+              <span class="star-label"><span class="star-letter">R</span>结果 Result</span>
+              <textarea name="star-result" placeholder="最终取得了哪些可量化结果？"></textarea>
+            </label>
+          </div>
+        </section>
+
+        <section class="case-section" aria-labelledby="case-experience-title">
+          <div class="case-section-head">
+            <div class="case-section-kicker">REUSABLE EXPERIENCE</div>
+            <h3 id="case-experience-title">可复制经验</h3>
+          </div>
+          <label class="record-field record-field-wide">
+            <span>方法与沉淀</span>
+            <textarea name="reusable-experience" placeholder="提炼可迁移到其他岗位或项目的方法、模板和判断标准"></textarea>
+          </label>
+          <div class="experience-tags" aria-label="可复制经验标签">
+            <span class="experience-tag">策略拆解</span>
+            <span class="experience-tag">资源协同</span>
+            <span class="experience-tag">数据复盘</span>
+            <span class="experience-tag">流程优化</span>
+          </div>
+        </section>
+      </form>
     </section>
   </main>
 </body>
