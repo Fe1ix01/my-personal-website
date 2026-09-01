@@ -1172,6 +1172,7 @@
             <div>
               <div class="group-name">Build</div>
               <div class="tools">
+                <a class="tool" target="_blank" rel="noopener" href="https://chatgpt.com/codex" title="Codex 开发工作区" aria-label="Codex：Codex 开发工作区">Codex</a>
                 <a class="tool" target="_blank" rel="noopener" href="https://github.com">GitHub</a>
                 <a class="tool" target="_blank" rel="noopener" href="https://vercel.com">Vercel</a>
                 <a class="tool" target="_blank" rel="noopener" href="https://dash.cloudflare.com">Cloudflare</a>
@@ -1341,16 +1342,6 @@
             <section class="recovery-step">
               <div class="recovery-step-head">
                 <span class="num">02</span>
-                <div><h3>Node.js LTS</h3><p>Codex 运行环境</p></div>
-              </div>
-              <div class="recovery-actions">
-                <a class="path-link" id="recovery-nodejs" target="_blank" rel="noopener">下载 Node.js</a>
-              </div>
-            </section>
-
-            <section class="recovery-step">
-              <div class="recovery-step-head">
-                <span class="num">03</span>
                 <div><h3>Git for Windows</h3><p>用于拉取和提交 GitHub 项目</p></div>
               </div>
               <div class="recovery-actions">
@@ -1360,8 +1351,29 @@
 
             <section class="recovery-step">
               <div class="recovery-step-head">
+                <span class="num">03</span>
+                <div><h3>安装 Codex Desktop</h3><p>通过 Codex App Manager 安装或更新 Codex 桌面版。</p></div>
+              </div>
+              <div class="recovery-actions">
+                <a class="path-link" id="recovery-codex-app-manager" target="_blank" rel="noopener">Codex App Manager</a>
+              </div>
+              <p>第三方开源安装/更新管理器，用于安装官方 Codex Desktop。</p>
+            </section>
+
+            <section class="recovery-step">
+              <div class="recovery-step-head">
                 <span class="num">04</span>
-                <div><h3>安装 Codex</h3></div>
+                <div><h3>Node.js LTS</h3><p>Codex CLI 需要时安装</p></div>
+              </div>
+              <div class="recovery-actions">
+                <a class="path-link" id="recovery-nodejs" target="_blank" rel="noopener">下载 Node.js</a>
+              </div>
+            </section>
+
+            <section class="recovery-step">
+              <div class="recovery-step-head">
+                <span class="num">05</span>
+                <div><h3>安装 Codex CLI</h3></div>
               </div>
               <div class="command-box">
                 <code>npm install -g @openai/codex</code>
@@ -1371,7 +1383,7 @@
 
             <section class="recovery-step">
               <div class="recovery-step-head">
-                <span class="num">05</span>
+                <span class="num">06</span>
                 <div><h3>恢复网站项目</h3></div>
               </div>
               <div class="command-box">
@@ -1384,7 +1396,7 @@ cd suze-os</code>
 
             <section class="recovery-step">
               <div class="recovery-step-head">
-                <span class="num">06</span>
+                <span class="num">07</span>
                 <div><h3>GitHub 连接异常时</h3><p>仅当 git clone 出现 Connection reset / timeout 时使用。</p></div>
               </div>
               <div class="command-box">
@@ -1397,8 +1409,8 @@ git config --global https.proxy http://127.0.0.1:10808</code>
 
             <section class="recovery-step">
               <div class="recovery-step-head">
-                <span class="num">07</span>
-                <div><h3>启动 Codex</h3></div>
+                <span class="num">08</span>
+                <div><h3>启动 Codex CLI</h3></div>
               </div>
               <div class="command-box">
                 <code>cd %USERPROFILE%\Desktop\suze-os
@@ -1408,7 +1420,7 @@ codex</code>
             </section>
           </div>
 
-          <p class="recovery-note">推荐顺序：v2rayN → Node.js → Git → Codex → clone Suze OS → 开始工作。</p>
+          <p class="recovery-note">推荐顺序：v2rayN → Git → Codex Desktop → Node.js（CLI 需要时）→ Codex CLI → clone Suze OS → 开始工作。</p>
         </details>
       </aside>
 
@@ -1506,7 +1518,8 @@ codex</code>
     };
     const RECOVERY_LINKS = {
       nodejs: "https://nodejs.org/",
-      git: "https://git-scm.com/install/windows"
+      git: "https://git-scm.com/install/windows",
+      codexAppManager: "https://github.com/Wangnov/Codex-App-Manager"
     };
     const SETTINGS_LINKS = {
       upma: "https://scene-myzo.upma.site/",
@@ -1863,6 +1876,7 @@ codex</code>
       setSafeExternalLink("recovery-v2rayn-official", CONNECTION_LINKS.v2raynOfficial);
       setSafeExternalLink("recovery-nodejs", RECOVERY_LINKS.nodejs);
       setSafeExternalLink("recovery-git", RECOVERY_LINKS.git);
+      setSafeExternalLink("recovery-codex-app-manager", RECOVERY_LINKS.codexAppManager);
 
       document.querySelectorAll(".copy-command").forEach((button) => {
         button.addEventListener("click", async () => {
