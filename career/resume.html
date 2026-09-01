@@ -5,6 +5,213 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>简历库 · Suze OS</title>
   <link rel="stylesheet" href="career.css">
+  <style>
+    .resume-manager {
+      margin-bottom:16px;
+      padding:16px;
+      display:grid;
+      gap:14px;
+      border:1px solid rgba(23,32,43,.07);
+      border-radius:16px;
+      background:rgba(255,255,255,.45);
+    }
+
+    .resume-manager-head {
+      display:flex;
+      align-items:flex-end;
+      justify-content:space-between;
+      gap:16px;
+    }
+
+    .resume-manager-title {
+      margin:0;
+      font-size:16px;
+      letter-spacing:-.2px;
+    }
+
+    .resume-manager-copy {
+      margin:4px 0 0;
+      color:var(--muted);
+      font-size:11px;
+    }
+
+    .resume-filter-grid {
+      display:grid;
+      grid-template-columns:minmax(0,1fr) 180px;
+      gap:12px;
+    }
+
+    .resume-filter-field {
+      min-width:0;
+      display:grid;
+      gap:7px;
+    }
+
+    .resume-filter-field span,
+    .resume-version-label {
+      color:#566371;
+      font-size:10px;
+      font-weight:800;
+    }
+
+    .resume-filter-field input,
+    .resume-filter-field select {
+      width:100%;
+      min-height:42px;
+      padding:10px 12px;
+      border:1px solid rgba(23,32,43,.08);
+      border-radius:11px;
+      background:rgba(255,255,255,.72);
+      color:var(--text);
+      font:inherit;
+      font-size:12px;
+      outline:none;
+    }
+
+    .resume-filter-field select {
+      cursor:pointer;
+    }
+
+    .resume-version-groups {
+      display:grid;
+      gap:8px;
+    }
+
+    .resume-version-tags,
+    .advantage-tags {
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+    }
+
+    .resume-version-tag,
+    .advantage-tag {
+      min-height:32px;
+      padding:7px 11px;
+      display:inline-flex;
+      align-items:center;
+      border:1px solid rgba(23,32,43,.08);
+      border-radius:999px;
+      background:rgba(255,255,255,.66);
+      color:#566371;
+      font-size:10px;
+      font-weight:800;
+    }
+
+    .resume-version-tag {
+      cursor:pointer;
+      font:inherit;
+      outline:none;
+    }
+
+    .resume-version-tag-active,
+    .advantage-tag {
+      border-color:rgba(22,201,195,.24);
+      background:rgba(22,201,195,.10);
+      color:var(--accent-deep);
+    }
+
+    .resume-card-head {
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:16px;
+    }
+
+    .resume-status {
+      flex:0 0 auto;
+    }
+
+    .resume-status-select {
+      min-height:36px;
+      padding:7px 30px 7px 12px;
+      border:1px solid rgba(22,201,195,.24);
+      border-radius:999px;
+      background:rgba(22,201,195,.12);
+      color:var(--accent-deep);
+      cursor:pointer;
+      font:inherit;
+      font-size:11px;
+      font-weight:800;
+      outline:none;
+    }
+
+    .resume-section {
+      margin-top:18px;
+      padding-top:18px;
+      border-top:1px solid rgba(23,32,43,.07);
+    }
+
+    .resume-section-head {
+      margin-bottom:14px;
+    }
+
+    .resume-section-kicker {
+      color:var(--accent-deep);
+      font-size:9px;
+      font-weight:800;
+      letter-spacing:1.1px;
+    }
+
+    .resume-section h3 {
+      margin:3px 0 0;
+      font-size:16px;
+      letter-spacing:-.2px;
+    }
+
+    .advantage-wrap {
+      display:grid;
+      gap:9px;
+    }
+
+    .resume-filter-field input:focus,
+    .resume-filter-field select:focus,
+    .resume-version-tag:focus-visible,
+    .resume-status-select:focus {
+      border-color:rgba(22,201,195,.46);
+      box-shadow:0 0 0 3px rgba(22,201,195,.09);
+    }
+
+    .sr-only {
+      position:absolute;
+      width:1px;
+      height:1px;
+      padding:0;
+      margin:-1px;
+      overflow:hidden;
+      clip:rect(0,0,0,0);
+      white-space:nowrap;
+      border:0;
+    }
+
+    @media(max-width:768px) {
+      .resume-manager {
+        padding:14px;
+      }
+
+      .resume-manager-head,
+      .resume-card-head {
+        align-items:flex-start;
+        flex-direction:column;
+      }
+
+      .resume-filter-grid {
+        grid-template-columns:1fr;
+      }
+
+      .resume-status,
+      .resume-status-select {
+        width:100%;
+      }
+
+      .resume-filter-field input,
+      .resume-filter-field select,
+      .resume-version-tag,
+      .resume-status-select {
+        font-size:16px;
+      }
+    }
+  </style>
 </head>
 <body>
   <header class="career-header">
@@ -24,34 +231,132 @@
         <a class="back-button tracker-back" href="../index.html">返回首页</a>
       </div>
 
-      <div class="record-card">
-        <div class="record-card-head">
-          <div class="record-kicker">RESUME CARD</div>
-          <h2>简历版本</h2>
+      <section class="resume-manager" aria-label="简历版本管理">
+        <div class="resume-manager-head">
+          <div>
+            <h2 class="resume-manager-title">简历版本管理</h2>
+            <p class="resume-manager-copy">按岗位方向和使用状态整理不同版本。</p>
+          </div>
+          <div class="record-kicker">VERSION MANAGER</div>
         </div>
+
+        <div class="resume-filter-grid">
+          <label class="resume-filter-field">
+            <span>搜索简历版本</span>
+            <input type="search" name="resume-search" placeholder="搜索简历名称、岗位或公司">
+          </label>
+          <label class="resume-filter-field">
+            <span>状态筛选</span>
+            <select name="resume-status-filter">
+              <option>全部状态</option>
+              <option>使用中</option>
+              <option>待优化</option>
+              <option>投递中</option>
+              <option>已废弃</option>
+            </select>
+          </label>
+        </div>
+
+        <div class="resume-version-groups">
+          <div class="resume-version-label">版本分类</div>
+          <div class="resume-version-tags" aria-label="简历版本分类">
+            <button class="resume-version-tag resume-version-tag-active" type="button">全部版本</button>
+            <button class="resume-version-tag" type="button">内容运营</button>
+            <button class="resume-version-tag" type="button">品牌营销</button>
+            <button class="resume-version-tag" type="button">商务合作</button>
+            <button class="resume-version-tag" type="button">项目管理</button>
+          </div>
+        </div>
+      </section>
+
+      <form class="record-card" aria-label="简历版本卡片">
+        <div class="record-card-head resume-card-head">
+          <div>
+            <div class="record-kicker">RESUME CARD</div>
+            <h2>简历版本卡片</h2>
+          </div>
+          <label class="resume-status">
+            <span class="sr-only">当前状态</span>
+            <select class="resume-status-select" name="status">
+              <option>使用中</option>
+              <option>待优化</option>
+              <option>投递中</option>
+              <option>已废弃</option>
+            </select>
+          </label>
+        </div>
+
         <div class="record-grid">
           <label class="record-field">
-            <span>简历版本</span>
-            <input type="text" name="version" placeholder="例如：内容运营 V3">
+            <span>简历名称</span>
+            <input type="text" name="resume-name" placeholder="例如：内容运营简历 V3">
           </label>
+
           <label class="record-field">
-            <span>更新时间</span>
+            <span>修改日期</span>
             <input type="date" name="updated-at">
           </label>
-          <label class="record-field record-field-wide">
-            <span>适合岗位</span>
-            <input type="text" name="target-role" placeholder="填写适合投递的岗位方向">
+
+          <label class="record-field">
+            <span>目标岗位</span>
+            <input type="text" name="target-role" placeholder="填写目标岗位" autocomplete="organization-title">
           </label>
-          <label class="record-field record-field-wide">
-            <span>核心优势</span>
-            <textarea name="strengths" placeholder="提炼这份简历重点突出的能力和成果"></textarea>
+
+          <label class="record-field">
+            <span>适配公司</span>
+            <input type="text" name="target-companies" placeholder="填写适配公司或公司类型">
           </label>
+
           <label class="record-field record-field-wide">
-            <span>备注</span>
-            <textarea name="notes" placeholder="记录待优化内容、适用公司或投递反馈"></textarea>
+            <span>核心关键词</span>
+            <input type="text" name="keywords" placeholder="例如：内容增长、达人合作、GMV、项目统筹">
           </label>
         </div>
-      </div>
+
+        <section class="resume-section" aria-labelledby="resume-match-title">
+          <div class="resume-section-head">
+            <div class="resume-section-kicker">MATCH NOTES</div>
+            <h3 id="resume-match-title">JD 匹配与优势</h3>
+          </div>
+          <div class="record-grid">
+            <label class="record-field record-field-wide">
+              <span>JD 匹配备注</span>
+              <textarea name="jd-match-notes" placeholder="记录岗位要求、已匹配能力和需要补强的内容"></textarea>
+            </label>
+            <div class="record-field record-field-wide advantage-wrap">
+              <span>优势标签</span>
+              <div class="advantage-tags" aria-label="优势标签">
+                <span class="advantage-tag">内容增长</span>
+                <span class="advantage-tag">达人合作</span>
+                <span class="advantage-tag">GMV 转化</span>
+                <span class="advantage-tag">项目统筹</span>
+              </div>
+              <input type="text" name="advantage-tags" placeholder="补充优势标签，用逗号分隔">
+            </div>
+          </div>
+        </section>
+
+        <section class="resume-section" aria-labelledby="resume-project-title">
+          <div class="resume-section-head">
+            <div class="resume-section-kicker">PROJECT EXPERIENCE</div>
+            <h3 id="resume-project-title">项目经历记录</h3>
+          </div>
+          <div class="record-grid">
+            <label class="record-field">
+              <span>项目名称</span>
+              <input type="text" name="project-name" placeholder="填写项目名称">
+            </label>
+            <label class="record-field">
+              <span>项目角色</span>
+              <input type="text" name="project-role" placeholder="填写负责角色">
+            </label>
+            <label class="record-field record-field-wide">
+              <span>项目成果</span>
+              <textarea name="project-results" placeholder="用数据记录项目动作、个人贡献和最终成果"></textarea>
+            </label>
+          </div>
+        </section>
+      </form>
     </section>
   </main>
 </body>
