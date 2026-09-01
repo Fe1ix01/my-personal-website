@@ -5,6 +5,200 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>岗位雷达 · Suze OS</title>
   <link rel="stylesheet" href="career.css">
+  <style>
+    .jobs-main {
+      width:min(calc(100% - 36px),980px);
+      place-items:start center;
+    }
+
+    .jobs-panel {
+      padding:32px;
+      text-align:left;
+    }
+
+    .jobs-page-head {
+      display:flex;
+      align-items:flex-end;
+      justify-content:space-between;
+      gap:24px;
+      margin-bottom:24px;
+    }
+
+    .jobs-page-head h1 {
+      font-size:clamp(32px,5vw,44px);
+    }
+
+    .jobs-page-copy {
+      margin:8px 0 0;
+      color:var(--muted);
+      font-size:12px;
+    }
+
+    .jobs-back {
+      flex:0 0 auto;
+      margin-top:0;
+    }
+
+    .job-card {
+      padding:22px;
+      border:1px solid rgba(23,32,43,.07);
+      border-radius:16px;
+      background:rgba(255,255,255,.56);
+    }
+
+    .job-card-head {
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:16px;
+      margin-bottom:20px;
+    }
+
+    .job-card-kicker {
+      color:var(--accent-deep);
+      font-size:9px;
+      font-weight:800;
+      letter-spacing:1.1px;
+    }
+
+    .job-card h2 {
+      margin:3px 0 0;
+      font-size:20px;
+      letter-spacing:-.3px;
+    }
+
+    .status-field {
+      flex:0 0 auto;
+    }
+
+    .status-tag {
+      min-height:36px;
+      padding:7px 30px 7px 12px;
+      border:1px solid rgba(22,201,195,.24);
+      border-radius:999px;
+      background:rgba(22,201,195,.12);
+      color:var(--accent-deep);
+      cursor:pointer;
+      font:inherit;
+      font-size:11px;
+      font-weight:800;
+      outline:none;
+    }
+
+    .job-grid {
+      display:grid;
+      grid-template-columns:repeat(2,minmax(0,1fr));
+      gap:16px;
+    }
+
+    .job-field {
+      min-width:0;
+      display:grid;
+      gap:7px;
+    }
+
+    .job-field-wide {
+      grid-column:1/-1;
+    }
+
+    .job-field span {
+      color:#566371;
+      font-size:10px;
+      font-weight:800;
+    }
+
+    .job-field input,
+    .job-field textarea {
+      width:100%;
+      border:1px solid rgba(23,32,43,.08);
+      border-radius:11px;
+      background:rgba(255,255,255,.72);
+      color:var(--text);
+      font:inherit;
+      font-size:12px;
+      outline:none;
+    }
+
+    .job-field input {
+      min-height:42px;
+      padding:10px 12px;
+    }
+
+    .job-field textarea {
+      min-height:112px;
+      padding:11px 12px;
+      line-height:1.6;
+      resize:vertical;
+    }
+
+    .job-field input:focus,
+    .job-field textarea:focus,
+    .status-tag:focus {
+      border-color:rgba(22,201,195,.46);
+      box-shadow:0 0 0 3px rgba(22,201,195,.09);
+    }
+
+    .sr-only {
+      position:absolute;
+      width:1px;
+      height:1px;
+      padding:0;
+      margin:-1px;
+      overflow:hidden;
+      clip:rect(0,0,0,0);
+      white-space:nowrap;
+      border:0;
+    }
+
+    @media(max-width:768px) {
+      .jobs-main {
+        width:calc(100% - 20px);
+      }
+
+      .jobs-panel {
+        padding:22px 16px;
+      }
+
+      .jobs-page-head {
+        align-items:flex-start;
+        flex-direction:column;
+        gap:18px;
+      }
+
+      .jobs-back {
+        width:100%;
+      }
+
+      .job-card {
+        padding:16px;
+      }
+
+      .job-card-head {
+        align-items:flex-start;
+        flex-direction:column;
+      }
+
+      .status-field,
+      .status-tag {
+        width:100%;
+      }
+
+      .job-grid {
+        grid-template-columns:1fr;
+        gap:14px;
+      }
+
+      .job-field-wide {
+        grid-column:auto;
+      }
+
+      .job-field input,
+      .job-field textarea,
+      .status-tag {
+        font-size:16px;
+      }
+    }
+  </style>
 </head>
 <body>
   <header class="career-header">
@@ -13,11 +207,68 @@
       <div class="career-context">CAREER</div>
     </div>
   </header>
-  <main class="career-main">
-    <section class="career-panel">
-      <div class="career-eyebrow">CAREER</div>
-      <h1>岗位雷达</h1>
-      <a class="back-button" href="../index.html">返回首页</a>
+  <main class="career-main jobs-main">
+    <section class="career-panel jobs-panel">
+      <div class="jobs-page-head">
+        <div>
+          <div class="career-eyebrow">CAREER</div>
+          <h1>岗位雷达</h1>
+          <p class="jobs-page-copy">记录岗位信息，集中整理求职机会。</p>
+        </div>
+        <a class="back-button jobs-back" href="../index.html">返回首页</a>
+      </div>
+
+      <form class="job-card">
+        <div class="job-card-head">
+          <div>
+            <div class="job-card-kicker">JOB CARD</div>
+            <h2>岗位卡片</h2>
+          </div>
+          <label class="status-field">
+            <span class="sr-only">岗位状态</span>
+            <select class="status-tag" name="status">
+              <option>待关注</option>
+              <option>准备投递</option>
+              <option>已投递</option>
+              <option>面试中</option>
+              <option>已拿 Offer</option>
+              <option>已结束</option>
+            </select>
+          </label>
+        </div>
+
+        <div class="job-grid">
+          <label class="job-field">
+            <span>公司</span>
+            <input type="text" name="company" placeholder="填写公司名称" autocomplete="organization">
+          </label>
+
+          <label class="job-field">
+            <span>岗位</span>
+            <input type="text" name="position" placeholder="填写岗位名称" autocomplete="organization-title">
+          </label>
+
+          <label class="job-field">
+            <span>薪资</span>
+            <input type="text" name="salary" placeholder="例如：20K–30K">
+          </label>
+
+          <label class="job-field">
+            <span>匹配度</span>
+            <input type="number" name="match" min="0" max="100" step="1" inputmode="numeric" placeholder="0–100">
+          </label>
+
+          <label class="job-field job-field-wide">
+            <span>岗位链接</span>
+            <input type="url" name="link" placeholder="https://..." inputmode="url">
+          </label>
+
+          <label class="job-field job-field-wide">
+            <span>备注</span>
+            <textarea name="notes" placeholder="记录岗位亮点、要求、联系人或后续行动"></textarea>
+          </label>
+        </div>
+      </form>
     </section>
   </main>
 </body>

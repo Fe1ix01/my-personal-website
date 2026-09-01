@@ -13,11 +13,54 @@
       <div class="career-context">CAREER</div>
     </div>
   </header>
-  <main class="career-main">
-    <section class="career-panel">
-      <div class="career-eyebrow">CAREER</div>
-      <h1>公司库</h1>
-      <a class="back-button" href="../index.html">返回首页</a>
+  <main class="career-main tracker-main">
+    <section class="career-panel tracker-panel">
+      <div class="tracker-page-head">
+        <div>
+          <div class="career-eyebrow">CAREER</div>
+          <h1>公司库</h1>
+          <p class="tracker-page-copy">整理目标公司信息和招聘进展。</p>
+        </div>
+        <a class="back-button tracker-back" href="../index.html">返回首页</a>
+      </div>
+
+      <div class="record-card">
+        <div class="record-card-head">
+          <div class="record-kicker">COMPANY CARD</div>
+          <h2>公司档案</h2>
+        </div>
+        <div class="record-grid">
+          <label class="record-field">
+            <span>公司名称</span>
+            <input type="text" name="company" placeholder="填写公司名称" autocomplete="organization">
+          </label>
+          <label class="record-field">
+            <span>行业</span>
+            <input type="text" name="industry" placeholder="填写所属行业">
+          </label>
+          <label class="record-field">
+            <span>目标岗位</span>
+            <input type="text" name="target-role" placeholder="填写目标岗位">
+          </label>
+          <label class="record-field">
+            <span>招聘状态</span>
+            <select name="hiring-status">
+              <option>持续关注</option>
+              <option>招聘中</option>
+              <option>暂停招聘</option>
+              <option>已关闭</option>
+            </select>
+          </label>
+          <label class="record-field record-field-wide">
+            <span>匹配原因</span>
+            <textarea name="match-reason" placeholder="记录公司、岗位与你的匹配点"></textarea>
+          </label>
+          <label class="record-field record-field-wide">
+            <span>备注</span>
+            <textarea name="notes" placeholder="记录团队信息、联系人或后续行动"></textarea>
+          </label>
+        </div>
+      </div>
     </section>
   </main>
 </body>

@@ -13,11 +13,45 @@
       <div class="career-context">CAREER</div>
     </div>
   </header>
-  <main class="career-main">
-    <section class="career-panel">
-      <div class="career-eyebrow">CAREER</div>
-      <h1>简历库</h1>
-      <a class="back-button" href="../index.html">返回首页</a>
+  <main class="career-main tracker-main">
+    <section class="career-panel tracker-panel">
+      <div class="tracker-page-head">
+        <div>
+          <div class="career-eyebrow">CAREER</div>
+          <h1>简历库</h1>
+          <p class="tracker-page-copy">管理不同岗位方向的简历版本。</p>
+        </div>
+        <a class="back-button tracker-back" href="../index.html">返回首页</a>
+      </div>
+
+      <div class="record-card">
+        <div class="record-card-head">
+          <div class="record-kicker">RESUME CARD</div>
+          <h2>简历版本</h2>
+        </div>
+        <div class="record-grid">
+          <label class="record-field">
+            <span>简历版本</span>
+            <input type="text" name="version" placeholder="例如：内容运营 V3">
+          </label>
+          <label class="record-field">
+            <span>更新时间</span>
+            <input type="date" name="updated-at">
+          </label>
+          <label class="record-field record-field-wide">
+            <span>适合岗位</span>
+            <input type="text" name="target-role" placeholder="填写适合投递的岗位方向">
+          </label>
+          <label class="record-field record-field-wide">
+            <span>核心优势</span>
+            <textarea name="strengths" placeholder="提炼这份简历重点突出的能力和成果"></textarea>
+          </label>
+          <label class="record-field record-field-wide">
+            <span>备注</span>
+            <textarea name="notes" placeholder="记录待优化内容、适用公司或投递反馈"></textarea>
+          </label>
+        </div>
+      </div>
     </section>
   </main>
 </body>

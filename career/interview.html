@@ -13,11 +13,45 @@
       <div class="career-context">CAREER</div>
     </div>
   </header>
-  <main class="career-main">
-    <section class="career-panel">
-      <div class="career-eyebrow">CAREER</div>
-      <h1>面试库</h1>
-      <a class="back-button" href="../index.html">返回首页</a>
+  <main class="career-main tracker-main">
+    <section class="career-panel tracker-panel">
+      <div class="tracker-page-head">
+        <div>
+          <div class="career-eyebrow">CAREER</div>
+          <h1>面试库</h1>
+          <p class="tracker-page-copy">记录面试问题、回答与复盘。</p>
+        </div>
+        <a class="back-button tracker-back" href="../index.html">返回首页</a>
+      </div>
+
+      <div class="record-card">
+        <div class="record-card-head">
+          <div class="record-kicker">INTERVIEW CARD</div>
+          <h2>面试记录</h2>
+        </div>
+        <div class="record-grid">
+          <label class="record-field">
+            <span>公司</span>
+            <input type="text" name="company" placeholder="填写公司名称" autocomplete="organization">
+          </label>
+          <label class="record-field">
+            <span>岗位</span>
+            <input type="text" name="position" placeholder="填写面试岗位" autocomplete="organization-title">
+          </label>
+          <label class="record-field record-field-wide">
+            <span>面试问题</span>
+            <textarea name="question" placeholder="记录面试官提出的问题"></textarea>
+          </label>
+          <label class="record-field record-field-wide">
+            <span>我的回答</span>
+            <textarea name="answer" placeholder="整理当时的回答内容"></textarea>
+          </label>
+          <label class="record-field record-field-wide">
+            <span>复盘</span>
+            <textarea name="review" placeholder="记录做得好的地方、问题和下次改进方向"></textarea>
+          </label>
+        </div>
+      </div>
     </section>
   </main>
 </body>
