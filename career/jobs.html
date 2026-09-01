@@ -39,6 +39,47 @@
       margin-top:0;
     }
 
+    .job-filters {
+      display:grid;
+      grid-template-columns:minmax(0,1fr) 190px;
+      gap:12px;
+      margin-bottom:16px;
+      padding:14px;
+      border:1px solid rgba(23,32,43,.07);
+      border-radius:16px;
+      background:rgba(255,255,255,.45);
+    }
+
+    .filter-field {
+      min-width:0;
+      display:grid;
+      gap:7px;
+    }
+
+    .filter-field span {
+      color:#566371;
+      font-size:10px;
+      font-weight:800;
+    }
+
+    .filter-field input,
+    .filter-field select {
+      width:100%;
+      min-height:42px;
+      padding:10px 12px;
+      border:1px solid rgba(23,32,43,.08);
+      border-radius:11px;
+      background:rgba(255,255,255,.72);
+      color:var(--text);
+      font:inherit;
+      font-size:12px;
+      outline:none;
+    }
+
+    .filter-field select {
+      cursor:pointer;
+    }
+
     .job-card {
       padding:22px;
       border:1px solid rgba(23,32,43,.07);
@@ -67,22 +108,40 @@
       letter-spacing:-.3px;
     }
 
-    .status-field {
+    .job-tags {
+      display:flex;
+      align-items:center;
+      justify-content:flex-end;
+      flex-wrap:wrap;
+      gap:8px;
+    }
+
+    .tag-field {
       flex:0 0 auto;
     }
 
+    .priority-tag,
     .status-tag {
       min-height:36px;
       padding:7px 30px 7px 12px;
-      border:1px solid rgba(22,201,195,.24);
       border-radius:999px;
-      background:rgba(22,201,195,.12);
-      color:var(--accent-deep);
       cursor:pointer;
       font:inherit;
       font-size:11px;
       font-weight:800;
       outline:none;
+    }
+
+    .priority-tag {
+      border:1px solid rgba(116,152,255,.28);
+      background:rgba(116,152,255,.12);
+      color:#526aa3;
+    }
+
+    .status-tag {
+      border:1px solid rgba(22,201,195,.24);
+      background:rgba(22,201,195,.12);
+      color:var(--accent-deep);
     }
 
     .job-grid {
@@ -131,8 +190,11 @@
       resize:vertical;
     }
 
+    .filter-field input:focus,
+    .filter-field select:focus,
     .job-field input:focus,
     .job-field textarea:focus,
+    .priority-tag:focus,
     .status-tag:focus {
       border-color:rgba(22,201,195,.46);
       box-shadow:0 0 0 3px rgba(22,201,195,.09);
@@ -169,6 +231,10 @@
         width:100%;
       }
 
+      .job-filters {
+        grid-template-columns:1fr;
+      }
+
       .job-card {
         padding:16px;
       }
@@ -178,7 +244,9 @@
         flex-direction:column;
       }
 
-      .status-field,
+      .job-tags,
+      .tag-field,
+      .priority-tag,
       .status-tag {
         width:100%;
       }
@@ -192,8 +260,11 @@
         grid-column:auto;
       }
 
+      .filter-field input,
+      .filter-field select,
       .job-field input,
       .job-field textarea,
+      .priority-tag,
       .status-tag {
         font-size:16px;
       }
@@ -213,38 +284,70 @@
         <div>
           <div class="career-eyebrow">CAREER</div>
           <h1>岗位雷达</h1>
-          <p class="jobs-page-copy">记录岗位信息，集中整理求职机会。</p>
+          <p class="jobs-page-copy">筛选、评估并跟进求职机会。</p>
         </div>
         <a class="back-button jobs-back" href="../index.html">返回首页</a>
       </div>
 
-      <form class="job-card">
+      <section class="job-filters" aria-label="岗位筛选">
+        <label class="filter-field">
+          <span>搜索公司 / 岗位</span>
+          <input type="search" name="job-search" placeholder="输入公司或岗位名称">
+        </label>
+
+        <label class="filter-field">
+          <span>状态筛选</span>
+          <select name="status-filter">
+            <option>全部状态</option>
+            <option>待分析</option>
+            <option>待投递</option>
+            <option>已投递</option>
+            <option>HR沟通</option>
+            <option>面试中</option>
+            <option>Offer</option>
+          </select>
+        </label>
+      </section>
+
+      <form class="job-card" aria-label="岗位卡片模板">
         <div class="job-card-head">
           <div>
             <div class="job-card-kicker">JOB CARD</div>
             <h2>岗位卡片</h2>
           </div>
-          <label class="status-field">
-            <span class="sr-only">岗位状态</span>
-            <select class="status-tag" name="status">
-              <option>待关注</option>
-              <option>准备投递</option>
-              <option>已投递</option>
-              <option>面试中</option>
-              <option>已拿 Offer</option>
-              <option>已结束</option>
-            </select>
-          </label>
+
+          <div class="job-tags">
+            <label class="tag-field">
+              <span class="sr-only">岗位优先级</span>
+              <select class="priority-tag" name="priority">
+                <option>重点关注</option>
+                <option>普通</option>
+                <option>放弃</option>
+              </select>
+            </label>
+
+            <label class="tag-field">
+              <span class="sr-only">投递状态</span>
+              <select class="status-tag" name="status">
+                <option>待分析</option>
+                <option>待投递</option>
+                <option>已投递</option>
+                <option>HR沟通</option>
+                <option>面试中</option>
+                <option>Offer</option>
+              </select>
+            </label>
+          </div>
         </div>
 
         <div class="job-grid">
           <label class="job-field">
-            <span>公司</span>
+            <span>公司名称</span>
             <input type="text" name="company" placeholder="填写公司名称" autocomplete="organization">
           </label>
 
           <label class="job-field">
-            <span>岗位</span>
+            <span>岗位名称</span>
             <input type="text" name="position" placeholder="填写岗位名称" autocomplete="organization-title">
           </label>
 
@@ -254,18 +357,43 @@
           </label>
 
           <label class="job-field">
+            <span>地点</span>
+            <input type="text" name="location" placeholder="例如：广州 / 远程" autocomplete="address-level2">
+          </label>
+
+          <label class="job-field">
+            <span>来源</span>
+            <input type="text" name="source" placeholder="例如：Boss 直聘 / 内推">
+          </label>
+
+          <label class="job-field">
             <span>匹配度</span>
             <input type="number" name="match" min="0" max="100" step="1" inputmode="numeric" placeholder="0–100">
           </label>
 
           <label class="job-field job-field-wide">
-            <span>岗位链接</span>
+            <span>招聘链接</span>
             <input type="url" name="link" placeholder="https://..." inputmode="url">
           </label>
 
           <label class="job-field job-field-wide">
+            <span>我的优势</span>
+            <textarea name="strengths" placeholder="记录与岗位匹配的经验、能力和成果"></textarea>
+          </label>
+
+          <label class="job-field job-field-wide">
+            <span>岗位短板</span>
+            <textarea name="gaps" placeholder="记录需要补足的经验、技能或信息"></textarea>
+          </label>
+
+          <label class="job-field job-field-wide">
+            <span>下一步动作</span>
+            <textarea name="next-action" placeholder="例如：优化简历、联系内推、准备面试"></textarea>
+          </label>
+
+          <label class="job-field job-field-wide">
             <span>备注</span>
-            <textarea name="notes" placeholder="记录岗位亮点、要求、联系人或后续行动"></textarea>
+            <textarea name="notes" placeholder="补充记录联系人、时间节点或其他信息"></textarea>
           </label>
         </div>
       </form>
