@@ -5,6 +5,139 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>公司库 · Suze OS</title>
   <link rel="stylesheet" href="career.css">
+  <style>
+    .company-tools {
+      margin-bottom:16px;
+      padding:16px;
+      display:grid;
+      gap:14px;
+      border:1px solid rgba(23,32,43,.07);
+      border-radius:16px;
+      background:rgba(255,255,255,.45);
+    }
+
+    .company-search {
+      display:grid;
+      gap:7px;
+    }
+
+    .company-search span,
+    .company-category-title {
+      color:#566371;
+      font-size:10px;
+      font-weight:800;
+    }
+
+    .company-search input {
+      width:100%;
+      min-height:42px;
+      padding:10px 12px;
+      border:1px solid rgba(23,32,43,.08);
+      border-radius:11px;
+      background:rgba(255,255,255,.72);
+      color:var(--text);
+      font:inherit;
+      font-size:12px;
+      outline:none;
+    }
+
+    .company-category-filter {
+      display:grid;
+      gap:8px;
+    }
+
+    .company-categories {
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+    }
+
+    .company-category {
+      min-height:34px;
+      padding:7px 12px;
+      border:1px solid rgba(23,32,43,.08);
+      border-radius:999px;
+      background:rgba(255,255,255,.66);
+      color:#566371;
+      cursor:pointer;
+      font:inherit;
+      font-size:11px;
+      font-weight:800;
+      outline:none;
+    }
+
+    .company-category-active {
+      border-color:rgba(22,201,195,.28);
+      background:rgba(22,201,195,.12);
+      color:var(--accent-deep);
+    }
+
+    .company-card-head {
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:16px;
+    }
+
+    .company-status {
+      flex:0 0 auto;
+    }
+
+    .company-status-select {
+      min-height:36px;
+      padding:7px 30px 7px 12px;
+      border:1px solid rgba(22,201,195,.24);
+      border-radius:999px;
+      background:rgba(22,201,195,.12);
+      color:var(--accent-deep);
+      cursor:pointer;
+      font:inherit;
+      font-size:11px;
+      font-weight:800;
+      outline:none;
+    }
+
+    .company-search input:focus,
+    .company-category:focus-visible,
+    .company-status-select:focus {
+      border-color:rgba(22,201,195,.46);
+      box-shadow:0 0 0 3px rgba(22,201,195,.09);
+    }
+
+    .sr-only {
+      position:absolute;
+      width:1px;
+      height:1px;
+      padding:0;
+      margin:-1px;
+      overflow:hidden;
+      clip:rect(0,0,0,0);
+      white-space:nowrap;
+      border:0;
+    }
+
+    @media(max-width:768px) {
+      .company-tools {
+        padding:14px;
+      }
+
+      .company-card-head {
+        align-items:flex-start;
+        flex-direction:column;
+      }
+
+      .company-status,
+      .company-status-select {
+        width:100%;
+      }
+
+      .company-search input,
+      .company-category,
+      .company-status-select {
+        font-size:16px;
+      }
+    }
+  </style>
 </head>
 <body>
   <header class="career-header">
@@ -24,43 +157,100 @@
         <a class="back-button tracker-back" href="../index.html">返回首页</a>
       </div>
 
-      <div class="record-card">
-        <div class="record-card-head">
-          <div class="record-kicker">COMPANY CARD</div>
-          <h2>公司档案</h2>
+      <section class="company-tools" aria-label="公司筛选">
+        <label class="company-search">
+          <span>搜索公司</span>
+          <input type="search" name="company-search" placeholder="搜索公司名称、行业或目标岗位">
+        </label>
+        <div class="company-category-filter">
+          <div class="company-category-title">行业分类</div>
+          <div class="company-categories" aria-label="行业分类标签">
+            <button class="company-category company-category-active" type="button">全部</button>
+            <button class="company-category" type="button">互联网</button>
+            <button class="company-category" type="button">电商</button>
+            <button class="company-category" type="button">内容营销</button>
+            <button class="company-category" type="button">旅游</button>
+            <button class="company-category" type="button">消费品牌</button>
+            <button class="company-category" type="button">其他</button>
+          </div>
         </div>
+      </section>
+
+      <form class="record-card" aria-label="公司卡片模板">
+        <div class="record-card-head company-card-head">
+          <div>
+            <div class="record-kicker">COMPANY CARD</div>
+            <h2>公司档案</h2>
+          </div>
+          <label class="company-status">
+            <span class="sr-only">公司状态</span>
+            <select class="company-status-select" name="status">
+              <option>未分析</option>
+              <option>值得投递</option>
+              <option>已投递</option>
+              <option>面试中</option>
+              <option>不考虑</option>
+            </select>
+          </label>
+        </div>
+
         <div class="record-grid">
           <label class="record-field">
             <span>公司名称</span>
             <input type="text" name="company" placeholder="填写公司名称" autocomplete="organization">
           </label>
+
           <label class="record-field">
-            <span>行业</span>
-            <input type="text" name="industry" placeholder="填写所属行业">
-          </label>
-          <label class="record-field">
-            <span>目标岗位</span>
-            <input type="text" name="target-role" placeholder="填写目标岗位">
-          </label>
-          <label class="record-field">
-            <span>招聘状态</span>
-            <select name="hiring-status">
-              <option>持续关注</option>
-              <option>招聘中</option>
-              <option>暂停招聘</option>
-              <option>已关闭</option>
+            <span>行业分类</span>
+            <select name="industry">
+              <option value="">选择行业</option>
+              <option>互联网</option>
+              <option>电商</option>
+              <option>内容营销</option>
+              <option>旅游</option>
+              <option>消费品牌</option>
+              <option>其他</option>
             </select>
           </label>
-          <label class="record-field record-field-wide">
-            <span>匹配原因</span>
-            <textarea name="match-reason" placeholder="记录公司、岗位与你的匹配点"></textarea>
+
+          <label class="record-field">
+            <span>公司规模</span>
+            <select name="company-size">
+              <option value="">选择规模</option>
+              <option>1–49 人</option>
+              <option>50–199 人</option>
+              <option>200–999 人</option>
+              <option>1000–9999 人</option>
+              <option>10000 人以上</option>
+            </select>
           </label>
+
+          <label class="record-field">
+            <span>所在地区</span>
+            <input type="text" name="location" placeholder="例如：广州 / 深圳" autocomplete="address-level2">
+          </label>
+
           <label class="record-field record-field-wide">
-            <span>备注</span>
-            <textarea name="notes" placeholder="记录团队信息、联系人或后续行动"></textarea>
+            <span>官网</span>
+            <input type="url" name="website" placeholder="https://..." inputmode="url">
+          </label>
+
+          <label class="record-field record-field-wide">
+            <span>招聘链接</span>
+            <input type="url" name="recruitment-link" placeholder="https://..." inputmode="url">
+          </label>
+
+          <label class="record-field">
+            <span>目标岗位</span>
+            <input type="text" name="target-role" placeholder="填写目标岗位" autocomplete="organization-title">
+          </label>
+
+          <label class="record-field">
+            <span>匹配度评分</span>
+            <input type="number" name="match-score" min="0" max="100" step="1" inputmode="numeric" placeholder="0–100">
           </label>
         </div>
-      </div>
+      </form>
     </section>
   </main>
 </body>
