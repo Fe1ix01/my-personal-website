@@ -5,6 +5,182 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>投递记录 · Suze OS</title>
   <link rel="stylesheet" href="career.css">
+  <style>
+    .application-filters {
+      margin-bottom:16px;
+      padding:14px;
+      display:grid;
+      grid-template-columns:minmax(0,1fr) 190px;
+      gap:12px;
+      border:1px solid rgba(23,32,43,.07);
+      border-radius:16px;
+      background:rgba(255,255,255,.45);
+    }
+
+    .application-filter-field {
+      min-width:0;
+      display:grid;
+      gap:7px;
+    }
+
+    .application-filter-field span {
+      color:#566371;
+      font-size:10px;
+      font-weight:800;
+    }
+
+    .application-filter-field input,
+    .application-filter-field select {
+      width:100%;
+      min-height:42px;
+      padding:10px 12px;
+      border:1px solid rgba(23,32,43,.08);
+      border-radius:11px;
+      background:rgba(255,255,255,.72);
+      color:var(--text);
+      font:inherit;
+      font-size:12px;
+      outline:none;
+    }
+
+    .application-filter-field select {
+      cursor:pointer;
+    }
+
+    .application-card-head {
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:16px;
+    }
+
+    .application-status {
+      flex:0 0 auto;
+    }
+
+    .application-status-select {
+      min-height:36px;
+      padding:7px 30px 7px 12px;
+      border:1px solid rgba(22,201,195,.24);
+      border-radius:999px;
+      background:rgba(22,201,195,.12);
+      color:var(--accent-deep);
+      cursor:pointer;
+      font:inherit;
+      font-size:11px;
+      font-weight:800;
+      outline:none;
+    }
+
+    .application-channel-wrap {
+      margin:18px 0 0;
+      padding:14px;
+      display:grid;
+      gap:9px;
+      border:1px solid rgba(23,32,43,.06);
+      border-radius:13px;
+      background:rgba(255,255,255,.42);
+    }
+
+    .application-channel-title {
+      color:#566371;
+      font-size:10px;
+      font-weight:800;
+    }
+
+    .application-channels {
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+    }
+
+    .application-channel {
+      min-height:30px;
+      padding:6px 10px;
+      display:inline-flex;
+      align-items:center;
+      border:1px solid rgba(23,32,43,.08);
+      border-radius:999px;
+      background:rgba(255,255,255,.66);
+      color:#566371;
+      font-size:10px;
+      font-weight:800;
+    }
+
+    .application-channel-active {
+      border-color:rgba(22,201,195,.24);
+      background:rgba(22,201,195,.10);
+      color:var(--accent-deep);
+    }
+
+    .application-review {
+      margin-top:18px;
+      padding-top:18px;
+      border-top:1px solid rgba(23,32,43,.07);
+    }
+
+    .application-review-head {
+      margin-bottom:14px;
+    }
+
+    .application-review-kicker {
+      color:var(--accent-deep);
+      font-size:9px;
+      font-weight:800;
+      letter-spacing:1.1px;
+    }
+
+    .application-review h3 {
+      margin:3px 0 0;
+      font-size:16px;
+      letter-spacing:-.2px;
+    }
+
+    .application-filter-field input:focus,
+    .application-filter-field select:focus,
+    .application-status-select:focus {
+      border-color:rgba(22,201,195,.46);
+      box-shadow:0 0 0 3px rgba(22,201,195,.09);
+    }
+
+    .sr-only {
+      position:absolute;
+      width:1px;
+      height:1px;
+      padding:0;
+      margin:-1px;
+      overflow:hidden;
+      clip:rect(0,0,0,0);
+      white-space:nowrap;
+      border:0;
+    }
+
+    @media(max-width:768px) {
+      .application-filters {
+        grid-template-columns:1fr;
+      }
+
+      .application-card-head {
+        align-items:flex-start;
+        flex-direction:column;
+      }
+
+      .application-status,
+      .application-status-select {
+        width:100%;
+      }
+
+      .application-filter-field input,
+      .application-filter-field select,
+      .application-status-select {
+        font-size:16px;
+      }
+
+      .application-channel-wrap {
+        padding:12px;
+      }
+    }
+  </style>
 </head>
 <body>
   <header class="career-header">
@@ -24,45 +200,126 @@
         <a class="back-button tracker-back" href="../index.html">返回首页</a>
       </div>
 
-      <div class="record-card">
-        <div class="record-card-head">
-          <div class="record-kicker">APPLICATION CARD</div>
-          <h2>投递档案</h2>
-        </div>
-        <div class="record-grid">
-          <label class="record-field">
-            <span>日期</span>
-            <input type="date" name="date">
-          </label>
-          <label class="record-field">
-            <span>公司</span>
-            <input type="text" name="company" placeholder="填写公司名称" autocomplete="organization">
-          </label>
-          <label class="record-field">
-            <span>岗位</span>
-            <input type="text" name="position" placeholder="填写投递岗位" autocomplete="organization-title">
-          </label>
-          <label class="record-field">
-            <span>投递渠道</span>
-            <input type="text" name="channel" placeholder="例如：官网、BOSS、内推">
-          </label>
-          <label class="record-field">
-            <span>当前状态</span>
-            <select name="status">
-              <option>准备投递</option>
+      <section class="application-filters" aria-label="投递记录筛选">
+        <label class="application-filter-field">
+          <span>搜索投递记录</span>
+          <input type="search" name="application-search" placeholder="搜索公司、岗位或联系人">
+        </label>
+        <label class="application-filter-field">
+          <span>状态筛选</span>
+          <select name="application-status-filter">
+            <option>全部状态</option>
+            <option>待沟通</option>
+            <option>已沟通</option>
+            <option>已投递</option>
+            <option>面试中</option>
+            <option>Offer</option>
+            <option>淘汰</option>
+          </select>
+        </label>
+      </section>
+
+      <form class="record-card" aria-label="投递记录卡片">
+        <div class="record-card-head application-card-head">
+          <div>
+            <div class="record-kicker">APPLICATION CARD</div>
+            <h2>投递记录卡片</h2>
+          </div>
+          <label class="application-status">
+            <span class="sr-only">当前状态</span>
+            <select class="application-status-select" name="status">
+              <option>待沟通</option>
+              <option>已沟通</option>
               <option>已投递</option>
-              <option>笔试中</option>
               <option>面试中</option>
-              <option>已拿 Offer</option>
-              <option>已结束</option>
+              <option>Offer</option>
+              <option>淘汰</option>
             </select>
           </label>
+        </div>
+
+        <div class="record-grid">
           <label class="record-field">
-            <span>下一步动作</span>
-            <input type="text" name="next-action" placeholder="填写待办或跟进时间">
+            <span>公司名称</span>
+            <input type="text" name="company" placeholder="填写公司名称" autocomplete="organization">
+          </label>
+
+          <label class="record-field">
+            <span>岗位名称</span>
+            <input type="text" name="position" placeholder="填写投递岗位" autocomplete="organization-title">
+          </label>
+
+          <label class="record-field">
+            <span>投递日期</span>
+            <input type="date" name="application-date">
+          </label>
+
+          <label class="record-field">
+            <span>投递渠道</span>
+            <select name="channel">
+              <option value="">选择投递渠道</option>
+              <option>BOSS</option>
+              <option>猎聘</option>
+              <option>拉勾</option>
+              <option>官网</option>
+              <option>内推</option>
+            </select>
+          </label>
+
+          <label class="record-field record-field-wide">
+            <span>JD 链接</span>
+            <input type="url" name="jd-link" placeholder="https://..." inputmode="url">
+          </label>
+
+          <label class="record-field">
+            <span>使用简历版本</span>
+            <input type="text" name="resume-version" placeholder="例如：内容运营简历 V3">
+          </label>
+
+          <label class="record-field">
+            <span>联系人</span>
+            <input type="text" name="contact" placeholder="填写 HR、内推人或业务联系人" autocomplete="name">
+          </label>
+
+          <label class="record-field">
+            <span>薪资范围</span>
+            <input type="text" name="salary-range" placeholder="例如：20K–30K">
+          </label>
+
+          <label class="record-field">
+            <span>匹配度评分</span>
+            <input type="number" name="match-score" min="0" max="100" step="1" inputmode="numeric" placeholder="0–100">
           </label>
         </div>
-      </div>
+
+        <div class="application-channel-wrap">
+          <div class="application-channel-title">常用投递渠道</div>
+          <div class="application-channels" aria-label="投递渠道">
+            <span class="application-channel application-channel-active">BOSS</span>
+            <span class="application-channel">猎聘</span>
+            <span class="application-channel">拉勾</span>
+            <span class="application-channel">官网</span>
+            <span class="application-channel">内推</span>
+          </div>
+        </div>
+
+        <section class="application-review" aria-labelledby="application-review-title">
+          <div class="application-review-head">
+            <div class="application-review-kicker">APPLICATION REVIEW</div>
+            <h3 id="application-review-title">投递复盘</h3>
+          </div>
+          <div class="record-grid">
+            <label class="record-field record-field-wide">
+              <span>沟通与反馈记录</span>
+              <textarea name="communication-notes" placeholder="记录投递反馈、沟通要点和岗位信息变化"></textarea>
+            </label>
+            <label class="record-field record-field-wide">
+              <span>下一步动作</span>
+              <textarea name="next-action" placeholder="记录跟进时间、准备事项或后续面试动作"></textarea>
+            </label>
+          </div>
+        </section>
+      </form>
     </section>
   </main>
 </body>
