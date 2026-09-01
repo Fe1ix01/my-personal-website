@@ -305,6 +305,10 @@
       gap:20px 22px;
     }
 
+    .career-group {
+      grid-column:1/-1;
+    }
+
     .group-name {
       text-align:center;
       margin-bottom:9px;
@@ -319,6 +323,10 @@
       display:grid;
       grid-template-columns:repeat(2,minmax(0,1fr));
       gap:10px;
+    }
+
+    .career-group .tools {
+      grid-template-columns:repeat(6,minmax(0,1fr));
     }
 
     .tool {
@@ -925,6 +933,14 @@
         gap:18px;
       }
 
+      .career-group {
+        grid-column:auto;
+      }
+
+      .career-group .tools {
+        grid-template-columns:repeat(2,minmax(0,1fr));
+      }
+
       .path-steps {
         grid-template-columns:1fr 1fr;
       }
@@ -1187,6 +1203,18 @@
                 <a class="tool" target="_blank" rel="noopener" href="https://x.com">X</a>
                 <a class="tool" target="_blank" rel="noopener" href="https://www.tiktok.com">TikTok</a>
                 <a class="tool" target="_blank" rel="noopener" href="https://www.instagram.com">Instagram</a>
+              </div>
+            </div>
+
+            <div class="career-group">
+              <div class="group-name">CAREER</div>
+              <div class="tools">
+                <a class="tool" href="career/jobs.html">岗位雷达</a>
+                <a class="tool" href="career/companies.html">公司库</a>
+                <a class="tool" href="career/resume.html">简历库</a>
+                <a class="tool" href="career/interview.html">面试库</a>
+                <a class="tool" href="career/apply.html">投递记录</a>
+                <a class="tool" href="career/cases.html">案例库</a>
               </div>
             </div>
           </div>
