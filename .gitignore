@@ -1,2 +1,20 @@
 # Local homepage backups
 /.local-backups/
+
+# Dependencies and build output
+node_modules/
+/dist/
+
+# Local environment and hosting metadata
+.env
+.env.*
+!.env.example
+/.vercel/
+
+# Local tests, logs, and OS files
+/.local-tests/
+/test-results/
+/playwright-report/
+npm-debug.log*
+.DS_Store
+Thumbs.db

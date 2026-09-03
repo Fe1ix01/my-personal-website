@@ -5,171 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="description" content="Suze OS V3.0 - 个人操作系统" />
   <title>Suze OS · Personal System</title>
-  <style>
-    :root{
-      --bg:#050607;
-      --panel:#101316;
-      --panel-2:#15191d;
-      --panel-3:#0b0e10;
-      --text:#f5f7fa;
-      --muted:#929ba5;
-      --line:#252c33;
-      --accent:#00e7e7;
-      --accent-soft:rgba(0,231,231,.10);
-      --good:#8fffe9;
-      --max:1180px;
-      --radius:18px;
-      --shadow:0 18px 60px rgba(0,0,0,.32);
-    }
-
-    *{box-sizing:border-box}
-    html{scroll-behavior:smooth;scroll-padding-top:84px}
-    body{
-      margin:0;
-      background:
-        radial-gradient(circle at 22% -5%, rgba(0,231,231,.10), transparent 26%),
-        radial-gradient(circle at 85% 4%, rgba(88,104,255,.08), transparent 26%),
-        var(--bg);
-      color:var(--text);
-      font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",Arial,sans-serif;
-      line-height:1.5;
-    }
-
-    a{color:inherit;text-decoration:none}
-    button,input,textarea{font:inherit}
-    button{color:inherit}
-    .wrap{width:min(calc(100% - 36px),var(--max));margin:0 auto}
-
-    header{
-      position:sticky;top:0;z-index:30;
-      backdrop-filter:blur(18px);
-      background:rgba(5,6,7,.76);
-      border-bottom:1px solid rgba(255,255,255,.05);
-    }
-    .nav{height:68px;display:flex;align-items:center;justify-content:space-between;gap:24px}
-    .brand{font-size:22px;font-weight:850;letter-spacing:.3px}
-    .brand span{color:var(--accent)}
-    .nav-links{display:flex;align-items:center;gap:24px;color:var(--muted);font-size:14px}
-    .nav-links a:hover{color:var(--text)}
-
-    .hero{padding:78px 0 48px}
-    .hero-grid{display:grid;grid-template-columns:1.2fr .8fr;gap:34px;align-items:center}
-    .eyebrow{display:inline-flex;align-items:center;gap:8px;padding:7px 11px;border:1px solid rgba(0,231,231,.28);background:var(--accent-soft);color:var(--accent);border-radius:999px;font-size:12px;font-weight:800;letter-spacing:.6px}
-    h1{margin:18px 0 8px;font-size:clamp(48px,7vw,84px);line-height:.98;letter-spacing:-2.6px}
-    .hero h2{margin:0;font-size:clamp(20px,2.3vw,30px)}
-    .hero h2 span{color:var(--accent)}
-    .hero-copy{margin:18px 0 0;max-width:700px;color:var(--muted);font-size:16px}
-    .hero-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:24px}
-
-    .quote-card,.system-card,.panel,.tool,.metric,.journal-card{
-      border:1px solid var(--line);
-      background:linear-gradient(180deg,rgba(255,255,255,.038),rgba(255,255,255,.014));
-      border-radius:var(--radius);
-    }
-    .quote-card{padding:24px;box-shadow:var(--shadow)}
-    .quote-meta{display:flex;justify-content:space-between;gap:18px;color:var(--muted);font-size:12px;margin-bottom:20px}
-    .quote-status{color:var(--good);font-weight:800}
-    .quote-card blockquote{margin:0;font-size:22px;font-weight:750;line-height:1.45;letter-spacing:-.3px}
-    .quote-card p{margin:14px 0 0;color:var(--muted);font-size:13px}
-
-    .btn{
-      border:1px solid var(--line);background:var(--panel);color:var(--text);padding:11px 16px;border-radius:11px;cursor:pointer;transition:.18s ease;
-    }
-    .btn:hover{transform:translateY(-2px);border-color:#3b4651;background:var(--panel-2)}
-    .btn.primary{background:var(--accent);border-color:var(--accent);color:#001919;font-weight:850}
-    .btn.small{padding:8px 11px;font-size:12px}
-    .btn.ghost{background:transparent}
-
-    section{padding:34px 0 64px}
-    .section-head{display:flex;align-items:end;justify-content:space-between;gap:20px;margin-bottom:22px}
-    .section-head h2{margin:0;font-size:30px}
-    .section-head p{margin:4px 0 0;color:var(--muted);font-size:14px}
-    .section-kicker{font-size:11px;letter-spacing:1.2px;color:var(--accent);font-weight:800;margin-bottom:5px}
-
-    .system-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
-    .system-card{padding:20px;min-height:218px;display:flex;flex-direction:column}
-    .system-card.featured{border-color:rgba(0,231,231,.34);background:linear-gradient(180deg,rgba(0,231,231,.08),rgba(0,231,231,.02))}
-    .system-icon{width:40px;height:40px;display:grid;place-items:center;border-radius:12px;background:var(--accent-soft);margin-bottom:18px;font-size:20px}
-    .system-card h3{margin:0 0 7px;font-size:18px}
-    .system-card p{margin:0;color:var(--muted);font-size:13px;flex:1}
-    .system-card .btn{width:100%;margin-top:18px}
-
-    .dashboard-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:16px}
-    .panel{padding:22px}
-    .panel-head{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:18px}
-    .panel h3{margin:0;font-size:18px}
-    .panel-sub{color:var(--muted);font-size:12px;margin-top:3px}
-
-    .metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
-    .metric{padding:15px;background:var(--panel-3)}
-    .metric-label{font-size:12px;color:var(--muted)}
-    .metric-row{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px;margin-top:8px}
-    .metric-value{overflow-wrap:anywhere;max-width:100%;font-size:26px;font-weight:850;letter-spacing:-.7px}
-    .metric-actions{display:flex;gap:5px}
-    .metric-actions button{width:28px;height:28px;border:1px solid var(--line);background:var(--panel);border-radius:8px;cursor:pointer}
-    .metric-actions button:hover{border-color:rgba(0,231,231,.5)}
-    .rate-line{margin-top:14px;border-top:1px solid var(--line);padding-top:14px;display:flex;justify-content:space-between;gap:14px;color:var(--muted);font-size:13px}
-    .rate-line strong{color:var(--text)}
-
-    .workflow-list{display:grid;gap:10px}
-    .workflow{display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center;padding:12px 0;border-bottom:1px solid var(--line)}
-    .workflow:last-child{border-bottom:0;padding-bottom:0}
-    .workflow:first-child{padding-top:0}
-    .workflow strong{display:block;font-size:14px}
-    .workflow span{display:block;margin-top:2px;color:var(--muted);font-size:12px}
-
-    .workspace-panel{border:1px solid var(--line);background:rgba(12,14,16,.82);border-radius:24px;padding:24px;box-shadow:var(--shadow)}
-    .group + .group{margin-top:28px}
-    .group-title{margin:0 0 12px;font-size:15px;color:#cbd2d9;font-weight:850}
-    .tools{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
-    .tool{min-height:76px;background:var(--panel);padding:15px 16px;display:flex;flex-direction:column;justify-content:center;transition:.18s ease}
-    .tool:hover{transform:translateY(-2px);border-color:rgba(0,231,231,.48);background:#15191b}
-    .tool strong{font-size:15px;margin-bottom:4px}
-    .tool small{font-size:12px;color:var(--muted)}
-
-    .journal-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-    .journal-card{padding:22px}
-    .journal-card h3{margin:0 0 5px;font-size:18px}
-    .journal-card p{margin:0 0 14px;color:var(--muted);font-size:12px}
-    textarea{
-      width:100%;min-height:170px;resize:vertical;border:1px solid var(--line);background:#090b0d;color:var(--text);border-radius:12px;padding:14px;outline:none;
-    }
-    textarea:focus{border-color:rgba(0,231,231,.45)}
-    .journal-actions{display:flex;justify-content:space-between;gap:10px;align-items:center;margin-top:12px}
-    .save-state{color:var(--muted);font-size:12px}
-
-    .data-actions{display:flex;gap:8px;flex-wrap:wrap}
-    .storage-note{margin-top:12px;color:var(--muted);font-size:11px;line-height:1.6}
-    input[type="file"]{display:none}
-    .data-status{min-height:1.5em;color:var(--good);font-size:12px}
-    .data-status.is-error{color:#ffb4b4}
-    .workflow-dialog{width:min(480px,calc(100% - 32px));max-height:80vh;overflow:auto;border:1px solid var(--line);border-radius:18px;background:var(--panel);color:var(--text);padding:24px}
-    .workflow-dialog::backdrop{background:rgba(0,0,0,.65)}
-    .workflow-dialog h3{margin:0 0 8px}
-    .workflow-dialog p{color:var(--muted);font-size:13px}
-    .workflow-links{display:grid;gap:10px;margin:18px 0}
-    .workflow-links a{display:block}
-    .workflow-actions{display:flex;justify-content:flex-end;gap:10px;flex-wrap:wrap}
-
-    .footer-note{padding:20px 0 34px;text-align:center;color:#747e88;font-size:12px;border-top:1px solid var(--line)}
-
-    @media (max-width:980px){
-      .hero-grid,.dashboard-grid{grid-template-columns:1fr}
-      .system-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
-      .metrics{grid-template-columns:repeat(2,minmax(0,1fr))}
-      .tools{grid-template-columns:repeat(2,minmax(0,1fr))}
-    }
-    @media (max-width:680px){
-      .nav-links a:nth-child(n+3){display:none}
-      .hero{padding-top:52px}
-      .quote-card{display:none}
-      .system-grid,.journal-grid{grid-template-columns:1fr}
-      .workspace-panel{padding:16px}
-      .section-head{align-items:flex-start;flex-direction:column}
-      .metrics{grid-template-columns:1fr 1fr}
-      h1{letter-spacing:-1.7px}
-    }
-  </style>
 </head>
 <body>
   <header>
@@ -194,7 +29,7 @@
           <p class="hero-copy">从“常用网站导航”升级成真正每天能使用的个人系统：启动工作流、记录求职数据、沉淀学习、写日记和复盘，同时保留原来轻量的一键工作台。</p>
           <div class="hero-actions">
             <a class="btn primary" href="#dashboard">进入系统</a>
-            <button class="btn" onclick="launchJobMode()">💼 启动求职工作流</button>
+            <button class="btn" data-workflow="job">💼 启动求职工作流</button>
           </div>
         </div>
 
@@ -217,19 +52,19 @@
             <div class="system-icon">⚡</div>
             <h3>AI 工作流</h3>
             <p>不是收藏更多 AI，而是按任务一键打开研究、分析、写作与执行所需工具。</p>
-            <button class="btn primary" onclick="launchResearchMode()">启动研究工作流</button>
+            <button class="btn primary" data-workflow="research">启动研究工作流</button>
           </article>
           <article class="system-card">
             <div class="system-icon">💼</div>
             <h3>Job Radar</h3>
             <p>集中求职入口，并记录投递、回复、面试和 Offer 数据，观察真实转化。</p>
-            <button class="btn" onclick="document.querySelector('#jobPanel').scrollIntoView({behavior:'smooth'})">打开求职看板</button>
+            <button class="btn" id="openJobPanel">打开求职看板</button>
           </article>
           <article class="system-card">
             <div class="system-icon">🧠</div>
             <h3>Learning Library</h3>
             <p>把 YouTube、X、Perplexity、GitHub 变成学习入口，而不是无目的的信息流。</p>
-            <button class="btn" onclick="launchLearnMode()">启动学习模式</button>
+            <button class="btn" data-workflow="learn">启动学习模式</button>
           </article>
           <article class="system-card">
             <div class="system-icon">◫</div>
@@ -246,13 +81,13 @@
         <article class="panel" id="jobPanel">
           <div class="panel-head">
             <div><h3>求职数据看板</h3><div class="panel-sub">手动 +1 / -1，数据自动保存在当前浏览器</div></div>
-            <button class="btn small" onclick="launchJobMode()">打开求职工具</button>
+            <button class="btn small" data-workflow="job">打开求职工具</button>
           </div>
           <div class="metrics">
-            <div class="metric"><div class="metric-label">已投递</div><div class="metric-row"><div class="metric-value" id="appliedValue">0</div><div class="metric-actions"><button aria-label="已投递减一" onclick="changeMetric('applied',-1)">−</button><button aria-label="已投递加一" onclick="changeMetric('applied',1)">+</button></div></div></div>
-            <div class="metric"><div class="metric-label">有效回复</div><div class="metric-row"><div class="metric-value" id="repliesValue">0</div><div class="metric-actions"><button aria-label="有效回复减一" onclick="changeMetric('replies',-1)">−</button><button aria-label="有效回复加一" onclick="changeMetric('replies',1)">+</button></div></div></div>
-            <div class="metric"><div class="metric-label">面试</div><div class="metric-row"><div class="metric-value" id="interviewsValue">0</div><div class="metric-actions"><button aria-label="面试减一" onclick="changeMetric('interviews',-1)">−</button><button aria-label="面试加一" onclick="changeMetric('interviews',1)">+</button></div></div></div>
-            <div class="metric"><div class="metric-label">Offer</div><div class="metric-row"><div class="metric-value" id="offersValue">0</div><div class="metric-actions"><button aria-label="Offer减一" onclick="changeMetric('offers',-1)">−</button><button aria-label="Offer加一" onclick="changeMetric('offers',1)">+</button></div></div></div>
+            <div class="metric"><div class="metric-label">已投递</div><div class="metric-row"><div class="metric-value" id="appliedValue">0</div><div class="metric-actions"><button aria-label="已投递减一" data-metric="applied" data-delta="-1">−</button><button aria-label="已投递加一" data-metric="applied" data-delta="1">+</button></div></div></div>
+            <div class="metric"><div class="metric-label">有效回复</div><div class="metric-row"><div class="metric-value" id="repliesValue">0</div><div class="metric-actions"><button aria-label="有效回复减一" data-metric="replies" data-delta="-1">−</button><button aria-label="有效回复加一" data-metric="replies" data-delta="1">+</button></div></div></div>
+            <div class="metric"><div class="metric-label">面试</div><div class="metric-row"><div class="metric-value" id="interviewsValue">0</div><div class="metric-actions"><button aria-label="面试减一" data-metric="interviews" data-delta="-1">−</button><button aria-label="面试加一" data-metric="interviews" data-delta="1">+</button></div></div></div>
+            <div class="metric"><div class="metric-label">Offer</div><div class="metric-row"><div class="metric-value" id="offersValue">0</div><div class="metric-actions"><button aria-label="Offer减一" data-metric="offers" data-delta="-1">−</button><button aria-label="Offer加一" data-metric="offers" data-delta="1">+</button></div></div></div>
           </div>
           <div class="rate-line"><span>回复率 <strong id="replyRate">0%</strong></span><span>面试转化 <strong id="interviewRate">0%</strong></span><span>Offer 转化 <strong id="offerRate">0%</strong></span></div>
         </article>
@@ -260,10 +95,10 @@
         <article class="panel">
           <div class="panel-head"><div><h3>AI 工作流</h3><div class="panel-sub">按任务开工具，不按工具找任务</div></div></div>
           <div class="workflow-list">
-            <div class="workflow"><div><strong>研究 / 查资料</strong><span>ChatGPT + Perplexity + Gemini</span></div><button class="btn small" onclick="launchResearchMode()">启动</button></div>
-            <div class="workflow"><div><strong>求职 / JD 分析</strong><span>BOSS + ChatGPT + Gmail + LinkedIn</span></div><button class="btn small" onclick="launchJobMode()">启动</button></div>
-            <div class="workflow"><div><strong>学习 / 深挖主题</strong><span>ChatGPT + YouTube + GitHub + Perplexity</span></div><button class="btn small" onclick="launchLearnMode()">启动</button></div>
-            <div class="workflow"><div><strong>内容 / 趋势观察</strong><span>YouTube + X + TikTok + Instagram</span></div><button class="btn small" onclick="launchContentMode()">启动</button></div>
+            <div class="workflow"><div><strong>研究 / 查资料</strong><span>ChatGPT + Perplexity + Gemini</span></div><button class="btn small" data-workflow="research">启动</button></div>
+            <div class="workflow"><div><strong>求职 / JD 分析</strong><span>BOSS + ChatGPT + Gmail + LinkedIn</span></div><button class="btn small" data-workflow="job">启动</button></div>
+            <div class="workflow"><div><strong>学习 / 深挖主题</strong><span>ChatGPT + YouTube + GitHub + Perplexity</span></div><button class="btn small" data-workflow="learn">启动</button></div>
+            <div class="workflow"><div><strong>内容 / 趋势观察</strong><span>YouTube + X + TikTok + Instagram</span></div><button class="btn small" data-workflow="content">启动</button></div>
           </div>
         </article>
       </div>
@@ -316,12 +151,12 @@
           <article class="journal-card">
             <h3>今日日记</h3><p id="journalDate">记录今天发生的事、想法或决定。</p>
             <textarea aria-label="今日日记" id="journalText" placeholder="今天发生了什么？有什么值得记住？"></textarea>
-            <div class="journal-actions"><span class="save-state" id="journalState">尚未输入</span><button class="btn small" onclick="clearJournal('journal')">清空</button></div>
+            <div class="journal-actions"><span class="save-state" id="journalState">尚未输入</span><button class="btn small" data-clear="journal">清空</button></div>
           </article>
           <article class="journal-card">
             <h3>今日复盘</h3><p>只保留真正有价值的结论，不做形式化打卡。</p>
             <textarea aria-label="今日复盘" id="reviewText" placeholder="今天做对了什么？哪里判断错了？下次怎么改？"></textarea>
-            <div class="journal-actions"><span class="save-state" id="reviewState">尚未输入</span><button class="btn small" onclick="clearJournal('review')">清空</button></div>
+            <div class="journal-actions"><span class="save-state" id="reviewState">尚未输入</span><button class="btn small" data-clear="review">清空</button></div>
           </article>
         </div>
       </div>
@@ -332,10 +167,10 @@
         <div class="panel">
           <div class="panel-head"><div><h3>个人数据备份</h3><div class="panel-sub">导出 / 导入 Suze OS 当前浏览器里的求职数据、日记和复盘</div></div></div>
           <div class="data-actions">
-            <button class="btn" onclick="exportData()">导出 JSON 备份</button>
+            <button class="btn" id="exportData">导出 JSON 备份</button>
             <label class="btn ghost" for="importFile">导入 JSON 备份</label>
-            <input id="importFile" type="file" accept="application/json,.json" onchange="importData(event)" />
-            <button class="btn ghost" onclick="resetAllData()">清空本地数据</button>
+            <input id="importFile" type="file" accept="application/json,.json" />
+            <button class="btn ghost" id="resetAllData">清空本地数据</button>
           </div>
           <p id="dataStatus" class="data-status" role="status" aria-live="polite"></p>
           <div class="storage-note">数据保存在当前浏览器，暂不支持跨设备同步。仅支持 V3 备份；旧版数据仍保留，旧版备份请在旧版页面恢复。</div>
@@ -352,231 +187,11 @@
     <div class="workflow-links" id="workflowLinks"></div>
     <p id="workflowStatus" role="status"></p>
     <div class="workflow-actions">
-      <button class="btn ghost" onclick="document.getElementById('workflowDialog').close()">关闭</button>
-      <button class="btn primary" onclick="openAllWorkflowLinks()">全部打开</button>
+      <button class="btn ghost" id="closeWorkflow">关闭</button>
+      <button class="btn primary" id="openAllWorkflow">全部打开</button>
     </div>
   </dialog>
 
-  <script>
-    const STORAGE_KEY = 'suze-os-v3';
-    const defaultState = {job:{applied:0,replies:0,interviews:0,offers:0},journal:'',review:'',updatedAt:null};
-    let storageReadFailed = false;
-    let unsavedChanges = false;
-    let lastSavedRaw = null;
-    let state = loadState();
-
-    function structuredCloneSafe(value){ return JSON.parse(JSON.stringify(value)); }
-
-    function validateState(value){
-      if(!value || typeof value !== 'object' || Array.isArray(value) ||
-          !value.job || typeof value.job !== 'object' || Array.isArray(value.job) ||
-          typeof value.journal !== 'string' || typeof value.review !== 'string'){
-        throw new Error('请选择 Suze OS V3 导出的 JSON 备份文件，旧版备份请在旧版页面恢复。');
-      }
-      const job = {};
-      for(const key of Object.keys(defaultState.job)){
-        if(!Number.isSafeInteger(value.job[key]) || value.job[key] < 0){
-          throw new Error('求职数据必须是非负整数，未修改现有数据。');
-        }
-        job[key] = value.job[key];
-      }
-      if(value.updatedAt != null && (typeof value.updatedAt !== 'string' || !Number.isFinite(Date.parse(value.updatedAt)))){
-        throw new Error('备份中的更新时间无效，未修改现有数据。');
-      }
-      return {job,journal:value.journal,review:value.review,updatedAt:value.updatedAt || null};
-    }
-
-    function loadState(){
-      try{
-        lastSavedRaw = localStorage.getItem(STORAGE_KEY);
-        return lastSavedRaw === null ? structuredCloneSafe(defaultState) : validateState(JSON.parse(lastSavedRaw));
-      }catch(error){
-        storageReadFailed = true;
-        return structuredCloneSafe(defaultState);
-      }
-    }
-
-    function showDataStatus(message,isError=false){
-      const el = document.getElementById('dataStatus');
-      el.textContent = message;
-      el.classList.toggle('is-error',isError);
-    }
-
-    function setSaveLabel(id){
-      document.getElementById(id).textContent = '已自动保存 · ' + new Date().toLocaleTimeString('zh-CN',{hour:'2-digit',minute:'2-digit',hour12:false});
-    }
-
-    function saveState(allowRecovery=false){
-      try{
-        if(storageReadFailed && !allowRecovery) throw new Error('本地数据读取失败，已暂停保存。请先检查存储权限或导入有效的 V3 备份。');
-        if(!allowRecovery && localStorage.getItem(STORAGE_KEY) !== lastSavedRaw){
-          throw new Error('其他标签页已更新数据。请先导出当前内容备份，再刷新页面，避免覆盖更新。');
-        }
-        const next = validateState({...state,updatedAt:new Date().toISOString()});
-        const raw = JSON.stringify(next);
-        localStorage.setItem(STORAGE_KEY,raw);
-        lastSavedRaw = raw;
-        state = next;
-        storageReadFailed = false;
-        unsavedChanges = false;
-        setSaveLabel('journalState');
-        setSaveLabel('reviewState');
-        showDataStatus('数据已保存到当前浏览器。');
-        return true;
-      }catch(error){
-        unsavedChanges = true;
-        document.getElementById('journalState').textContent = '保存失败，请勿关闭页面';
-        document.getElementById('reviewState').textContent = '保存失败，请勿关闭页面';
-        showDataStatus(error instanceof Error && error.name === 'Error' ? error.message : '保存失败，请检查浏览器存储权限和可用空间；当前内容可先导出备份。',true);
-        return false;
-      }
-    }
-
-    let workflowUrls = [];
-    const workflowNames = {'chatgpt.com':'ChatGPT','www.perplexity.ai':'Perplexity','gemini.google.com':'Gemini','www.zhipin.com':'BOSS直聘','mail.google.com':'Gmail','www.linkedin.com':'LinkedIn','www.youtube.com':'YouTube','github.com':'GitHub','x.com':'X','www.tiktok.com':'TikTok','www.instagram.com':'Instagram'};
-    function openSet(urls){
-      workflowUrls = urls;
-      const list = document.getElementById('workflowLinks');
-      list.replaceChildren();
-      urls.forEach(url=>{
-        const link = document.createElement('a');
-        link.className = 'btn';
-        link.href = url;
-        link.target = '_blank';
-        link.rel = 'noopener';
-        link.textContent = workflowNames[new URL(url).hostname] || new URL(url).hostname;
-        list.appendChild(link);
-      });
-      document.getElementById('workflowStatus').textContent = '';
-      document.getElementById('workflowDialog').showModal();
-    }
-    function openAllWorkflowLinks(){
-      let blocked = 0;
-      workflowUrls.forEach(url=>{
-        const tab = window.open(url,'_blank');
-        if(tab) tab.opener = null;
-        else blocked += 1;
-      });
-      document.getElementById('workflowStatus').textContent = blocked ? '浏览器拦截了部分窗口，请使用上方链接逐个打开。' : '已打开全部工具。';
-    }
-    function launchResearchMode(){openSet(['https://chatgpt.com','https://www.perplexity.ai','https://gemini.google.com']);}
-    function launchJobMode(){openSet(['https://www.zhipin.com','https://chatgpt.com','https://mail.google.com','https://www.linkedin.com']);}
-    function launchLearnMode(){openSet(['https://chatgpt.com','https://www.youtube.com','https://github.com','https://www.perplexity.ai']);}
-    function launchContentMode(){openSet(['https://www.youtube.com','https://x.com','https://www.tiktok.com','https://www.instagram.com']);}
-
-    function changeMetric(key,delta){
-      if(!Object.hasOwn(defaultState.job,key) || ![-1,1].includes(delta)) return;
-      const next = Math.max(0,state.job[key]+delta);
-      if(!Number.isSafeInteger(next)) return;
-      state.job[key] = next;
-      saveState();
-      renderMetrics();
-    }
-    function percent(a,b){return b>0 ? ((a/b)*100).toFixed(1)+'%' : '0%';}
-    function renderMetrics(){
-      for(const key of Object.keys(defaultState.job)) document.getElementById(key+'Value').textContent=state.job[key];
-      document.getElementById('replyRate').textContent=percent(state.job.replies,state.job.applied);
-      document.getElementById('interviewRate').textContent=percent(state.job.interviews,state.job.replies);
-      document.getElementById('offerRate').textContent=percent(state.job.offers,state.job.interviews);
-    }
-
-    const quotes = [
-      '持续构建能反复使用的能力，而不是只完成一次任务。',
-      '真正有效的系统，是让正确行动更容易发生。',
-      '把复杂问题拆成可验证的小步骤，判断力会越来越锋利。',
-      '信息不是资产，经过筛选、理解和应用的信息才是。',
-      '工具的价值不在数量，而在它是否缩短真实工作的路径。',
-      '记录结果，才能区分“感觉努力”和“确实进步”。',
-      '先定义问题，再调用工具；不要让工具替你定义目标。',
-      '一次高质量复盘，胜过重复十次同样的错误。',
-      '把经验沉淀成流程，下一次就不必从零开始。',
-      '产出是检验学习最可靠的方式。',
-      '做决定时同时写下依据，之后才能判断自己错在哪里。',
-      '长期优势通常来自少数几件持续重复且不断改进的事情。'
-    ];
-
-    function updateClockAndQuote(){
-      const now = new Date();
-      const fmt = new Intl.DateTimeFormat('zh-CN',{month:'2-digit',day:'2-digit',weekday:'short',hour:'2-digit',minute:'2-digit',hour12:false});
-      document.getElementById('nowText').textContent=fmt.format(now);
-      const index=Math.floor(now.getTime()/600000)%quotes.length;
-      document.getElementById('quoteText').textContent=quotes[index];
-    }
-
-
-    const journalText = document.getElementById('journalText');
-    const reviewText = document.getElementById('reviewText');
-    function renderState(label='已从本地读取'){
-      journalText.value=state.journal;
-      reviewText.value=state.review;
-      document.getElementById('journalState').textContent=state.journal ? label : '尚未输入';
-      document.getElementById('reviewState').textContent=state.review ? label : '尚未输入';
-      renderMetrics();
-    }
-    journalText.addEventListener('input',()=>{state.journal=journalText.value;saveState();});
-    reviewText.addEventListener('input',()=>{state.review=reviewText.value;saveState();});
-
-    function clearJournal(type){
-      if(!['journal','review'].includes(type)) return;
-      if(!confirm('确定清空当前'+(type==='journal'?'日记':'复盘')+'吗？')) return;
-      state[type]='';
-      const saved=saveState();
-      if(type==='journal') journalText.value='';
-      else reviewText.value='';
-      if(saved) document.getElementById(type+'State').textContent='已清空';
-    }
-
-    function exportData(){
-      if(storageReadFailed){showDataStatus('本地数据尚未成功读取，已取消导出，避免生成空白备份。',true);return;}
-      const blob=new Blob([JSON.stringify(state,null,2)],{type:'application/json'});
-      const url=URL.createObjectURL(blob);
-      const link=document.createElement('a');
-      link.href=url;
-      link.download='suze-os-v3-backup-'+new Date().toISOString().slice(0,10)+'.json';
-      document.body.appendChild(link);
-      link.click();
-      link.remove();
-      setTimeout(()=>URL.revokeObjectURL(url),1000);
-      showDataStatus(unsavedChanges ? '已导出当前内容；浏览器内的保存仍未成功。' : '已导出 V3 数据备份。',unsavedChanges);
-    }
-
-    async function importData(event){
-      const input=event.target;
-      const file=input.files?.[0];
-      if(!file) return;
-      try{
-        const next=validateState(JSON.parse(await file.text()));
-        if(!confirm('导入将覆盖当前 V3 的求职数据、日记和复盘。确定继续吗？')) return;
-        const previous=state;
-        const previouslyUnsaved=unsavedChanges;
-        state=next;
-        if(!saveState(true)){state=previous;unsavedChanges=previouslyUnsaved;return;}
-        renderState('已导入');
-        showDataStatus('V3 备份已导入并保存。');
-      }catch(error){
-        showDataStatus('导入失败：'+(error instanceof SyntaxError ? 'JSON 格式无效，未修改现有数据。' : error.message),true);
-      }finally{
-        input.value='';
-      }
-    }
-
-    function resetAllData(){
-      if(!confirm('确定清空当前浏览器中的 Suze OS V3 数据吗？旧版数据不会被删除。')) return;
-      try{localStorage.removeItem(STORAGE_KEY);}catch(error){showDataStatus('清空失败，请检查浏览器存储权限。',true);return;}
-      state=structuredCloneSafe(defaultState);
-      lastSavedRaw=null;
-      storageReadFailed=false;
-      unsavedChanges=false;
-      renderState();
-      showDataStatus('V3 本地数据已清空。');
-    }
-
-    window.addEventListener('beforeunload',event=>{if(unsavedChanges){event.preventDefault();event.returnValue='';}});
-    document.getElementById('journalDate').textContent=new Intl.DateTimeFormat('zh-CN',{year:'numeric',month:'long',day:'numeric',weekday:'long'}).format(new Date())+' · 记录今天发生的事、想法或决定。';
-    renderState();
-    if(storageReadFailed) showDataStatus('本地数据读取失败，已暂停保存。请检查存储权限或导入有效的 V3 备份。',true);
-    updateClockAndQuote();
-    setInterval(updateClockAndQuote,30000);
-  </script>
+  <script type="module" src="/src/main.js"></script>
 </body>
 </html>
