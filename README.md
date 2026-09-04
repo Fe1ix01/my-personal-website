@@ -1,42 +1,90 @@
 # Suze OS
 
-V3.1 本地增强版：在 V3.0 页面迁移到最小 Vite + 原生 JavaScript 项目的基础上，加入统一本地数据层和可持久化的 Job Radar。保留 V3.0 数据格式；尚未接入 Supabase、登录或云同步。
+## 项目定位
 
-## 本地运行
+**Personal Operating System**
 
-使用 Node.js 22.12+（22 LTS）或 24+，以及完整可用的 npm：
+Suze OS 是面向个人工作、学习、求职和复盘的本地优先操作系统。当前版本聚焦浏览器端能力，暂不依赖后端服务。
+
+## 当前版本
+
+**V3.1 — 本地数据能力增强**
+
+## 已完成模块
+
+- Dashboard
+- AI Workflow
+- Job Radar
+- Journal
+- Review
+- Learning Library
+- Local Data Layer
+
+## 当前技术架构
+
+### Frontend
+
+Vite + JavaScript
+
+项目采用原生 JavaScript 和 Vite 多页面构建，不使用前端框架。首页与 `career/` 下的职业模块均作为独立入口参与构建。
+
+### Storage
+
+localStorage + storageService
+
+所有浏览器存储访问统一通过 `src/services/storageService.js`。当前使用以下数据键：
+
+- `suze-os-v3`：Dashboard 求职计数、Journal、Review 和更新时间。
+- `suze-os-v3-job-radar`：Job Radar 岗位与面试明细。
+
+`suze-os-v3` 保持 V3.0 的原始数据结构和备份兼容性。Job Radar 使用独立键，避免无法还原历史岗位明细时覆盖旧计数。
+
+### Backend
+
+待接入 Supabase。
+
+当前没有登录、云端数据库或跨设备同步能力。
+
+## 本地开发
+
+需要 Node.js 22.12+ 或 24+，以及完整可用的 npm。
 
 ```sh
 npm install
 npm run dev
+```
+
+开发地址默认为 `http://localhost:5173`。必须通过开发服务器访问，不能直接双击 `index.html`。
+
+生产构建与本地预览：
+
+```sh
 npm run build
 npm run preview
 ```
 
-开发地址默认是 `http://localhost:5173`，构建预览默认是 `http://localhost:4173`。通过终端显示的 HTTP 地址访问，不能直接双击 `index.html`。已有锁文件时可以用 `npm ci` 重现依赖安装。
+构建产物输出到 `dist/`。`dist/` 和 `node_modules/` 不提交，`package-lock.json` 应随依赖变更提交。
 
-本次验收使用 Node.js 24.19.0。当前电脑的内置 npm 缺少内部模块，因此验收通过仓库外的官方便携 npm 12.0.2 执行；项目没有依赖该临时路径。后续在普通终端开发前，请确认 `node --version` 和 `npm --version` 均能正常执行。
-
-## 目录与职责
+## 目录结构
 
 ```text
-index.html          页面结构、内容与模块入口
-src/main.js         页面初始化、DOM 绑定、求职看板、日记、复盘、激励语
-src/jobRadar.js     岗位记录、筛选、编辑及面试记录交互
-src/style.css       从 V3.0 原样抽出的首页样式
-src/storage.js     V3 数据结构、校验、JSON 备份与清除
-src/services/      统一浏览器存储、兼容 key 与 Job Radar 数据服务
-src/workflows.js   研究、求职、学习、内容工作流及多窗口启动
-career/            职业工作台的 6 个多页面入口及共享样式
-vite.config.js     首页和 career 页面的多入口构建
-vercel.json        Vite 构建命令和 dist 输出目录
+index.html                       Dashboard 与主要模块入口
+career/                          职业工作台多页面入口及共享样式
+src/main.js                      首页初始化和交互
+src/jobRadar.js                  Job Radar 页面交互
+src/storage.js                   V3 主状态、校验、备份与清除
+src/services/storageService.js   统一浏览器存储入口与 key 注册
+src/services/jobRadarService.js  Job Radar 数据校验和持久化
+src/style.css                    首页样式
+src/workflows.js                 AI 工作流配置与启动逻辑
+vite.config.js                   Vite 多页面构建配置
+vercel.json                      Vercel 构建配置
+DEVELOPMENT.md                   当前开发基线与待办
 ```
 
-项目唯一的直接开发依赖是 Vite，无前端框架或运行时依赖。`dist/` 和 `node_modules/` 均不提交；`package-lock.json` 应随工程文件提交。
+## 数据兼容
 
-## V3.0 数据兼容
-
-继续使用 `suze-os-v3` 这个 localStorage 键。`DATA_VERSION = 3` 仅用于标明代码支持的数据版本，不向已有数据增加字段。存储与导出仍使用以下无外层封装、无 `schemaVersion` 的格式：
+V3 主状态继续使用无外层封装、无 `schemaVersion` 的结构：
 
 ```json
 {
@@ -47,26 +95,28 @@ vercel.json        Vite 构建命令和 dist 输出目录
 }
 ```
 
-V3.0 备份可直接导入，新版导出的备份也可在 V3.0 恢复。保留数据校验、存储失败提示、未保存内容离开提醒，以及多标签页覆盖冲突检测。
+V3.0 备份可以直接导入，V3.1 导出的主状态备份也可在 V3.0 恢复。localStorage 按浏览器与来源隔离；更换协议、域名或端口前，应先从旧地址导出备份。
 
-Job Radar 明细使用独立的 `suze-os-v3-job-radar` localStorage 键，通过统一 storage service 访问，不改变 `suze-os-v3` 的字段或 V3.0 备份格式。岗位明细与旧版手动求职计数相互独立，避免无法准确还原明细时覆盖已有统计。
+## 开发路线
 
-localStorage 按浏览器与来源（协议、主机、端口）隔离。同一来源升级可以直接读取旧数据；更换域名、端口，或从 `file://` 切换到 HTTP 时，应先在旧地址导出 JSON，再在新地址导入。Vite 迁移本身不提供跨来源或跨设备同步。
+### V3.1
 
-## Vercel 构建
+本地数据能力增强。
 
-`vercel.json` 明确指定 Vite、`npm ci`、`npm run build` 与 `dist`，适用于原先按纯静态 HTML 部署的仓库。项目根目录应为仓库根目录，Node 版本使用 22.12+ 或 24+。
+### V3.2
 
-构建会生成 `dist/index.html`、`dist/career/*.html` 和 `dist/assets/`。保留 `/career/jobs.html` 等路径和返回首页链接，不添加 SPA 通配重写。仅发布 `dist`，本地备份与测试文件不会进入构建产物。
+Supabase Auth + Cloud Sync。
 
-本阶段仅进行本地构建和预览，不提交、不推送、不部署。后续发布仍需单独确认。
+### V3.3
 
-## 第一阶段验收
+AI Agent 能力。
 
-2026-09-03：开发服务、生产构建和构建预览通过。迁移前通过 V3.0 页面保存并导出测试数据，在同一浏览器来源切换到 Vite 后直接读取成功，重新导出的 JSON 与迁移前一致（含更新时间）；构建预览也通过旧备份导入验证。
+### V4
 
-已验证计数增减与零下限、转化率、日记和复盘刷新持久化、四种工作流、多标签启动、JSON 导入导出与错误文件保护、数据清除、6 个 career 页面及返回首页、桌面和手机布局。首页及 career 控制台未见错误。另有 9 项临时模块测试覆盖存储失败、损坏数据、导入回滚、多标签冲突与激励语定时切换，全部通过。测试脚本、数据和截图均保存在仓库外。
+多设备个人操作系统。
 
-Vercel 已准备好构建配置，发布内容限定为 `dist`；本轮未执行远程部署，线上结果尚未验收。
+## 部署
 
-参考：[Vite 多页面构建](https://vite.dev/guide/build#multi-page-app)、[Vercel Vite 支持](https://vercel.com/docs/frameworks/frontend/vite)。
+Vercel 使用 `npm ci` 和 `npm run build`，发布目录为 `dist`。当前阶段不包含 Supabase 或其他后端部署。
+
+当前开发状态和未完成事项见 [DEVELOPMENT.md](DEVELOPMENT.md)。
