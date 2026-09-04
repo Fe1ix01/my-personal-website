@@ -1,6 +1,8 @@
+import { STORAGE_KEYS, storageService } from './services/storageService.js';
+
 // V3.0 compatibility: keep the storage key and unwrapped JSON shape unchanged.
 export const DATA_VERSION = 3;
-export const STORAGE_KEY = 'suze-os-v3';
+export const STORAGE_KEY = STORAGE_KEYS.appState;
 export const defaultState = {job:{applied:0,replies:0,interviews:0,offers:0},journal:'',review:'',updatedAt:null};
 export let storageReadFailed = false;
 export let unsavedChanges = false;
@@ -30,7 +32,7 @@ function validateState(value){
 
 function loadState(){
   try{
-    lastSavedRaw = localStorage.getItem(STORAGE_KEY);
+    lastSavedRaw = storageService.get(STORAGE_KEY);
     return lastSavedRaw === null ? structuredCloneSafe(defaultState) : validateState(JSON.parse(lastSavedRaw));
   }catch(error){
     storageReadFailed = true;
@@ -41,12 +43,12 @@ function loadState(){
 export function saveState(allowRecovery=false){
   try{
     if(storageReadFailed && !allowRecovery) throw new Error('本地数据读取失败，已暂停保存。请先检查存储权限或导入有效的 V3 备份。');
-    if(!allowRecovery && localStorage.getItem(STORAGE_KEY) !== lastSavedRaw){
+    if(!allowRecovery && storageService.get(STORAGE_KEY) !== lastSavedRaw){
       throw new Error('其他标签页已更新数据。请先导出当前内容备份，再刷新页面，避免覆盖更新。');
     }
     const next = validateState({...state,updatedAt:new Date().toISOString()});
     const raw = JSON.stringify(next);
-    localStorage.setItem(STORAGE_KEY,raw);
+    storageService.set(STORAGE_KEY,raw);
     lastSavedRaw = raw;
     state = next;
     storageReadFailed = false;
@@ -88,7 +90,7 @@ export async function importData(file){
 }
 
 export function resetAllData(){
-  localStorage.removeItem(STORAGE_KEY);
+  storageService.remove(STORAGE_KEY);
   state=structuredCloneSafe(defaultState);
   lastSavedRaw=null;
   storageReadFailed=false;

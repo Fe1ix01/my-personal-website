@@ -167,6 +167,7 @@
     }
 
     .job-field input,
+    .job-field select,
     .job-field textarea {
       width:100%;
       border:1px solid rgba(23,32,43,.08);
@@ -178,9 +179,14 @@
       outline:none;
     }
 
-    .job-field input {
+    .job-field input,
+    .job-field select {
       min-height:42px;
       padding:10px 12px;
+    }
+
+    .job-field select {
+      cursor:pointer;
     }
 
     .job-field textarea {
@@ -193,11 +199,306 @@
     .filter-field input:focus,
     .filter-field select:focus,
     .job-field input:focus,
+    .job-field select:focus,
     .job-field textarea:focus,
     .priority-tag:focus,
     .status-tag:focus {
       border-color:rgba(22,201,195,.46);
       box-shadow:0 0 0 3px rgba(22,201,195,.09);
+    }
+
+    .job-interview-section {
+      margin-top:22px;
+      padding-top:20px;
+      border-top:1px solid rgba(23,32,43,.07);
+    }
+
+    .job-section-head,
+    .job-records-head,
+    .interview-editor-head,
+    .job-record-head {
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:14px;
+    }
+
+    .job-section-head h3,
+    .job-records-head h2,
+    .job-record-title h3 {
+      margin:0;
+    }
+
+    .job-section-head p,
+    .job-records-head p {
+      margin:5px 0 0;
+      color:var(--muted);
+      font-size:11px;
+    }
+
+    .job-action-button {
+      min-height:38px;
+      padding:8px 14px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      border:1px solid rgba(23,32,43,.09);
+      border-radius:999px;
+      background:rgba(255,255,255,.74);
+      color:var(--text);
+      cursor:pointer;
+      font:inherit;
+      font-size:11px;
+      font-weight:800;
+      text-decoration:none;
+    }
+
+    .job-action-button:hover {
+      transform:translateY(-1px);
+      filter:brightness(1.02);
+    }
+
+    .job-action-button:focus-visible {
+      outline:2px solid var(--accent-deep);
+      outline-offset:2px;
+    }
+
+    .job-action-button[hidden] {
+      display:none;
+    }
+
+    .job-action-primary {
+      border-color:rgba(22,201,195,.25);
+      background:linear-gradient(135deg,var(--accent),#55d7c7);
+      color:#fff;
+    }
+
+    .job-action-danger {
+      color:#a95a5a;
+    }
+
+    .interview-editor-list,
+    .job-list {
+      display:grid;
+      gap:12px;
+    }
+
+    .interview-editor-list {
+      margin-top:14px;
+    }
+
+    .interview-editor {
+      padding:16px;
+      border:1px solid rgba(23,32,43,.07);
+      border-radius:14px;
+      background:rgba(255,255,255,.43);
+    }
+
+    .interview-editor-head {
+      margin-bottom:12px;
+    }
+
+    .interview-editor-title {
+      color:var(--accent-deep);
+      font-size:11px;
+      font-weight:800;
+    }
+
+    .interview-editor-grid {
+      display:grid;
+      grid-template-columns:repeat(2,minmax(0,1fr));
+      gap:12px;
+    }
+
+    .interview-editor-grid .job-field:first-child,
+    .interview-editor-grid .job-field:last-child {
+      grid-column:1/-1;
+    }
+
+    .interview-editor-grid textarea {
+      min-height:90px;
+    }
+
+    .job-form-actions {
+      margin-top:20px;
+      display:flex;
+      align-items:center;
+      flex-wrap:wrap;
+      gap:10px;
+    }
+
+    .job-data-status {
+      min-height:18px;
+      margin:12px 0 0;
+      color:var(--accent-deep);
+      font-size:11px;
+    }
+
+    .job-data-status.is-error {
+      color:#a95a5a;
+    }
+
+    .job-records {
+      margin-top:24px;
+    }
+
+    .job-records-head {
+      align-items:flex-end;
+      margin-bottom:14px;
+    }
+
+    .job-records-head h2 {
+      font-size:20px;
+    }
+
+    .job-record-count {
+      flex:0 0 auto;
+      color:var(--muted);
+      font-size:11px;
+      font-weight:800;
+    }
+
+    .job-record {
+      padding:20px;
+      border:1px solid rgba(23,32,43,.07);
+      border-radius:16px;
+      background:rgba(255,255,255,.56);
+    }
+
+    .job-record-head {
+      align-items:flex-start;
+    }
+
+    .job-record-title {
+      min-width:0;
+    }
+
+    .job-record-title h3 {
+      font-size:18px;
+      overflow-wrap:anywhere;
+    }
+
+    .job-record-title p {
+      margin:5px 0 0;
+      color:var(--muted);
+      font-size:11px;
+    }
+
+    .job-record-actions,
+    .job-record-meta,
+    .job-record-tags {
+      display:flex;
+      align-items:center;
+      flex-wrap:wrap;
+      gap:8px;
+    }
+
+    .job-record-tags {
+      margin-top:12px;
+    }
+
+    .job-record-tag {
+      padding:5px 10px;
+      border-radius:999px;
+      background:rgba(22,201,195,.10);
+      color:var(--accent-deep);
+      font-size:10px;
+      font-weight:800;
+    }
+
+    .job-record-tag.is-priority {
+      background:rgba(116,152,255,.12);
+      color:#526aa3;
+    }
+
+    .job-record-meta {
+      margin-top:14px;
+      color:#566371;
+      font-size:11px;
+    }
+
+    .job-record-meta span:not(:last-child)::after {
+      content:'·';
+      margin-left:8px;
+      color:rgba(23,32,43,.28);
+    }
+
+    .job-record-link {
+      color:var(--accent-deep);
+      font-weight:800;
+      text-decoration:none;
+    }
+
+    .job-record-link:hover {
+      text-decoration:underline;
+    }
+
+    .job-record-notes {
+      margin-top:14px;
+      display:grid;
+      grid-template-columns:repeat(2,minmax(0,1fr));
+      gap:10px;
+    }
+
+    .job-record-note {
+      padding:12px;
+      border-radius:12px;
+      background:rgba(255,255,255,.46);
+      color:#566371;
+      font-size:11px;
+      line-height:1.6;
+      white-space:pre-wrap;
+      overflow-wrap:anywhere;
+    }
+
+    .job-record-note strong {
+      display:block;
+      margin-bottom:4px;
+      color:var(--text);
+      font-size:10px;
+    }
+
+    .job-record-interviews {
+      margin-top:14px;
+      padding-top:14px;
+      border-top:1px solid rgba(23,32,43,.07);
+    }
+
+    .job-record-interviews h4 {
+      margin:0 0 10px;
+      font-size:12px;
+    }
+
+    .job-record-interview {
+      padding:12px;
+      border-radius:12px;
+      background:rgba(22,201,195,.06);
+    }
+
+    .job-record-interview + .job-record-interview {
+      margin-top:8px;
+    }
+
+    .job-record-interview strong {
+      font-size:11px;
+    }
+
+    .job-record-interview p {
+      margin:6px 0 0;
+      color:#566371;
+      font-size:11px;
+      line-height:1.6;
+      white-space:pre-wrap;
+      overflow-wrap:anywhere;
+    }
+
+    .job-empty {
+      padding:28px 18px;
+      border:1px dashed rgba(23,32,43,.12);
+      border-radius:16px;
+      color:var(--muted);
+      font-size:12px;
+      text-align:center;
     }
 
     .sr-only {
@@ -263,10 +564,35 @@
       .filter-field input,
       .filter-field select,
       .job-field input,
+      .job-field select,
       .job-field textarea,
       .priority-tag,
       .status-tag {
         font-size:16px;
+      }
+
+      .job-section-head,
+      .job-records-head,
+      .job-record-head {
+        align-items:flex-start;
+        flex-direction:column;
+      }
+
+      .interview-editor-grid,
+      .job-record-notes {
+        grid-template-columns:1fr;
+      }
+
+      .interview-editor-grid .job-field:first-child,
+      .interview-editor-grid .job-field:last-child {
+        grid-column:auto;
+      }
+
+      .job-form-actions,
+      .job-form-actions .job-action-button,
+      .job-record-actions,
+      .job-record-actions .job-action-button {
+        width:100%;
       }
     }
   </style>
@@ -292,28 +618,29 @@
       <section class="job-filters" aria-label="岗位筛选">
         <label class="filter-field">
           <span>搜索公司 / 岗位</span>
-          <input type="search" name="job-search" placeholder="输入公司或岗位名称">
+          <input id="jobSearch" type="search" name="job-search" placeholder="输入公司或岗位名称">
         </label>
 
         <label class="filter-field">
           <span>状态筛选</span>
-          <select name="status-filter">
-            <option>全部状态</option>
-            <option>待分析</option>
-            <option>待投递</option>
-            <option>已投递</option>
-            <option>HR沟通</option>
-            <option>面试中</option>
+          <select id="statusFilter" name="status-filter">
+            <option value="">全部状态</option>
+            <option>发现</option>
+            <option>分析</option>
+            <option>投递</option>
+            <option>回复</option>
+            <option>面试</option>
             <option>Offer</option>
+            <option>结束</option>
           </select>
         </label>
       </section>
 
-      <form class="job-card" aria-label="岗位卡片模板">
+      <form class="job-card" id="jobForm" aria-label="岗位记录表单">
         <div class="job-card-head">
           <div>
             <div class="job-card-kicker">JOB CARD</div>
-            <h2>岗位卡片</h2>
+            <h2 id="jobFormTitle">新增岗位</h2>
           </div>
 
           <div class="job-tags">
@@ -329,12 +656,13 @@
             <label class="tag-field">
               <span class="sr-only">投递状态</span>
               <select class="status-tag" name="status">
-                <option>待分析</option>
-                <option>待投递</option>
-                <option>已投递</option>
-                <option>HR沟通</option>
-                <option>面试中</option>
+                <option>发现</option>
+                <option>分析</option>
+                <option>投递</option>
+                <option>回复</option>
+                <option>面试</option>
                 <option>Offer</option>
+                <option>结束</option>
               </select>
             </label>
           </div>
@@ -343,12 +671,12 @@
         <div class="job-grid">
           <label class="job-field">
             <span>公司名称</span>
-            <input type="text" name="company" placeholder="填写公司名称" autocomplete="organization">
+            <input type="text" name="company" placeholder="填写公司名称" autocomplete="organization" required>
           </label>
 
           <label class="job-field">
             <span>岗位名称</span>
-            <input type="text" name="position" placeholder="填写岗位名称" autocomplete="organization-title">
+            <input type="text" name="position" placeholder="填写岗位名称" autocomplete="organization-title" required>
           </label>
 
           <label class="job-field">
@@ -363,7 +691,14 @@
 
           <label class="job-field">
             <span>来源</span>
-            <input type="text" name="source" placeholder="例如：Boss 直聘 / 内推">
+            <input type="text" name="source" list="jobSources" placeholder="例如：BOSS / 官网 / 猎聘">
+            <datalist id="jobSources">
+              <option value="BOSS"></option>
+              <option value="官网"></option>
+              <option value="猎聘"></option>
+              <option value="内推"></option>
+              <option value="LinkedIn"></option>
+            </datalist>
           </label>
 
           <label class="job-field">
@@ -371,8 +706,13 @@
             <input type="number" name="match" min="0" max="100" step="1" inputmode="numeric" placeholder="0–100">
           </label>
 
+          <label class="job-field">
+            <span>投递日期</span>
+            <input type="date" name="applied-date">
+          </label>
+
           <label class="job-field job-field-wide">
-            <span>招聘链接</span>
+            <span>JD 链接</span>
             <input type="url" name="link" placeholder="https://..." inputmode="url">
           </label>
 
@@ -396,8 +736,37 @@
             <textarea name="notes" placeholder="补充记录联系人、时间节点或其他信息"></textarea>
           </label>
         </div>
+
+        <section class="job-interview-section" aria-labelledby="jobInterviewTitle">
+          <div class="job-section-head">
+            <div>
+              <h3 id="jobInterviewTitle">面试记录</h3>
+              <p>可为同一岗位记录多轮面试问题、回答和复盘。</p>
+            </div>
+            <button class="job-action-button" id="addInterview" type="button">新增面试记录</button>
+          </div>
+          <div class="interview-editor-list" id="interviewDraftList"></div>
+        </section>
+
+        <div class="job-form-actions">
+          <button class="job-action-button job-action-primary" id="saveJob" type="submit">保存岗位</button>
+          <button class="job-action-button" id="cancelJobEdit" type="button" hidden>取消编辑</button>
+        </div>
+        <p class="job-data-status" id="jobDataStatus" role="status" aria-live="polite"></p>
       </form>
+
+      <section class="job-records" aria-labelledby="jobRecordsTitle">
+        <div class="job-records-head">
+          <div>
+            <h2 id="jobRecordsTitle">岗位记录</h2>
+            <p>本地保存的求职机会和面试进展。</p>
+          </div>
+          <div class="job-record-count" id="jobRecordCount">0 个岗位</div>
+        </div>
+        <div class="job-list" id="jobList"></div>
+      </section>
     </section>
   </main>
+  <script type="module" src="../src/jobRadar.js"></script>
 </body>
 </html>

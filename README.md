@@ -1,6 +1,6 @@
 # Suze OS
 
-V3.1 第一阶段：将已验收的 V3.0 页面迁移为最小 Vite + 原生 JavaScript 项目。保留 V3.0 的界面、功能、文案和数据格式；尚未接入 Supabase、登录或云同步。
+V3.1 本地增强版：在 V3.0 页面迁移到最小 Vite + 原生 JavaScript 项目的基础上，加入统一本地数据层和可持久化的 Job Radar。保留 V3.0 数据格式；尚未接入 Supabase、登录或云同步。
 
 ## 本地运行
 
@@ -22,10 +22,12 @@ npm run preview
 ```text
 index.html          页面结构、内容与模块入口
 src/main.js         页面初始化、DOM 绑定、求职看板、日记、复盘、激励语
+src/jobRadar.js     岗位记录、筛选、编辑及面试记录交互
 src/style.css       从 V3.0 原样抽出的首页样式
-src/storage.js     V3 数据结构、localStorage、JSON 备份与清除
+src/storage.js     V3 数据结构、校验、JSON 备份与清除
+src/services/      统一浏览器存储、兼容 key 与 Job Radar 数据服务
 src/workflows.js   研究、求职、学习、内容工作流及多窗口启动
-career/            原有 6 个 HTML 页面及样式，源文件保持不变
+career/            职业工作台的 6 个多页面入口及共享样式
 vite.config.js     首页和 career 页面的多入口构建
 vercel.json        Vite 构建命令和 dist 输出目录
 ```
@@ -46,6 +48,8 @@ vercel.json        Vite 构建命令和 dist 输出目录
 ```
 
 V3.0 备份可直接导入，新版导出的备份也可在 V3.0 恢复。保留数据校验、存储失败提示、未保存内容离开提醒，以及多标签页覆盖冲突检测。
+
+Job Radar 明细使用独立的 `suze-os-v3-job-radar` localStorage 键，通过统一 storage service 访问，不改变 `suze-os-v3` 的字段或 V3.0 备份格式。岗位明细与旧版手动求职计数相互独立，避免无法准确还原明细时覆盖已有统计。
 
 localStorage 按浏览器与来源（协议、主机、端口）隔离。同一来源升级可以直接读取旧数据；更换域名、端口，或从 `file://` 切换到 HTTP 时，应先在旧地址导出 JSON，再在新地址导入。Vite 迁移本身不提供跨来源或跨设备同步。
 
